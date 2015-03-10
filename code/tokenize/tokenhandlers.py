@@ -69,7 +69,7 @@ def read_leading_number(string):
     if not number_as_string:
         raise tokenizer.ParseError("_", "a number", string[0])
     number = int(number_as_string.group())
-    string_without_number = string[len(number_as_string):]
+    string_without_number = string[len(number_as_string.group()):]
     return (number, string_without_number)
 
 def remove_first_character(string):
@@ -82,17 +82,20 @@ def remove_first_character(string):
     return string[1:], string[0]
 
 def read_proposition(string):
-    pass
-    # expected_lowercase_character = string[0]
-    # if  not expected_lowercase_character.isLower():
-    #     # TODO Adapt parse error so that it accepts kwargs.
-    #     raise Error("Propositions should start with a lowercase letter, after that they may contain letters in any case, underscores and numbers.")
-    # re.match(r'\d+', string).group()
-    # #  Read first characters: first character is lowercase rest may be: lowercase, number, uppercase, underscore, or dash
-    #
-    # return proposition, rest
-
-
+    """
+    Read a proposition. A proposition has to start with a lowercase letter, after that lowercase, uppercase, underscores
+    and numbers are accepted.
+    :param string: the string that starts with a proposition
+    :return: (basestring, basestring)
+    """
+    match = re.match(r'[a-z]\w*', string)
+    if not match:
+        # TODO Adapt parse error so that it accepts kwargs.
+        pass
+        # raise Error("Propositions should start with a lowercase letter, after that they may contain letters in any case, underscores and numbers.")
+    proposition = match.group()
+    rest = string[len(proposition):]
+    return rest, proposition
 
 
 def knows_handler(rest):
