@@ -8,6 +8,6 @@ __author__ = 'laura'
 from tokenize import tokenizer
 
 if __name__ == "__main__":
-    input_formula = "K_1"
+    input_formula = "K_1 (M_1 | & -> <-> ! T        F   )"
     tokens = tokenizer.tokenize(input_formula)
     print tokens

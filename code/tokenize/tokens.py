@@ -6,7 +6,7 @@ The definitions of the tokens
 __author__ = 'laura'
 
 
-class Knows(object):
+class KnowsToken(object):
     """Token representing the knows operator (K)"""
 
     def __init__(self, agent):
@@ -17,3 +17,72 @@ class Knows(object):
         return (
             "K_{obj.agent}".format(obj=self)
         )
+
+class PossibleToken(object):
+    """Token representing the possible operator (M)"""
+
+    def __init__(self, agent):
+        self.agent = agent
+
+    def __repr__(self):
+        """Print-friendly representation of the Possible object."""
+        return (
+            "M_{obj.agent}".format(obj=self)
+        )
+
+class CommonKnowledgeToken(object):
+    """Token representing the common knowledge (T)"""
+
+    def __repr__(self):
+        """Print-friendly representation of the CommonKnowledge_token object."""
+        return ("C")
+
+class TrueToken(object):
+    """Token representing the truth (T)"""
+
+    def __repr__(self):
+        """Print-friendly representation of the True_token object."""
+        return ("T")
+
+class FalseToken(object):
+    """Token representing the absurdum (F)"""
+
+    def __repr__(self):
+        """Print-friendly representation of the False_token object."""
+        return ("F")
+
+class BracketOpen(object):
+    """Token representing the bracket open (()"""
+
+    def __repr__(self):
+        """Print-friendly representation of the False_token object."""
+        return ("(")
+
+class BracketClose(object):
+    """Token representing the bracket close ())"""
+
+    def __repr__(self):
+        """Print-friendly representation of the False_token object."""
+        return (")")
+
+class BinaryOperator(object):
+    """
+    Token representing binary operators
+    """
+    def __init__(self, operator):
+        # TODO represent binary operators using enums
+        self.operator = operator
+
+    def __repr__(self):
+        """Print-friendly representation of the Binary_Operator object."""
+        return (
+            "{obj.operator}".format(obj=self)
+        )
+
+class NotOperator(object):
+    """
+    Token representing the not
+    """
+    def __repr__(self):
+        """Print-friendly representation of the Not_operator object."""
+        return ("!")

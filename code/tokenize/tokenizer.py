@@ -6,7 +6,7 @@ This module tokenizes a string
 
 __author__ = 'laura'
 
-import tokenhandlers as ops
+import tokenhandlers as token_handler
 
 
 class ParseError(Exception):
@@ -33,18 +33,37 @@ def select_parser(logic):
     """
 
     km = {
-        'K': ops.knows,
-        'M': ops.possible,
+        'K': token_handler.knows_handler,
+        'M': token_handler.possible_handler,
+        'T': token_handler.true_handler,
+        'F': token_handler.false_handler,
+
+        '(': token_handler.bracket_open_handler,
+        ')': token_handler.bracket_close_handler,
+
+        '&': token_handler.simple_binary_handler,
+        '|': token_handler.simple_binary_handler,
+
+        '-': token_handler.implication_handler,
+        '<': token_handler.bi_implication_handler,
+
+        '!': token_handler.not_handler,
+
+        ' ': token_handler.space_handler,
+        '\t': token_handler.space_handler,
+        '\n': token_handler.space_handler
     }
 
-    ec = {
-        'C': ops.common_knowledge
+    km_copy = km.copy()
+    ec_part = {
+        'C': token_handler.common_knowledge_handler
     }
+    ec = km_copy.update(ec_part)
 
     logic_to_parser_functions_mapping = {
         "KM": km,
         "S5": km,
-        "S5EC": km.update(ec)
+        "S5EC": ec
     }
     parser = logic_to_parser_functions_mapping.get(logic)
 
@@ -63,9 +82,10 @@ def tokenize(formula, logic="KM"):
     :type logic: String
     """
     token_handlers = select_parser(logic)
-    rest = formula
+    rest = formula.strip()
     tokens = []
     while rest:
         (token, rest) = token_handlers.get(rest[0])(rest)
-        tokens.append(token)
+        if token:
+            tokens.append(token)
     return tokens
