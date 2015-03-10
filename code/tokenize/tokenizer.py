@@ -6,6 +6,8 @@ This module tokenizes a string
 
 __author__ = 'laura'
 
+from enum import Enum
+
 import tokenhandlers as token_handler
 
 
@@ -23,6 +25,13 @@ class ParseError(Exception):
 class LogicError(Exception):
     """Logic errors"""
     pass
+
+
+class BinaryOperators(Enum):
+    or_op = "|"
+    and_op = "&"
+    implication_op = "->"
+    bi_implication_op = "<->"
 
 
 def select_parser(logic):

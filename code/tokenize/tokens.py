@@ -3,6 +3,8 @@
 """
 The definitions of the tokens
 """
+import tokenizer
+
 __author__ = 'laura'
 
 
@@ -70,13 +72,19 @@ class BinaryOperator(object):
     Token representing binary operators
     """
     def __init__(self, operator):
-        # TODO represent binary operators using enums
-        self.operator = operator
+        mapping = {
+            "|" : tokenizer.BinaryOperators.or_op,
+            "&" : tokenizer.BinaryOperators.and_op,
+            "->": tokenizer.BinaryOperators.implication_op,
+            "<->":tokenizer.BinaryOperators.bi_implication_op
+        }
+
+        self.operator = mapping.get(operator)
 
     def __repr__(self):
         """Print-friendly representation of the Binary_Operator object."""
         return (
-            "{obj.operator}".format(obj=self)
+            "{obj.operator.value}".format(obj=self)
         )
 
 class NotOperator(object):
