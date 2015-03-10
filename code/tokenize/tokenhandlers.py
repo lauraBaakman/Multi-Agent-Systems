@@ -21,7 +21,11 @@ def read_underscore(string, preceding_operator):
     """
     expected_underscore = string[0]
     if expected_underscore != '_':
-        raise tokenizer.ParseError(preceding_operator, '_', expected_underscore)
+        raise tokenizer.ParseError(
+            forward=preceding_operator,
+            expected_underscore='_',
+            read=expected_underscore
+        )
     string, _ = remove_first_character(string)
     return string
 
@@ -34,7 +38,11 @@ def read_implication(string):
     string, _ = remove_first_character(string)
     expected_pointy_bracket = string[0]
     if (expected_pointy_bracket != '>'):
-        raise tokenizer.ParseError('-', '>', expected_pointy_bracket)
+        raise tokenizer.ParseError(
+            forward='-',
+            expected='>',
+            read=expected_pointy_bracket
+        )
     string, _ = remove_first_character(string)
     return string
 
@@ -49,13 +57,21 @@ def read_bi_implication(string):
     # read dash
     expected_dash = string[0]
     if (expected_dash != '-'):
-        raise tokenizer.ParseError('<', '-', expected_dash)
+        raise tokenizer.ParseError(
+            forward='<',
+            expected='-',
+            read=expected_dash
+        )
     string, _ = remove_first_character(string)
 
     # read ending pointy bracket
     expected_pointy_bracket = string[0]
     if (expected_pointy_bracket != '>'):
-        raise tokenizer.ParseError('-', '>', expected_pointy_bracket)
+        raise tokenizer.ParseError(
+            forward='-',
+            expected='>',
+            read=expected_pointy_bracket
+        )
     string, _ = remove_first_character(string)
     return string
 
@@ -67,7 +83,10 @@ def read_leading_number(string):
     """
     number_as_string = re.match(r'\d+', string)
     if not number_as_string:
-        raise tokenizer.ParseError("_", "a number", string[0])
+        raise tokenizer.ParseError(
+            forward="_",
+            expected="a number",
+            read=string[0])
     number = int(number_as_string.group())
     string_without_number = string[len(number_as_string.group()):]
     return (number, string_without_number)
@@ -90,9 +109,10 @@ def read_proposition(string):
     """
     match = re.match(r'[a-z]\w*', string)
     if not match:
-        # TODO Adapt parse error so that it accepts kwargs.
-        pass
-        # raise Error("Propositions should start with a lowercase letter, after that they may contain letters in any case, underscores and numbers.")
+        raise tokenizer.ParseError(
+            "Propositions should start with a lowercase letter, after that they may contain letters in any case, "
+            "underscores and numbers, you inputted {}".format(string)
+        )
     proposition = match.group()
     rest = string[len(proposition):]
     return rest, proposition

@@ -14,11 +14,21 @@ import tokenhandlers as token_handler
 class ParseError(Exception):
     """Parse errors"""
 
-    def __init__(self, forward_character, expected_character, read_character):
-        # Call the base class constructor with the parameters it needs
-        message = 'After "{forward}" "{expected}" is expected not "{read}"'.format(
-            forward=forward_character, expected=expected_character, read=read_character
-        )
+    def __init__(self, **kwargs):
+        """
+        Create a parse error.
+        :param kwargs: Either the message as a string, under the keyword message, or the expected, read, and previous
+        character with the keys forward, expected, read.
+        :return ParseError
+        """
+        if(kwargs.has_key('message')):
+            message = kwargs['message']
+        else:
+            message = 'After "{forward}" "{expected}" is expected not "{read}"'.format(
+                forward = kwargs.get('forward', '?'),
+                expected = kwargs.get('expected', '?'),
+                read = kwargs.get('read', '?')
+            )
         super(Exception, self).__init__(message)
 
 
