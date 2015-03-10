@@ -83,9 +83,7 @@ class BinaryOperator(object):
 
     def __repr__(self):
         """Print-friendly representation of the Binary_Operator object."""
-        return (
-            "{obj.operator.value}".format(obj=self)
-        )
+        return ("{obj.operator.value}".format(obj=self))
 
 class NotOperator(object):
     """
@@ -94,3 +92,14 @@ class NotOperator(object):
     def __repr__(self):
         """Print-friendly representation of the Not_operator object."""
         return ("!")
+
+class PropositionToken(object):
+    """
+    Token representing a propostion
+    """
+    def __init__(self, name):
+        self.name = name
+
+    def __repr__(self):
+        """Print-friendly representation of the proposition  object."""
+        return ("{obj.name}".format(obj=self))

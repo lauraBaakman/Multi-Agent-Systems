@@ -65,8 +65,10 @@ def read_leading_number(string):
     :param string: the string from which the number needs to be read
     :return: (the read number, the string without the leading number)
     """
-    number_as_string = re.match(r'\d+', string).group()
-    number = int(number_as_string)
+    number_as_string = re.match(r'\d+', string)
+    if not number_as_string:
+        raise tokenizer.ParseError("_", "a number", string[0])
+    number = int(number_as_string.group())
     string_without_number = string[len(number_as_string):]
     return (number, string_without_number)
 
@@ -78,6 +80,19 @@ def remove_first_character(string):
     :return: rest with the first character removed
     """
     return string[1:], string[0]
+
+def read_proposition(string):
+    pass
+    # expected_lowercase_character = string[0]
+    # if  not expected_lowercase_character.isLower():
+    #     # TODO Adapt parse error so that it accepts kwargs.
+    #     raise Error("Propositions should start with a lowercase letter, after that they may contain letters in any case, underscores and numbers.")
+    # re.match(r'\d+', string).group()
+    # #  Read first characters: first character is lowercase rest may be: lowercase, number, uppercase, underscore, or dash
+    #
+    # return proposition, rest
+
+
 
 
 def knows_handler(rest):
@@ -194,3 +209,6 @@ def space_handler(rest):
     rest = rest.lstrip()
     return None, rest
 
+def proposition_handler(rest):
+    rest, proposition = read_proposition(rest)
+    return tokens.PropositionToken(proposition), rest

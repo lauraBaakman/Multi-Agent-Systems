@@ -94,7 +94,7 @@ def tokenize(formula, logic="KM"):
     rest = formula.strip()
     tokens = []
     while rest:
-        (token, rest) = token_handlers.get(rest[0])(rest)
+        (token, rest) = token_handlers.get(rest[0], token_handler.proposition_handler)(rest)
         if token:
             tokens.append(token)
     return tokens
