@@ -1,6 +1,8 @@
 require.config({
 	paths: {
-		'd3': 'libs/d3.min'
+		'd3': 'libs/d3.min',
+		'Converters': 'EPL/Converters',
+		'RegularExpressions': 'EPL/RegularExpressions'
 	}
 });
 

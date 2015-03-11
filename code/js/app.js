@@ -7,7 +7,7 @@
  * Released under the MIT License.
  */
 
-define("app", ["d3"], function(d3) {
+define("app", ["d3", "MPL"], function(d3, MPL) {
     // app mode constants
     
         var MODE = {
@@ -801,6 +801,7 @@ define("app", ["d3"], function(d3) {
                 if (d3.event.keyCode === 13) d3.event.preventDefault();
             });
 
+    // Global :)
     return {
       MODE: MODE,
       setAppMode: setAppMode
