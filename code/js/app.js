@@ -7,7 +7,7 @@
  * Released under the MIT License.
  */
 
-define("app", ["d3", "EPL"], function(d3, EPL) {
+define("app", ["d3", "EPL", "EPLModel"], function(d3, EPL, EPLModel) {
     // app mode constants
     
         var MODE = {
@@ -20,7 +20,7 @@ define("app", ["d3", "EPL"], function(d3, EPL) {
         var propvars = ['p', 'q', 'r', 's', 't'],
             varCount = 2;
 
-        var model = new EPL.Model(),
+        var model = new EPLModel.Model(),
             modelString = 'AS1;ApS1,2;AqS;';
 
         var modelParam = window.location.search.match(/\?model=(.*)/);
