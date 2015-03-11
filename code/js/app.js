@@ -7,9 +7,16 @@
  * Released under the MIT License.
  */
 
-define("app", ["d3", "EPL", "epl_model"], function(d3, EPL, epl_model) {
-    // app mode constants
-    
+define("app", [
+        "d3",
+        "epl_valuation",
+        "epl_model",
+        "epl_formula",
+        "mathjax"
+    ],
+    function(d3, epl_valuation, epl_model, epl_formula, MathJax) {
+        // app mode constants
+
         var MODE = {
                 EDIT: 0,
                 EVAL: 1
@@ -224,7 +231,7 @@ define("app", ["d3", "EPL", "epl_model"], function(d3, EPL, epl_model) {
             // parse formula and catch bad input
             var wff = null;
             try {
-                wff = new EPL.Wff(formula);
+                wff = new epl_formula.Formula(formula);
             } catch (e) {
                 evalOutput
                     .html('<div class="alert">Invalid formula!</div>')
@@ -237,7 +244,7 @@ define("app", ["d3", "EPL", "epl_model"], function(d3, EPL, epl_model) {
                 falseStates = [];
             nodes.forEach(function(node, index) {
                 var id = node.id,
-                    truthVal = EPL.truth(model, id, wff);
+                    truthVal = epl_valuation.valuate(model, id, wff);
 
                 if (truthVal) trueStates.push(id);
                 else falseStates.push(id);
@@ -801,9 +808,14 @@ define("app", ["d3", "EPL", "epl_model"], function(d3, EPL, epl_model) {
                 if (d3.event.keyCode === 13) d3.event.preventDefault();
             });
 
-    // Global :)
-    return {
-      MODE: MODE,
-      setAppMode: setAppMode
-    };
-});
+        // Global :)
+        return {
+            MODE: MODE,
+            setAppMode: setAppMode,
+            setVarCount: setVarCount,
+            setVarForSelectedNode: setVarForSelectedNode,
+            evaluateFormula: evaluateFormula,
+            showLinkDialog: showLinkDialog,
+            hideLinkDialog: hideLinkDialog
+        };
+    });

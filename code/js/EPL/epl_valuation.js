@@ -1,13 +1,4 @@
-/*!
- * EPL v1.2.0
- * (http://github.com/rkirsling/modallogic)
- *
- * A library for parsing and evaluating well-formed formulas (wffs) of modal propositional logic.
- *
- * Copyright (c) 2013-2014 Ross Kirsling
- * Released under the MIT License.
- */
-define("EPL", ["epl_model", "epl_formula"], function(
+define("epl_valuation", ["epl_model", "epl_formula"], function(
   epl_model, epl_formula) {
     'use strict';
 
@@ -53,7 +44,7 @@ define("EPL", ["epl_model", "epl_formula"], function(
 
     // export public methods
     return {
-        truth: truth
+        valuate: truth
     };
 
 });

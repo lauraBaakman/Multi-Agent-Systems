@@ -8,16 +8,17 @@ require.config({
 		'epl_regexp': 'epl/epl_regexp',
 		'epl_model': 'epl/epl_model',
 		'epl_formula': 'epl/epl_formula',
+		'epl_valuation': 'epl/epl_valuation'
 	},
 
 	shim: {
 		mathjax: {
 			export: "MathJax",
 			init: function() {
-				MathJAx.Hub.Config({
+				MathJax.Hub.Config({
 					tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 				});
-				MathJAx.Hub.Startup.onload();
+				MathJax.Hub.Startup.onload();
 				return MathJax;
 			}
 		}
