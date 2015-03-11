@@ -1,11 +1,11 @@
 // name, deps, callback
-define("Converters", ["RegularExpressions"], function(RegularExpressions) {
+define("epl_converters", ["epl_regexp"], function(epl_regexp) {
 
     var asciiToJSON = function (ascii) {
         var json = {},
             subwffs = [];
 
-        if (RegularExpressions.proposition.test(ascii))
+        if (epl_regexp.proposition.test(ascii))
             json.prop = ascii;
         else if (ascii.slice(0, 1) === '~')
             json.neg = asciiToJSON(ascii.slice(1));
@@ -13,13 +13,13 @@ define("Converters", ["RegularExpressions"], function(RegularExpressions) {
             json.nec = asciiToJSON(ascii.slice(2));
         else if (ascii.slice(0, 2) === '<>')
             json.poss = asciiToJSON(ascii.slice(2));
-        else if (subwffs = ascii.match(RegularExpressions.conjunction))
+        else if (subwffs = ascii.match(epl_regexp.conjunction))
             json.conj = [asciiToJSON(subwffs[1]), asciiToJSON(subwffs[2])];
-        else if (subwffs = ascii.match(RegularExpressions.disjunction))
+        else if (subwffs = ascii.match(epl_regexp.disjunction))
             json.disj = [asciiToJSON(subwffs[1]), asciiToJSON(subwffs[2])];
-        else if (subwffs = ascii.match(RegularExpressions.implication))
+        else if (subwffs = ascii.match(epl_regexp.implication))
             json.impl = [asciiToJSON(subwffs[1]), asciiToJSON(subwffs[2])];
-        else if (subwffs = ascii.match(RegularExpressions.equivalence))
+        else if (subwffs = ascii.match(epl_regexp.equivalence))
             json.equi = [asciiToJSON(subwffs[1]), asciiToJSON(subwffs[2])];
         else
             throw new Error('Invalid formula!');

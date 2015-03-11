@@ -1,4 +1,4 @@
-define("EPLModel", [], function() {
+define("epl_model", [], function() {
 
 	function Model() {
         // Array of states (worlds) in model.

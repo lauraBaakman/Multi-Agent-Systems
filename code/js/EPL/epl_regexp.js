@@ -1,5 +1,5 @@
 // name, deps, callback
-define("RegularExpressions", [], function() {
+define("epl_regexp", [], function() {
 	'use strict';
 
     // sub-regexes
