@@ -1,5 +1,5 @@
 /*!
- * MPL v1.2.0
+ * EPL v1.2.0
  * (http://github.com/rkirsling/modallogic)
  *
  * A library for parsing and evaluating well-formed formulas (wffs) of modal propositional logic.
@@ -7,11 +7,12 @@
  * Copyright (c) 2013-2014 Ross Kirsling
  * Released under the MIT License.
  */
-define("MPL", ["Converters"], function(Converters) {
+define("EPL", ["Converters"], function(
+  Converters) {
     'use strict';
 
     /**
-     * Constructor for MPL wff. Takes either ASCII or JSON representation as input.
+     * Constructor for EPL wff. Takes either ASCII or JSON representation as input.
      * @constructor
      */
     function Wff(asciiOrJSON) {
@@ -22,28 +23,28 @@ define("MPL", ["Converters"], function(Converters) {
             _unicode = '';
 
         /**
-         * Returns the ASCII representation of an MPL wff.
+         * Returns the ASCII representation of an EPL wff.
          */
         this.ascii = function() {
             return _ascii;
         };
 
         /**
-         * Returns the JSON representation of an MPL wff.
+         * Returns the JSON representation of an EPL wff.
          */
         this.json = function() {
             return _json;
         };
 
         /**
-         * Returns the LaTeX representation of an MPL wff.
+         * Returns the LaTeX representation of an EPL wff.
          */
         this.latex = function() {
             return _latex;
         };
 
         /**
-         * Returns the Unicode representation of an MPL wff.
+         * Returns the Unicode representation of an EPL wff.
          */
         this.unicode = function() {
             return _unicode;
@@ -249,7 +250,7 @@ define("MPL", ["Converters"], function(Converters) {
     }
 
     /**
-     * Evaluate the truth of an MPL wff (in JSON representation) at a given state within a given model.
+     * Evaluate the truth of an EPL wff (in JSON representation) at a given state within a given model.
      * @private
      */
     function _truth(model, state, json) {
@@ -278,12 +279,12 @@ define("MPL", ["Converters"], function(Converters) {
     }
 
     /**
-     * Evaluate the truth of an MPL wff at a given state within a given model.
+     * Evaluate the truth of an EPL wff at a given state within a given model.
      */
     function truth(model, state, wff) {
-        if (!(model instanceof MPL.Model)) throw new Error('Invalid model!');
+        if (!(model instanceof EPL.Model)) throw new Error('Invalid model!');
         if (!model.getStates()[state]) throw new Error('State ' + state + ' not found!');
-        if (!(wff instanceof MPL.Wff)) throw new Error('Invalid wff!');
+        if (!(wff instanceof EPL.Wff)) throw new Error('Invalid wff!');
 
         return _truth(model, state, wff.json());
     }

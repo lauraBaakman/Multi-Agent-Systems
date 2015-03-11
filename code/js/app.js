@@ -1,13 +1,13 @@
 /**
  * Modal Logic Playground -- application code
  *
- * Dependencies: D3, MathJax, MPL
+ * Dependencies: D3, MathJax, EPL
  *
  * Copyright (c) 2013 Ross Kirsling
  * Released under the MIT License.
  */
 
-define("app", ["d3", "MPL"], function(d3, MPL) {
+define("app", ["d3", "EPL"], function(d3, EPL) {
     // app mode constants
     
         var MODE = {
@@ -16,11 +16,11 @@ define("app", ["d3", "MPL"], function(d3, MPL) {
             },
             appMode = MODE.EDIT;
 
-        // set up initial MPL model (loads saved model if available, default otherwise)
+        // set up initial EPL model (loads saved model if available, default otherwise)
         var propvars = ['p', 'q', 'r', 's', 't'],
             varCount = 2;
 
-        var model = new MPL.Model(),
+        var model = new EPL.Model(),
             modelString = 'AS1;ApS1,2;AqS;';
 
         var modelParam = window.location.search.match(/\?model=(.*)/);
@@ -28,7 +28,7 @@ define("app", ["d3", "MPL"], function(d3, MPL) {
 
         model.loadFromModelString(modelString);
 
-        // set up initial nodes and links (edges) of graph, based on MPL model
+        // set up initial nodes and links (edges) of graph, based on EPL model
         var lastNodeId = -1,
             nodes = [],
             links = [];
@@ -224,7 +224,7 @@ define("app", ["d3", "MPL"], function(d3, MPL) {
             // parse formula and catch bad input
             var wff = null;
             try {
-                wff = new MPL.Wff(formula);
+                wff = new EPL.Wff(formula);
             } catch (e) {
                 evalOutput
                     .html('<div class="alert">Invalid formula!</div>')
@@ -237,7 +237,7 @@ define("app", ["d3", "MPL"], function(d3, MPL) {
                 falseStates = [];
             nodes.forEach(function(node, index) {
                 var id = node.id,
-                    truthVal = MPL.truth(model, id, wff);
+                    truthVal = EPL.truth(model, id, wff);
 
                 if (truthVal) trueStates.push(id);
                 else falseStates.push(id);
