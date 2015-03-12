@@ -19,8 +19,10 @@ def _get_regular_expression(logic):
     :param logic: the logic to be used, options: KM, S5, S5EC
     :return: a list of regular expressions.
     """
+    # TODO add stuff for KM/S5
     km_s5_expressions = []
 
+    # TODO add stuff for S5EC
     s5EC_expressions = []
 
     expressions_per_logic = {
@@ -46,18 +48,17 @@ def tokenize(logic, string):
     """
     Tokenize the inputted string to a list of tokens
     :param loigc: The logic of the string, options: KM, S5, S5EC
-    :param string: The string to be tokenized
+    :param string: The string to be converted to tokens.
     :return:[object]
     """
-    regular_expressions = regular_expressions(logic);
-
+    regular_expressions = _get_regular_expression(logic);
+    scan = re.Scanner(regular_expressions)
+    results, remainder=scan.scan(input_formula)
+    # TODO raise error if remainder is not empty
+    return results
 
 if __name__ == "__main__":
     input_formula = "~a | c & q"
-
-    expressions = _get_regular_expression("KM")
-
-    scan = re.Scanner(expressions)
-    results, remainder=scan.scan(input_formula)
-    print results
-    print remainder
+    logic = "KM"
+    tokens = tokenize(logic, input_formula)
+    print tokens

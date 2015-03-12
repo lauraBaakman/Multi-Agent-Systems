@@ -13,11 +13,13 @@ propositional = {
     'negation': r"~"
 }
 
+# TODO test regexs for kms5
 kms5 = {
     'knowledge': r"K_[1-9]+",
     'possible': r"M_[1-9]+"
 }
 
+# TODO add regex for common logic
 common = {
     'common': r"C"
 }
