@@ -75,7 +75,7 @@ class Possible(object):
             "M_({obj.agent})".format(obj=self)
         )
 
-class COMMON(object):
+class Common(object):
     def __repr__(self):
         """Print-friendly representation."""
         return (

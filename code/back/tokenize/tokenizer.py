@@ -19,14 +19,14 @@ def _get_regular_expression(logic):
     :param logic: the logic to be used, options: KM, S5, S5EC
     :return: a list of regular expressions.
     """
-    # TODO add stuff for KM/S5
     km_s5_expressions = [
         (config.kms5['knowledge'],      lambda scanner, token: tokens.Knowledge(token)),
         (config.kms5['possible'],      lambda scanner, token: tokens.Possible(token))
     ]
 
-    # TODO add stuff for S5EC
-    s5EC_expressions = []
+    s5EC_expressions = [
+        (config.common['common'],      lambda scanner, _: tokens.Common())
+    ]
 
     expressions_per_logic = {
         "KM": km_s5_expressions,
@@ -63,6 +63,7 @@ def tokenize(logic, string):
     return results
 
 if __name__ == "__main__":
-    input_formula = "~a | K_47 c & q"
-    logic = "KM"
+    input_formula = "C ~a | K_47 c & q"
+    logic = "S5EC"
     tokens = tokenize(logic, input_formula)
+    print tokens
