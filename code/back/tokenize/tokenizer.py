@@ -12,6 +12,20 @@ class BinaryOperators(Enum):
     implication = 3
     biimplication = 4
 
+class TokenizeError(IOError):
+    """
+    Exception raised when the string cannot be tokenized.
+    """
+
+    def __init__(self, expr, msg):
+        """
+        Constructor for TokenizeError
+        :param expr: input expression in which the error occurred
+        :param msg: explanation of the error
+        """
+        self.expr = expr
+        self.msg = msg
+
 
 def _get_regular_expression(logic):
     """
@@ -20,17 +34,17 @@ def _get_regular_expression(logic):
     :return: a list of regular expressions.
     """
     km_s5_expressions = [
-        (config.kms5['knowledge'],      lambda scanner, token: tokens.Knowledge(token)),
-        (config.kms5['possible'],      lambda scanner, token: tokens.Possible(token))
+        (config.kms5['knowledge'], lambda scanner, token: tokens.Knowledge(token)),
+        (config.kms5['possible'],  lambda scanner, token: tokens.Possible(token))
     ]
 
     s5EC_expressions = [
-        (config.common['common'],      lambda scanner, _: tokens.Common())
+        (config.common['common'], lambda scanner, _: tokens.Common())
     ]
 
     expressions_per_logic = {
-        "KM": km_s5_expressions,
-        "S5": km_s5_expressions,
+        "KM":   km_s5_expressions,
+        "S5":   km_s5_expressions,
         "S5EC": s5EC_expressions
     }
 
@@ -59,11 +73,15 @@ def tokenize(logic, string):
     regular_expressions = _get_regular_expression(logic);
     scan = re.Scanner(regular_expressions)
     results, remainder=scan.scan(input_formula)
-    # TODO raise error if remainder is not empty
+
+    if remainder:
+        msg = "Could not parse some part of the expression, you probably " \
+              "used an operator that is not defined (for this logic)."
+        raise TokenizeError(remainder, msg)
     return results
 
 if __name__ == "__main__":
     input_formula = "C ~a | K_47 c & q"
-    logic = "S5EC"
+    logic = "KM"
     tokens = tokenize(logic, input_formula)
     print tokens
