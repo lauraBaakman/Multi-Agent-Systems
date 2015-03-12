@@ -5,7 +5,7 @@ Main script to test the AST
 """
 __author__ = 'laura'
 
-from tokenize import tokenizer
+import tokenizer
 
 if __name__ == "__main__":
     input_formula = "K_1 (p & q) | (q -> r)"
