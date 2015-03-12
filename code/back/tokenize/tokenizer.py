@@ -1,110 +1,61 @@
-# -*- coding: utf-8 -*-
-
-"""
-This module tokenizes a string
-"""
-
-__author__ = 'laura'
-
+"""."""
 from enum import Enum
-
-import tokenhandlers as token_handler
-
-
-class ParseError(Exception):
-    """Parse errors"""
-
-    def __init__(self, **kwargs):
-        """
-        Create a parse error.
-        :param kwargs: Either the message as a string, under the keyword message, or the expected, read, and previous
-        character with the keys forward, expected, read.
-        :return ParseError
-        """
-        if(kwargs.has_key('message')):
-            message = kwargs['message']
-        else:
-            message = 'After "{forward}" "{expected}" is expected not "{read}"'.format(
-                forward = kwargs.get('forward', '?'),
-                expected = kwargs.get('expected', '?'),
-                read = kwargs.get('read', '?')
-            )
-        super(Exception, self).__init__(message)
+import re
 
 
-class LogicError(Exception):
-    """Logic errors"""
-    pass
-
+import config
+import tokens
 
 class BinaryOperators(Enum):
-    or_op = "|"
-    and_op = "&"
-    implication_op = "->"
-    bi_implication_op = "<->"
+    conjunction = 1
+    disjunction  = 2
+    implication = 3
+    biimplication = 4
 
 
-def select_parser(logic):
+def _get_regular_expression(logic):
     """
-    Select the logic to be used.
-    :param logic: The name of the logic as a string, options: KM, S5, S5EC
-    :return: Dictionary with the parse functions.
+    Create a list of regular expressions to tokenize the formula.
+    :param logic: the logic to be used, options: KM, S5, S5EC
+    :return: a list of regular expressions.
     """
+    km_s5_expressions = []
 
-    km = {
-        'K': token_handler.knows_handler,
-        'M': token_handler.possible_handler,
-        'T': token_handler.true_handler,
-        'F': token_handler.false_handler,
+    s5EC_expressions = []
 
-        '(': token_handler.bracket_open_handler,
-        ')': token_handler.bracket_close_handler,
-
-        '&': token_handler.simple_binary_handler,
-        '|': token_handler.simple_binary_handler,
-
-        '-': token_handler.implication_handler,
-        '<': token_handler.bi_implication_handler,
-
-        '!': token_handler.not_handler,
-
-        ' ': token_handler.space_handler,
-        '\t': token_handler.space_handler,
-        '\n': token_handler.space_handler
+    expressions_per_logic = {
+        "KM": km_s5_expressions,
+        "S5": km_s5_expressions,
+        "S5EC": s5EC_expressions
     }
 
-    km_copy = km.copy()
-    ec_part = {
-        'C': token_handler.common_knowledge_handler
-    }
-    ec = km_copy.update(ec_part)
+    regular_expressions = []
 
-    logic_to_parser_functions_mapping = {
-        "KM": km,
-        "S5": km,
-        "S5EC": ec
-    }
-    parser = logic_to_parser_functions_mapping.get(logic)
+    regular_expressions.append(expressions_per_logic.get(logic, []))
+    return regular_expressions
 
-    if parser is None:
-        raise ('The logic {logic} is not supported'.format(logic=logic))
-
-    return parser
-
-
-def tokenize(formula, logic="KM"):
+def tokenize(logic, string):
     """
-    Tokenize the formula.
-    :param formula: A formula in the logic of your choice to be tokenized.
-    :return: List of tokens
-    :param logic: The logic to be parsed as a string, options: KM, S5, S5EC. Default: KM
-    :type logic: String
+    Tokenize the inputted string to a list of tokens
+    :param loigc: The logic of the string, options: KM, S5, S5EC
+    :param string: The string to be tokenized
+    :return:[object]
     """
-    token_handlers = select_parser(logic)
-    rest = formula.strip()
-    tokens = []
-    while rest:
-        (token, rest) = token_handlers.get(rest[0], token_handler.proposition_handler)(rest)
-        if token:
-            tokens.append(token)
-    return tokens
+    regular_expressions = regular_expressions(logic);
+
+
+if __name__ == "__main__":
+    input_formula = "~a | C & q"
+
+    scan = re.Scanner([
+        (r"[a-z]\w*",                              lambda scanner,  token: tokens.Proposition(token)),
+        (config.propositional['conjunction'],      lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.conjunction)),
+        (config.propositional['disjunction'],      lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.disjunction)),
+        (config.propositional['implication'],      lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.implication)),
+        (config.propositional['bi-implication'],   lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.biimplication)),
+        (config.propositional['negation'],         lambda scanner,      _: tokens.Negation()),
+        (r"\s+", None), # None == skip token.
+    ])
+    results, remainder=scan.scan(input_formula)
+    print results
+    print remainder

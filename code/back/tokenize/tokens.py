@@ -1,105 +1,64 @@
-# -*- coding: utf-8 -*-
+# coding=utf-8
 
 """
-The definitions of the tokens
+Definition of the different tokens the tokenizer generates
 """
-import tokenizer
 
-__author__ = 'laura'
+import re
 
-
-class KnowsToken(object):
-    """Token representing the knows operator (K)"""
-
-    def __init__(self, agent):
-        self.agent = agent
-
-    def __repr__(self):
-        """Print-friendly representation of the Knows object."""
-        return (
-            "K_{obj.agent}".format(obj=self)
-        )
-
-class PossibleToken(object):
-    """Token representing the possible operator (M)"""
-
-    def __init__(self, agent):
-        self.agent = agent
-
-    def __repr__(self):
-        """Print-friendly representation of the Possible object."""
-        return (
-            "M_{obj.agent}".format(obj=self)
-        )
-
-class CommonKnowledgeToken(object):
-    """Token representing the common knowledge (T)"""
-
-    def __repr__(self):
-        """Print-friendly representation of the CommonKnowledge_token object."""
-        return ("C")
-
-class TrueToken(object):
-    """Token representing the truth (T)"""
-
-    def __repr__(self):
-        """Print-friendly representation of the True_token object."""
-        return ("T")
-
-class FalseToken(object):
-    """Token representing the absurdum (F)"""
-
-    def __repr__(self):
-        """Print-friendly representation of the False_token object."""
-        return ("F")
-
-class BracketOpen(object):
-    """Token representing the bracket open (()"""
-
-    def __repr__(self):
-        """Print-friendly representation of the False_token object."""
-        return ("(")
-
-class BracketClose(object):
-    """Token representing the bracket close ())"""
-
-    def __repr__(self):
-        """Print-friendly representation of the False_token object."""
-        return (")")
-
-class BinaryOperator(object):
+def get_agent_from_string(string):
     """
-    Token representing binary operators
+    Get the agent from a string.
+    :param string: the string with the agent
+    :return:the number of the agent
     """
-    def __init__(self, operator):
-        mapping = {
-            "|" : tokenizer.BinaryOperators.or_op,
-            "&" : tokenizer.BinaryOperators.and_op,
-            "->": tokenizer.BinaryOperators.implication_op,
-            "<->":tokenizer.BinaryOperators.bi_implication_op
-        }
+    return re.search(r"\d+", string).group()
 
-        self.operator = mapping.get(operator)
+class Proposition(object):
 
-    def __repr__(self):
-        """Print-friendly representation of the Binary_Operator object."""
-        return ("{obj.operator.value}".format(obj=self))
-
-class NotOperator(object):
-    """
-    Token representing the not
-    """
-    def __repr__(self):
-        """Print-friendly representation of the Not_operator object."""
-        return ("!")
-
-class PropositionToken(object):
-    """
-    Token representing a propostion
-    """
     def __init__(self, name):
         self.name = name
 
     def __repr__(self):
-        """Print-friendly representation of the proposition  object."""
-        return ("{obj.name}".format(obj=self))
+        """Print-friendly representation."""
+        return (
+            "PROPOSITION({obj.name})".format(obj=self)
+        )
+
+class BinaryOperator(object):
+
+    def __init__(self, type):
+        self.type = type
+
+    def __repr__(self):
+        """Print-friendly representation."""
+        return (
+            "BINOP({obj.type})".format(obj=self)
+        )
+
+class Negation(object):
+    def __repr__(self):
+        """Print-friendly representation."""
+        return (
+            "NEGATION"
+        )
+
+class Knowledge(object):
+
+    def __init__(self, string):
+        """
+        Token for the knowledge operator.
+        :param string: the string representing the knowledge operator.
+        :return: Knowledge token
+        """
+        self.agent = get_agent_from_string(string)
+
+    def __repr__(self):
+        """Print-friendly representation."""
+        return (
+            "K({obj.agent})".format(obj=self)
+        )
+
+
+
+
