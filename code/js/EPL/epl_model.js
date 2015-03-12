@@ -1,5 +1,4 @@
 define("epl_model", [], function() {
-
 	function Model() {
         // Array of states (worlds) in model.
         // Each state is an object with two properties:

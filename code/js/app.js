@@ -104,6 +104,9 @@ define("app", [
             });
         });
 
+
+// ------------------------------ Graph `Canvas' ------------------------------ //
+
         // set up SVG for D3
         var width = 640,
             height = 540,
@@ -155,6 +158,32 @@ define("app", [
         var path = svg.append('svg:g').selectAll('path'),
             circle = svg.append('svg:g').selectAll('g');
 
+        // update force layout (called automatically each iteration)
+        function tick() {
+            // draw directed edges with proper padding from node centers
+            path.attr('d', function(d) {
+                var deltaX = d.target.x - d.source.x,
+                    deltaY = d.target.y - d.source.y,
+                    dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY),
+                    normX = deltaX / dist,
+                    normY = deltaY / dist,
+                    sourcePadding = d.left ? 17 : 12,
+                    targetPadding = d.right ? 17 : 12,
+                    sourceX = d.source.x + (sourcePadding * normX),
+                    sourceY = d.source.y + (sourcePadding * normY),
+                    targetX = d.target.x - (targetPadding * normX),
+                    targetY = d.target.y - (targetPadding * normY);
+                return 'M' + sourceX + ',' + sourceY + 'L' + targetX + ',' + targetY;
+            });
+
+            circle.attr('transform', function(d) {
+                return 'translate(' + d.x + ',' + d.y + ')';
+            });
+        }
+
+
+// ------------------------------ Mouse/Key Events ------------------------------ //
+
         // mouse event vars
         var selected_node = null,
             selected_link = null,
@@ -167,6 +196,8 @@ define("app", [
             mouseup_node = null;
             mousedown_link = null;
         }
+
+// ------------------------------ Link/Model dialog ------------------------------ //
 
         // handles for 'Link to Model' dialog
         var backdrop = d3.select('.modal-backdrop'),
@@ -196,6 +227,9 @@ define("app", [
                 backdrop.classed('inactive', true);
             }, 300);
         }
+
+
+// ------------------------------ Info Panel ------------------------------ //
 
         // handles for dynamic content in panel
         var varCountButtons = d3.selectAll('#edit-pane .var-count button'),
@@ -273,6 +307,8 @@ define("app", [
             MathJax.Hub.Queue(['Typeset', MathJax.Hub, evalOutput.node()]);
         }
 
+// ------------------------------ No idea ------------------------------ //
+
         // set selected node and notify panel of changes
         function setSelectedNode(node) {
             selected_node = node;
@@ -340,29 +376,6 @@ define("app", [
             circle.selectAll('text:not(.id)').text(makeAssignmentString);
         }
 
-        // update force layout (called automatically each iteration)
-        function tick() {
-            // draw directed edges with proper padding from node centers
-            path.attr('d', function(d) {
-                var deltaX = d.target.x - d.source.x,
-                    deltaY = d.target.y - d.source.y,
-                    dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY),
-                    normX = deltaX / dist,
-                    normY = deltaY / dist,
-                    sourcePadding = d.left ? 17 : 12,
-                    targetPadding = d.right ? 17 : 12,
-                    sourceX = d.source.x + (sourcePadding * normX),
-                    sourceY = d.source.y + (sourcePadding * normY),
-                    targetX = d.target.x - (targetPadding * normX),
-                    targetY = d.target.y - (targetPadding * normY);
-                return 'M' + sourceX + ',' + sourceY + 'L' + targetX + ',' + targetY;
-            });
-
-            circle.attr('transform', function(d) {
-                return 'translate(' + d.x + ',' + d.y + ')';
-            });
-        }
-
         // update graph (called when needed)
         function restart() {
             // path (link) group
@@ -391,7 +404,7 @@ define("app", [
                 .style('marker-end', function(d) {
                     return d.right ? 'url(#end-arrow)' : '';
                 })
-                .on('mousedown', function(d) {
+                .on('mousedown', function(d) { 
                     if (appMode !== MODE.EDIT || d3.event.ctrlKey) return;
 
                     // select link

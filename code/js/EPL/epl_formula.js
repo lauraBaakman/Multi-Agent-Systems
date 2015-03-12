@@ -3,7 +3,7 @@ define("epl_formula", ["epl_converters"], function(epl_converters) {
      * Constructor for EPL wff. Takes either ASCII or JSON representation as input.
      * @constructor
      */
-    function Wff(asciiOrJSON) {
+    function Formula(asciiOrJSON) {
         // Strings for the four representations: ASCII, JSON, LaTeX, and Unicode.
         var _ascii = '',
             _json = '',
@@ -47,6 +47,6 @@ define("epl_formula", ["epl_converters"], function(epl_converters) {
     }
 
     return {
-        Formula: Wff
+        Formula: Formula
     };
 });

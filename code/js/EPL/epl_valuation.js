@@ -6,7 +6,7 @@ define("epl_valuation", ["epl_model", "epl_formula"], function(
      * Evaluate the truth of an EPL wff (in JSON representation) at a given state within a given model.
      * @private
      */
-    function _truth(model, state, json) {
+    var _truth = function(model, state, json) {
         if (json.prop)
             return model.valuation(json.prop, state);
         else if (json.neg)
@@ -34,7 +34,7 @@ define("epl_valuation", ["epl_model", "epl_formula"], function(
     /**
      * Evaluate the truth of an EPL wff at a given state within a given model.
      */
-    function truth(model, state, wff) {
+    var valuate = function(model, state, wff) {
         if (!(model instanceof epl_model.Model)) throw new Error('Invalid model!');
         if (!model.getStates()[state]) throw new Error('State ' + state + ' not found!');
         if (!(wff instanceof epl_formula.Formula)) throw new Error('Invalid wff!');
@@ -44,7 +44,7 @@ define("epl_valuation", ["epl_model", "epl_formula"], function(
 
     // export public methods
     return {
-        valuate: truth
+        valuate: valuate
     };
 
 });
