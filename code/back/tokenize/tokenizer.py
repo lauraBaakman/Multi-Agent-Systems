@@ -29,10 +29,18 @@ def _get_regular_expression(logic):
         "S5EC": s5EC_expressions
     }
 
-    regular_expressions = []
+    expressions = [
+        (r"[a-z]\w*",                              lambda scanner,  token: tokens.Proposition(token)),
+        (config.propositional['conjunction'],      lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.conjunction)),
+        (config.propositional['disjunction'],      lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.disjunction)),
+        (config.propositional['implication'],      lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.implication)),
+        (config.propositional['bi-implication'],   lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.biimplication)),
+        (config.propositional['negation'],         lambda scanner,      _: tokens.Negation()),
+        (r"\s+", None), # None == skip token.
+    ]
 
-    regular_expressions.append(expressions_per_logic.get(logic, []))
-    return regular_expressions
+    expressions.extend(expressions_per_logic.get(logic, []))
+    return expressions
 
 def tokenize(logic, string):
     """
@@ -45,17 +53,11 @@ def tokenize(logic, string):
 
 
 if __name__ == "__main__":
-    input_formula = "~a | C & q"
+    input_formula = "~a | c & q"
 
-    scan = re.Scanner([
-        (r"[a-z]\w*",                              lambda scanner,  token: tokens.Proposition(token)),
-        (config.propositional['conjunction'],      lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.conjunction)),
-        (config.propositional['disjunction'],      lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.disjunction)),
-        (config.propositional['implication'],      lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.implication)),
-        (config.propositional['bi-implication'],   lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.biimplication)),
-        (config.propositional['negation'],         lambda scanner,      _: tokens.Negation()),
-        (r"\s+", None), # None == skip token.
-    ])
+    expressions = _get_regular_expression("KM")
+
+    scan = re.Scanner(expressions)
     results, remainder=scan.scan(input_formula)
     print results
     print remainder
