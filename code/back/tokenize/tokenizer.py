@@ -20,7 +20,10 @@ def _get_regular_expression(logic):
     :return: a list of regular expressions.
     """
     # TODO add stuff for KM/S5
-    km_s5_expressions = []
+    km_s5_expressions = [
+        (config.kms5['knowledge'],      lambda scanner, token: tokens.Knowledge(token)),
+        (config.kms5['possible'],      lambda scanner, token: tokens.Possible(token))
+    ]
 
     # TODO add stuff for S5EC
     s5EC_expressions = []
@@ -38,7 +41,9 @@ def _get_regular_expression(logic):
         (config.propositional['implication'],      lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.implication)),
         (config.propositional['bi-implication'],   lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.biimplication)),
         (config.propositional['negation'],         lambda scanner,      _: tokens.Negation()),
+        # TODO extend skip token to tabs and newlines
         (r"\s+", None), # None == skip token.
+        # TODO add brackets
     ]
 
     expressions.extend(expressions_per_logic.get(logic, []))
@@ -58,7 +63,6 @@ def tokenize(logic, string):
     return results
 
 if __name__ == "__main__":
-    input_formula = "~a | c & q"
+    input_formula = "~a | K_47 c & q"
     logic = "KM"
     tokens = tokenize(logic, input_formula)
-    print tokens

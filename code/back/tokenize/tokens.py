@@ -56,9 +56,30 @@ class Knowledge(object):
     def __repr__(self):
         """Print-friendly representation."""
         return (
-            "K({obj.agent})".format(obj=self)
+            "K_({obj.agent})".format(obj=self)
         )
 
+class Possible(object):
 
+    def __init__(self, string):
+        """
+        Token for the possible operator.
+        :param string: the string representing the possible operator.
+        :return: Possible token
+        """
+        self.agent = get_agent_from_string(string)
+
+    def __repr__(self):
+        """Print-friendly representation."""
+        return (
+            "M_({obj.agent})".format(obj=self)
+        )
+
+class COMMON(object):
+    def __repr__(self):
+        """Print-friendly representation."""
+        return (
+            "COMMON"
+        )
 
 
