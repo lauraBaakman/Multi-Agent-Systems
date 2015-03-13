@@ -43,6 +43,7 @@ def _get_lexicon(logic):
     s5EC_expressions = [
         (config.common['common'], lambda scanner, _: tokens.Common())
     ]
+    s5EC_expressions.extend(km_s5_expressions)
 
     expressions_per_logic = {
         "KM":   km_s5_expressions,
@@ -73,8 +74,8 @@ def tokenize(logic, string):
     :raise TokenizeError: if a unknown character is in the string.
     :return:[object]
     """
-    regular_expressions = _get_lexicon(logic);
-    scan = re.Scanner(regular_expressions)
+    lexicon = _get_lexicon(logic);
+    scan = re.Scanner(lexicon)
     results, remainder=scan.scan(input_formula)
 
     if remainder:
@@ -84,8 +85,8 @@ def tokenize(logic, string):
     return results
 
 if __name__ == "__main__":
-    input_formula = "({[<>]})"
-    logic = "KM"
+    input_formula = "K_1 C b"
+    logic = "S5EC"
     try:
         tokens = tokenize(logic, input_formula)
         print tokens
