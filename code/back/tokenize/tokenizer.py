@@ -52,15 +52,14 @@ def _get_lexicon(logic):
 
     expressions = [
         (r"[a-z]\w*",                              lambda scanner,  token: tokens.Proposition(token)),
-        (r"[[{(<]",                                    lambda scanner,      _: tokens.BracketOpen()),
-        (r"[]})>]",                                    lambda scanner,      _: tokens.BracketClose()),
+        (r"[[{(<]",                                lambda scanner,      _: tokens.BracketOpen()),
+        (r"[]})>]",                                lambda scanner,      _: tokens.BracketClose()),
         (config.propositional['conjunction'],      lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.conjunction)),
         (config.propositional['disjunction'],      lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.disjunction)),
         (config.propositional['implication'],      lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.implication)),
         (config.propositional['bi-implication'],   lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.biimplication)),
         (config.propositional['negation'],         lambda scanner,      _: tokens.Negation()),
-        # TODO extend skip token to tabs and newlines
-        (r"\s+", None), # None == skip token.
+        (r"\s+",                                   None), # None == skip token.
     ]
 
     expressions.extend(expressions_per_logic.get(logic, []))
