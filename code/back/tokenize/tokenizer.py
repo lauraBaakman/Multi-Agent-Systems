@@ -37,6 +37,7 @@ def _get_lexicon(logic):
     s5EC_expressions = [
         (config.common['common'], lambda scanner, _: tokens.UnaryOperator(Unary.common))
     ]
+    s5EC_expressions.extend(km_s5_expressions)
 
     expressions_per_logic = {
         "KM":   km_s5_expressions,
@@ -78,7 +79,7 @@ def tokenize(logic, string):
     return results
 
 if __name__ == "__main__":
-    input_formula = "C ~ (a -> b)"
+    input_formula = "C K_1 M_1  ~ (a -> b) <-> | &"
     logic = "S5EC"
     try:
         tokens = tokenize(logic, input_formula)
