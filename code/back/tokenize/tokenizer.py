@@ -1,3 +1,5 @@
+# coding=utf-8
+
 """."""
 from enum import Enum
 import re
@@ -27,11 +29,11 @@ class TokenizeError(IOError):
         self.msg = msg
 
 
-def _get_regular_expression(logic):
+def _get_lexicon(logic):
     """
-    Create a list of regular expressions to tokenize the formula.
+    Select the lexicon for the scanner based on the logic.
     :param logic: the logic to be used, options: KM, S5, S5EC
-    :return: a list of regular expressions.
+    :return: list[(regular_expression, lambda function)]
     """
     km_s5_expressions = [
         (config.kms5['knowledge'], lambda scanner, token: tokens.Knowledge(token)),
@@ -50,6 +52,8 @@ def _get_regular_expression(logic):
 
     expressions = [
         (r"[a-z]\w*",                              lambda scanner,  token: tokens.Proposition(token)),
+        (r"[[{(<]",                                    lambda scanner,      _: tokens.BracketOpen()),
+        (r"[]})>]",                                    lambda scanner,      _: tokens.BracketClose()),
         (config.propositional['conjunction'],      lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.conjunction)),
         (config.propositional['disjunction'],      lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.disjunction)),
         (config.propositional['implication'],      lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.implication)),
@@ -57,7 +61,6 @@ def _get_regular_expression(logic):
         (config.propositional['negation'],         lambda scanner,      _: tokens.Negation()),
         # TODO extend skip token to tabs and newlines
         (r"\s+", None), # None == skip token.
-        # TODO add brackets
     ]
 
     expressions.extend(expressions_per_logic.get(logic, []))
@@ -68,20 +71,24 @@ def tokenize(logic, string):
     Tokenize the inputted string to a list of tokens
     :param loigc: The logic of the string, options: KM, S5, S5EC
     :param string: The string to be converted to tokens.
+    :raise TokenizeError: if a unknown character is in the string.
     :return:[object]
     """
-    regular_expressions = _get_regular_expression(logic);
+    regular_expressions = _get_lexicon(logic);
     scan = re.Scanner(regular_expressions)
     results, remainder=scan.scan(input_formula)
 
     if remainder:
-        msg = "Could not parse some part of the expression, you probably " \
-              "used an operator that is not defined (for this logic)."
+        msg = "Could not parse some part of the expression \"...{expression}\", you probably " \
+              "used an operator that is not defined (for this logic).".format(expression = remainder)
         raise TokenizeError(remainder, msg)
     return results
 
 if __name__ == "__main__":
-    input_formula = "C ~a | K_47 c & q"
+    input_formula = "({[<>]})"
     logic = "KM"
-    tokens = tokenize(logic, input_formula)
-    print tokens
+    try:
+        tokens = tokenize(logic, input_formula)
+        print tokens
+    except TokenizeError as e:
+        print e.msg

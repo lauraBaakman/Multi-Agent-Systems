@@ -82,4 +82,16 @@ class Common(object):
             "COMMON"
         )
 
+class BracketOpen():
+    def __repr__(self):
+        """Print-friendly representation."""
+        return (
+            "BRACKET_OPEN"
+        )
 
+class BracketClose():
+    def __repr__(self):
+        """Print-friendly representation."""
+        return (
+            "BRACKET_CLOSE"
+        )
