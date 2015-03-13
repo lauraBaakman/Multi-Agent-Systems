@@ -70,19 +70,10 @@ def tokenize(logic, string):
     """
     regular_expressions = _get_lexicon(logic);
     scan = re.Scanner(regular_expressions)
-    results, remainder=scan.scan(input_formula)
+    results, remainder=scan.scan(string)
 
     if remainder:
         msg = "Could not parse some part of the expression \"...{expression}\", you probably " \
               "used an operator that is not defined (for this logic).".format(expression = remainder)
         raise TokenizeError(remainder, msg)
     return results
-
-if __name__ == "__main__":
-    input_formula = "C K_1 M_1  ~ (a -> b) <-> | &"
-    logic = "S5EC"
-    try:
-        tokens = tokenize(logic, input_formula)
-        print tokens
-    except TokenizeError as e:
-        print e.msg
