@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-This module can be used to build an abstract syntax tree.
+Class that defines the abstract syntax tree
 """
 
 __author__ = 'laura'
@@ -18,16 +18,3 @@ class Ast(object):
         :rtype : Ast
         """
         print(formula)
-
-class Knowledge(object):
-    """Class to represent the knowledge operator."""
-
-    def __init__(self, ast, agent):
-        """Create an K node for an AST
-        :param ast: the ast that hangs in the K node.
-        :type ast: Ast
-        :param agent: the number of the agent
-        :type agent: int
-        :return: a K node
-        :rtype : node
-        """

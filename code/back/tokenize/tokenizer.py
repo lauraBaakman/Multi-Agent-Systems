@@ -1,22 +1,12 @@
 # coding=utf-8
 
 """."""
-from enum import Enum
 import re
 
-
 import config
+from tokenize.operators import Binary, Unary
 import tokens
 
-class BinaryOperators(Enum):
-    conjunction = 1
-    disjunction  = 2
-    implication = 3
-    biimplication = 4
-
-class UnaryOperators(Enum):
-    negation = 1
-    common = 2
 
 class TokenizeError(IOError):
     """
@@ -45,7 +35,7 @@ def _get_lexicon(logic):
     ]
 
     s5EC_expressions = [
-        (config.common['common'], lambda scanner, _: tokens.UnaryOperator(UnaryOperators.common))
+        (config.common['common'], lambda scanner, _: tokens.UnaryOperator(Unary.common))
     ]
 
     expressions_per_logic = {
@@ -55,11 +45,11 @@ def _get_lexicon(logic):
     }
 
     expressions = [
-        (config.propositional['conjunction'],      lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.conjunction)),
-        (config.propositional['disjunction'],      lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.disjunction)),
-        (config.propositional['implication'],      lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.implication)),
-        (config.propositional['bi-implication'],   lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.biimplication)),
-        (config.propositional['negation'],         lambda scanner,      _: tokens.UnaryOperator(UnaryOperators.negation)),
+        (config.propositional['conjunction'],      lambda scanner,      _: tokens.BinaryOperator(Binary.conjunction)),
+        (config.propositional['disjunction'],      lambda scanner,      _: tokens.BinaryOperator(Binary.disjunction)),
+        (config.propositional['implication'],      lambda scanner,      _: tokens.BinaryOperator(Binary.implication)),
+        (config.propositional['bi-implication'],   lambda scanner,      _: tokens.BinaryOperator(Binary.biimplication)),
+        (config.propositional['negation'],         lambda scanner,      _: tokens.UnaryOperator(Unary.negation)),
         (r"[a-z]\w*",                              lambda scanner,  token: tokens.Proposition(token)),
         (r"[[{(<]",                                lambda scanner,      _: tokens.BracketOpen()),
         (r"[]})>]",                                lambda scanner,      _: tokens.BracketClose()),
