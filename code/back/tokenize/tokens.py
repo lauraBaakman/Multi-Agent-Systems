@@ -36,12 +36,17 @@ class BinaryOperator(object):
             "BINOP({obj.type})".format(obj=self)
         )
 
-class Negation(object):
+class UnaryOperator(object):
+
+    def __init__(self, type):
+        self.type = type
+
     def __repr__(self):
         """Print-friendly representation."""
         return (
-            "NEGATION"
+            "UNOP({obj.type})".format(obj=self)
         )
+
 
 class Knowledge(object):
 
@@ -73,13 +78,6 @@ class Possible(object):
         """Print-friendly representation."""
         return (
             "M_({obj.agent})".format(obj=self)
-        )
-
-class Common(object):
-    def __repr__(self):
-        """Print-friendly representation."""
-        return (
-            "COMMON"
         )
 
 class BracketOpen():

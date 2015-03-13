@@ -14,6 +14,10 @@ class BinaryOperators(Enum):
     implication = 3
     biimplication = 4
 
+class UnaryOperators(Enum):
+    negation = 1
+    common = 2
+
 class TokenizeError(IOError):
     """
     Exception raised when the string cannot be tokenized.
@@ -41,7 +45,7 @@ def _get_lexicon(logic):
     ]
 
     s5EC_expressions = [
-        (config.common['common'], lambda scanner, _: tokens.Common())
+        (config.common['common'], lambda scanner, _: tokens.UnaryOperator(UnaryOperators.common))
     ]
 
     expressions_per_logic = {
@@ -51,14 +55,14 @@ def _get_lexicon(logic):
     }
 
     expressions = [
-        (r"[a-z]\w*",                              lambda scanner,  token: tokens.Proposition(token)),
-        (r"[[{(<]",                                lambda scanner,      _: tokens.BracketOpen()),
-        (r"[]})>]",                                lambda scanner,      _: tokens.BracketClose()),
         (config.propositional['conjunction'],      lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.conjunction)),
         (config.propositional['disjunction'],      lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.disjunction)),
         (config.propositional['implication'],      lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.implication)),
         (config.propositional['bi-implication'],   lambda scanner,      _: tokens.BinaryOperator(BinaryOperators.biimplication)),
-        (config.propositional['negation'],         lambda scanner,      _: tokens.Negation()),
+        (config.propositional['negation'],         lambda scanner,      _: tokens.UnaryOperator(UnaryOperators.negation)),
+        (r"[a-z]\w*",                              lambda scanner,  token: tokens.Proposition(token)),
+        (r"[[{(<]",                                lambda scanner,      _: tokens.BracketOpen()),
+        (r"[]})>]",                                lambda scanner,      _: tokens.BracketClose()),
         (r"\s+",                                   None), # None == skip token.
     ]
 
@@ -84,8 +88,8 @@ def tokenize(logic, string):
     return results
 
 if __name__ == "__main__":
-    input_formula = "({[<>]})"
-    logic = "KM"
+    input_formula = "C ~ (a -> b)"
+    logic = "S5EC"
     try:
         tokens = tokenize(logic, input_formula)
         print tokens
