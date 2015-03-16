@@ -203,6 +203,7 @@ class Parser(object):
         :param operator_2: operator
         :return: boolean
         """
+        print "Precedence functie"
         if (
                     isinstance(operator_1, tokens.BinaryOperator) and
                     isinstance(operator_2, tokens.BinaryOperator)
@@ -214,8 +215,18 @@ class Parser(object):
                     isinstance(operator_2, tokens.UnaryOperator)
         ):
             return self.precedence.get(operator_1.type) >= self.precedence.get(operator_2.type)
+
+        if (
+                    isinstance(operator_1, (tokens.BinaryOperator, tokens.UnaryOperator, tokens.AgentOperator)) and
+                    isinstance(operator_2, tokens.UnaryOperator)
+        ):
+            return False
+        if (operator_1 == None):
+            return False
         else:
-            raise ParserError("This case shouldn't happen?")
+            raise ParserError("Error!")
+
+
 
     def makeNode(self, operator, lhs, rhs=None):
         """
