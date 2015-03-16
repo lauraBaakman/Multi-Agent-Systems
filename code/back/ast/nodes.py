@@ -12,53 +12,63 @@ class Node(object):
 
 class Unary(Node):
 
-    def __init__(self, type, child):
+    def __init__(self, token):
         """
         Constructor for unary nodes
-        :param type: member of the enum Operators.Unary, denotes the type of the operator.
-        :param child: the formula after the unary operator
+        :param token: unary token
         :return: Unary Node
         """
-        self.type = type
-        self.child = child
+        self.type = token.type
+        self.lhs = None
 
     def __repr__(self):
         """Print-friendly infix representation."""
         return (
-            "{obj.type} ({obj.child})".format(obj=self)
+            "{obj.type} ({obj.lhs})".format(obj=self)
         )
 
-class Modal(Unary):
+class Agent(Unary):
 
-    def __init__(self, type, agent, child,):
+    def __init__(self, token):
         """
-        Constructor for Modal nodes
-        :param type: member of the enum Operators.Modal
-        :param agent:
-        :param child:
+        Constructor for Agent nodes
+        :param token: unary token
         :return:
         """
-        super(Unary, self).__init__(type, child)
-        self.agent = agent
-
+        super(Unary, self).__init__(token)
+        self.agent = token.agent
+    def __repr__(self):
+        """Print-friendly infix representation."""
+        return (
+            "{obj.type}_{obj.agent} ({obj.lhs})".format(obj=self)
+        )
 
 
 class Binary(Node):
 
-    def __init__(self, type, lhs, rhs):
+    def __init__(self, token):
         """
         Constructor for binary nodes
-        :param type: member of the enum Operators.Binary, denotes the type of the operator.
-        :param lhs: formula on the left of the operator in infix notation
-        :param rhs: formula on the right of the operator in infix notation
-        :return: Unary Node
+        :param token: binary token
+        :return: Binary Node
         """
-        self.type = type
-        self.lhs = lhs
-        self.rhs = rhs
+        self.type = token.type
+        self.rhs = None
+        self.lhs = None
 
     def __repr__(self):
         """Print-friendly infix representation."""
         return (
             "({obj.lhs}) {obj.type} ({obj.rhs})".format(obj=self)
+        )
+
+class Proposition(Node):
+
+    def __init__(self, token):
+        self.name = token.name
+
+    def __repr__(self):
+        """Print-friendly infix representation."""
+        return (
+            "{obj.name}".format(obj=self)
         )
