@@ -117,7 +117,7 @@ class Parser(object):
             self.P()
 
         while self.operators.top():
-            self.popOperator()
+            self.buildTree()
 
     def P(self):
         if isinstance(self.next(), tokens.Proposition):
@@ -136,15 +136,15 @@ class Parser(object):
         else:
             raise ParserError("Could not continue parsing")
 
-    def popOperator(self):
+    def buildTree(self):
         if isinstance(self.operators.top(), nodes.Binary):
             t1 = self.operands.pop()
             t2 = self.operands.pop()
             self.operands.push(
                 self.makeNode(
                     self.operators.pop(),
-                    t1,
-                    t2
+                    t2,
+                    t1
                 )
             )
         elif isinstance(self.operators.top(), tokens.UnaryOperator):
@@ -166,7 +166,7 @@ class Parser(object):
 
     def pushOperator(self, operator):
         while self.precedence_is_higher(self.operators.top(), operator):
-            self.popOperator()
+            self.buildTree()
         self.operators.push(operator)
 
     def precedence_is_higher(self, operator_1, operator_2):
