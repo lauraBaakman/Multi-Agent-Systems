@@ -4,7 +4,7 @@
 import re
 
 import config
-from tokenize.operators import Binary, Unary
+from tokenize.operators import Binary, Unary, Agent
 import tokens
 
 
@@ -30,8 +30,8 @@ def _get_lexicon(logic):
     :return: list[(regular_expression, lambda function)]
     """
     km_s5_expressions = [
-        (config.kms5['knowledge'], lambda scanner, token: tokens.Knowledge(token)),
-        (config.kms5['possible'],  lambda scanner, token: tokens.Possible(token))
+        (config.kms5['knowledge'], lambda scanner, token: tokens.AgentOperator(token, Agent.knowledge)),
+        (config.kms5['possible'],  lambda scanner, token: tokens.AgentOperator(token, Agent.possible))
     ]
 
     s5EC_expressions = [

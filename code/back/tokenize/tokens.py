@@ -48,36 +48,22 @@ class UnaryOperator(object):
         )
 
 
-class Knowledge(object):
+class AgentOperator(object):
 
-    def __init__(self, string):
+    def __init__(self, string, type):
         """
         Token for the knowledge operator.
         :param string: the string representing the knowledge operator.
+        :param type: the type of the operator, as part of the enum agent
         :return: Knowledge token
         """
         self.agent = get_agent_from_string(string)
+        self.type = type
 
     def __repr__(self):
         """Print-friendly representation."""
         return (
-            "K_({obj.agent})".format(obj=self)
-        )
-
-class Possible(object):
-
-    def __init__(self, string):
-        """
-        Token for the possible operator.
-        :param string: the string representing the possible operator.
-        :return: Possible token
-        """
-        self.agent = get_agent_from_string(string)
-
-    def __repr__(self):
-        """Print-friendly representation."""
-        return (
-            "M_({obj.agent})".format(obj=self)
+            "AGENTOP({obj.type})_{obj.agent}".format(obj=self)
         )
 
 class BracketOpen():

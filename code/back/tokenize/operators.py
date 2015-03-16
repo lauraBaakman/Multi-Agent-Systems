@@ -18,6 +18,6 @@ class Unary(Enum):
     common = 2
 
 
-class Modal(Enum):
+class Agent(Enum):
     knowledge = 1
     possible = 2
