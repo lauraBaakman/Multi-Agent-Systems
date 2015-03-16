@@ -1,6 +1,15 @@
 # -*- coding: utf-8 -*-
 
-"""The parser handles the actual parsing of expressions."""
+"""
+The parser handles the actual parsing of expressions.
+
+ Grammar:
+
+ E -> T '&' T | T '|' T | T '->' T | T '<->' T
+ T -> C F | K F | M F
+ F -> prop | '(' E ')' | '~' E
+
+"""
 
 import tokenize.operators as operators
 import tokenize.tokens as tokens
@@ -60,7 +69,9 @@ class Parser(object):
         :return: nothing
         :raises: ParserError if the expected token is not found.
         """
-        if self.next() == expected_token:
+        if not self.next():
+            return self.next() == expected_token
+        elif isinstance(self.next(), expected_token):
             self.consume()
         else:
             raise ParserError(
@@ -92,15 +103,12 @@ class Parser(object):
         else:
             node = nodes.Unary(self.next())
             self.consume()
-            node.lhs = self.f()
+            node.lhs = self.e()
             return node
 
     def e(self):
         t = self.t()
-        while (
-            self.next() and
-            self.next().type in operators.to_set(operators.Binary)
-        ):
+        while isinstance(self.next(), tokens.BinaryOperator):
             node = nodes.Binary(self.next())
             self.consume()
             t1 = self.t()

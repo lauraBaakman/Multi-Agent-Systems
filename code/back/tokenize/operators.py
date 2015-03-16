@@ -22,9 +22,3 @@ class Unary(Operator):
 class Agent(Operator):
     knowledge = 7
     possible = 8
-
-def to_set(enum):
-    """
-    Get the members of an enum as a set
-    """
-    return set([member for name, member in enum.__members__.items()])

@@ -27,17 +27,7 @@ class Ast(object):
         Print friendly representation of the AST object
         :return: string
         """
-        return "Tree: {tree}".format(tree = self._tree_repr())
-
-    def _tree_repr(self):
-        """
-        Print friendly representation of the AST
-        :return: string
-        """
-        if isinstance(self.root, nodes.Binary):
-            return "({obj.type} [{obj.lhs}], [{obj.rhs}])".format(obj=self.root)
-        else:
-            return "({obj.type} [{obj.lhs}])".format(obj=self.root)
+        return "Tree: {obj.root}".format(obj = self)
 
 
 
