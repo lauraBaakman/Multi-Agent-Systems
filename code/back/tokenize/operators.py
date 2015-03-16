@@ -6,18 +6,25 @@ from enum import Enum
 __author__ = 'laura'
 
 
-class Binary(Enum):
+class Operator(Enum):
+    pass
+
+class Binary(Operator):
     conjunction = 1
     disjunction  = 2
     implication = 3
     biimplication = 4
 
+class Unary(Operator):
+    negation = 5
+    common = 6
 
-class Unary(Enum):
-    negation = 1
-    common = 2
+class Agent(Operator):
+    knowledge = 7
+    possible = 8
 
-
-class Agent(Enum):
-    knowledge = 1
-    possible = 2
+def to_set(enum):
+    """
+    Get the members of an enum as a set
+    """
+    return set([member for name, member in enum.__members__.items()])

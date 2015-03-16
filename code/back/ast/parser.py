@@ -5,7 +5,6 @@
 import tokenize.operators as operators
 import tokenize.tokens as tokens
 import nodes
-import utils
 
 __author__ = 'laura'
 
@@ -31,46 +30,9 @@ class Parser(object):
     def __init__(self, precedence=None):
         """
         Constructor for parser object
-        :param precedence: Dictionary with the different operators and their precedence. If it is not supplied a
-        default is used.
         :return: AST
         """
-        default_precedence = {
-            operators.Unary.common: 7,
-            operators.Agent.knowledge: 7,
-            operators.Agent.possible: 7,
-
-            operators.Unary.negation: 6,
-
-            operators.Binary.conjunction: 5,
-
-            operators.Binary.disjunction: 4,
-
-            operators.Binary.implication: 3,
-
-            operators.Binary.biimplication: 2,
-
-            None: 1
-        }
-        if not precedence:
-            precedence = default_precedence
-
-        self.precedence = precedence
         self.tokens = []
-        self.operators = utils.Stack()
-        self.operands = utils.Stack()
-
-    def parse(self, tokens):
-        """
-        Parse the list of tokens and create an AST
-        :param tokens: as list of tokens
-        :return: an AST
-        """
-        self.tokens = tokens
-        self.operators.push(None)
-        self.E()
-        self.expect(None)
-        return self.operands.top()
 
     def next(self):
         """
@@ -91,7 +53,7 @@ class Parser(object):
         if self.next():
             self.tokens.pop(0)
 
-    def expect(self, expected_token):
+    def expect(self, expected_token=None):
         """
         Consume the next token if it is the expected_token, otherwise throw an error.
         :param expected_token: the expected token.
@@ -108,107 +70,60 @@ class Parser(object):
                 )
             )
 
-    def E(self):
-        self.P()
-        while isinstance(self.next(), tokens.BinaryOperator):
-            node = nodes.Binary(self.next())
-            self.pushOperator(node)
-            self.consume()
-            self.P()
-
-        while self.operators.top():
-            self.buildTree()
-
-    def P(self):
+    def f(self):
         if isinstance(self.next(), tokens.Proposition):
-            self.operands.push(nodes.Proposition(self.next()))
+            t = nodes.Proposition(self.next())
             self.consume()
+            return t
         elif isinstance(self.next(), tokens.BracketOpen):
             self.consume()
-            self.operators.push(None)
-            self.E()
+            t = self.e()
             self.expect(tokens.BracketClose)
-            self.operators.pop()
-        elif isinstance(self.next(), tokens.UnaryOperator):
-            self.pushOperator(nodes.Unary(self.next()))
+            return t
+        elif self.next().type == operators.Unary.negation:
+            node = nodes.Unary(self.next())
+            node.lhs = self.e()
+        else:
+            raise ParserError("Could not parse the expression.")
+
+    def t(self):
+        if isinstance(self.next(), (tokens.BracketOpen, tokens.Proposition, tokens.BracketClose)):
+            return self.f()
+        else:
+            node = nodes.Unary(self.next())
             self.consume()
-            self.P()
-        else:
-            raise ParserError("Could not continue parsing")
+            node.lhs = self.f()
+            return node
 
-    def buildTree(self):
-        if isinstance(self.operators.top(), nodes.Binary):
-            t1 = self.operands.pop()
-            t2 = self.operands.pop()
-            self.operands.push(
-                self.makeNode(
-                    self.operators.pop(),
-                    t2,
-                    t1
-                )
-            )
-        elif isinstance(self.operators.top(), tokens.UnaryOperator):
-            t1 = self.operands.pop()
-            self.operands.push(
-                self.makeNode(
-                    self.operators.pop(),
-                    t1
-                )
-            )
-        elif isinstance(self.operators.top(), tokens.AgentOperator):
-            t1 = self.pop(self.operands)
-            self.operands.push(
-                self.makeNode(
-                    self.operators.pop(),
-                    t1
-                )
-            )
-
-    def pushOperator(self, operator):
-        while self.precedence_is_higher(self.operators.top(), operator):
-            self.buildTree()
-        self.operators.push(operator)
-
-    def precedence_is_higher(self, operator_1, operator_2):
-        """
-        Return true if the precedence of operator_1 is greater than that of operator_2.
-        :param operator_1: operator
-        :param operator_2: operator
-        :return: boolean
-        """
-        if(
-            isinstance(operator_1, tokens.BinaryOperator) and
-            isinstance(operator_2, tokens.BinaryOperator)
+    def e(self):
+        t = self.t()
+        while (
+            self.next() and
+            self.next().type in operators.to_set(operators.Binary)
         ):
-            return self.precedence.get(operator_1.type) > self.precedence.get(operator_2.type)
-        elif(
-            isinstance(operator_1, (tokens.UnaryOperator, tokens.AgentOperator)) and
-            isinstance(operator_2, tokens.BinaryOperator)
-        ):
-            return self.precedence.get(operator_1.type) >= self.precedence.get(operator_2.type)
-        elif(
-            isinstance(operator_1, (tokens.UnaryOperator, tokens.BinaryOperator, tokens.AgentOperator)) and
-            isinstance(operator_2, tokens.UnaryOperator)
-        ):
-            return False
-        elif(
-            operator_1 == None
-        ):
-            return False
-        else:
-            raise ParserError("Houston enzo....")
+            node = nodes.Binary(self.next())
+            self.consume()
+            t1 = self.t()
+            node.rhs = t1
+            node.lhs = t
+            t = node
+        return t
 
 
-    def makeNode(self, operator, lhs, rhs=None):
+    def parse(self, tokens):
         """
-        Create an actual node
-        :return: Node
+        Parse the list of tokens and create an AST
+        :param tokens: as list of tokens
+        :return: an AST
         """
-        if (rhs):
-            operator.lhs = lhs
-            operator.rhs = rhs
-        else:
-            operator.lhs = lhs
+        self.tokens = tokens
+        t = self.e()
+        self.expect()
+        return t
 
-        return operator
+
+
+
+
+
 
