@@ -5,6 +5,7 @@
 import tokenize.operators as operators
 import tokenize.tokens as tokens
 import nodes
+import utils
 
 __author__ = 'laura'
 
@@ -56,8 +57,8 @@ class Parser(object):
 
         self.precedence = precedence
         self.tokens = []
-        self.operators = []
-        self.operands = []
+        self.operators = utils.Stack()
+        self.operands = utils.Stack()
 
     def parse(self, tokens):
         """
@@ -66,10 +67,10 @@ class Parser(object):
         :return: an AST
         """
         self.tokens = tokens
-        self.push(self.operators, None)
+        self.operators.push(None)
         self.E()
         self.expect(None)
-        return self.top(self.operands)
+        return self.operands.top()
 
     def next(self):
         """
@@ -107,31 +108,6 @@ class Parser(object):
                 )
             )
 
-    def push(self, stack, token):
-        """
-        Push token on stack
-        :param stack: a list
-        :param token: an object
-        :return: void
-        """
-        stack.append(token)
-
-    def pop(self, stack):
-        """
-        Pop a token from the stack
-        :param stack: a list
-        :return: the first object on the stack
-        """
-        return stack.pop()
-
-    def top(self, stack):
-        """
-        Return the first object of the stack without popping it.
-        :param stack: a list
-        :return: first object on the stack
-        """
-        return stack[-1]
-
     def E(self):
         self.P()
         while isinstance(self.next(), tokens.BinaryOperator):
@@ -140,19 +116,19 @@ class Parser(object):
             self.consume()
             self.P()
 
-        while self.top(self.operators):
+        while self.operators.top():
             self.popOperator()
 
     def P(self):
         if isinstance(self.next(), tokens.Proposition):
-            self.push(self.operands, nodes.Proposition(self.next()))
+            self.operands.push(nodes.Proposition(self.next()))
             self.consume()
         elif isinstance(self.next(), tokens.BracketOpen):
             self.consume()
-            self.push(self.operators, None)
+            self.operators.push(None)
             self.E()
             self.expect(tokens.BracketClose)
-            self.pop(self.operators)
+            self.operators.pop()
         elif isinstance(self.next(), tokens.UnaryOperator):
             self.pushOperator(nodes.Unary(self.next()))
             self.consume()
@@ -161,40 +137,37 @@ class Parser(object):
             raise ParserError("Could not continue parsing")
 
     def popOperator(self):
-        if isinstance(self.top(self.operators), tokens.BinaryOperator):
-            t1 = self.pop(self.operands)
-            t2 = self.pop(self.operands)
-            self.push(
-                self.operands,
+        if isinstance(self.operators.top(), tokens.BinaryOperator):
+            t1 = self.operands.pop()
+            t2 = self.operands.pop()
+            self.operands.push(
                 self.makeNode(
-                    self.pop(self.operators),
+                    self.operators.pop(),
                     t1,
                     t2
                 )
             )
-        elif isinstance(self.top(self.operators), tokens.UnaryOperator):
-            t1 = self.pop(self.operands)
-            self.push(
-                self.operands,
+        elif isinstance(self.operators.top(), tokens.UnaryOperator):
+            t1 = self.operands.pop()
+            self.operands.push(
                 self.makeNode(
-                    self.pop(self.operators),
+                    self.operators.pop(),
                     t1
                 )
             )
-        elif isinstance(self.top(self.operators), tokens.AgentOperator):
+        elif isinstance(self.operators.top(), tokens.AgentOperator):
             t1 = self.pop(self.operands)
-            self.push(
-                self.operands,
+            self.operands.push(
                 self.makeNode(
-                    self.pop(self.operators),
+                    self.operators.pop(),
                     t1
                 )
             )
 
     def pushOperator(self, operator):
-        while self.precedence_is_higher(self.top(self.operators), operator):
+        while self.precedence_is_higher(self.operators.top(), operator):
             self.popOperator()
-        self.push(self.operators, operator)
+        self.operators.push(operator)
 
     def precedence_is_higher(self, operator_1, operator_2):
         """
