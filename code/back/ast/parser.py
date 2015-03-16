@@ -137,7 +137,7 @@ class Parser(object):
             raise ParserError("Could not continue parsing")
 
     def popOperator(self):
-        if isinstance(self.operators.top(), tokens.BinaryOperator):
+        if isinstance(self.operators.top(), nodes.Binary):
             t1 = self.operands.pop()
             t2 = self.operands.pop()
             self.operands.push(
@@ -176,29 +176,27 @@ class Parser(object):
         :param operator_2: operator
         :return: boolean
         """
-        print "Precedence functie"
-        if (
-                    isinstance(operator_1, tokens.BinaryOperator) and
-                    isinstance(operator_2, tokens.BinaryOperator)
+        if(
+            isinstance(operator_1, tokens.BinaryOperator) and
+            isinstance(operator_2, tokens.BinaryOperator)
         ):
             return self.precedence.get(operator_1.type) > self.precedence.get(operator_2.type)
-
-        if (
-                    isinstance(operator_1, tokens.BinaryOperator) and
-                    isinstance(operator_2, tokens.UnaryOperator)
+        elif(
+            isinstance(operator_1, (tokens.UnaryOperator, tokens.AgentOperator)) and
+            isinstance(operator_2, tokens.BinaryOperator)
         ):
             return self.precedence.get(operator_1.type) >= self.precedence.get(operator_2.type)
-
-        if (
-                    isinstance(operator_1, (tokens.BinaryOperator, tokens.UnaryOperator, tokens.AgentOperator)) and
-                    isinstance(operator_2, tokens.UnaryOperator)
+        elif(
+            isinstance(operator_1, (tokens.UnaryOperator, tokens.BinaryOperator, tokens.AgentOperator)) and
+            isinstance(operator_2, tokens.UnaryOperator)
         ):
             return False
-        if (operator_1 == None):
+        elif(
+            operator_1 == None
+        ):
             return False
         else:
-            raise ParserError("Error!")
-
+            raise ParserError("Houston enzo....")
 
 
     def makeNode(self, operator, lhs, rhs=None):
