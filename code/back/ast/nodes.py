@@ -24,7 +24,7 @@ class Unary(Node):
     def __repr__(self):
         """Print-friendly infix representation."""
         return (
-            "[{obj.type} ({obj.lhs})]".format(obj=self)
+            "({obj.type} {obj.lhs})".format(obj=self)
         )
 
 class Agent(Unary):
@@ -40,7 +40,7 @@ class Agent(Unary):
     def __repr__(self):
         """Print-friendly infix representation."""
         return (
-            "[{obj.type}_{obj.agent} ({obj.lhs})]".format(obj=self)
+            "({obj.type}_{obj.agent} {obj.lhs})".format(obj=self)
         )
 
 
@@ -59,7 +59,7 @@ class Binary(Node):
     def __repr__(self):
         """Print-friendly infix representation."""
         return (
-            "[({obj.lhs}) {obj.type} ({obj.rhs})]".format(obj=self)
+            "({obj.lhs} {obj.type} {obj.rhs})".format(obj=self)
         )
 
 class Proposition(Node):
