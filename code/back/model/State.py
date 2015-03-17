@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import model
+
 __author__ = 'laura'
 
 class State(object):
@@ -23,19 +25,31 @@ class State(object):
         self.outgoing = {}
         self.valuations = {proposition: False for proposition in propositions}
 
-    def set_truth_value(self, proposition, truth_value=True):
+    def set_true(self, propositions):
+        """
+        Set the truth value of each propositions in propositions to true.
+        :param propositions: list of propositions.
+        :return: void
+        """
+        try:
+            [self._set_truth_value(proposition) for proposition in propositions]
+        except model.ModelError:
+            raise
+
+
+    def _set_truth_value(self, proposition, truth_value=True):
         """
         Set the truth value of a proposition.
         :param proposition: the proposition to set the truth value of.
         :param truth_value: [optional] the truth value to set, default is true.
         :return: void
         """
-        try:
+        if proposition in self.valuations:
             self.valuations[proposition] = truth_value
-        except KeyError:
-            print "Unknown proposition encountered, did not set truth value."
+        else:
+            raise model.ModelError('Tried to set the truth value of a non-existent proposition.')
 
     def __repr__(self):
         # TODO show incoming, outgoing states and valuation as well.
-        return "{obj.name}".format(obj = self)
+        return "{obj.name} [in: [], out: [], valuations: {obj.valuations}]\n".format(obj = self)
 

@@ -2,6 +2,6 @@
 	"states": ["a", "b", "c", "d"],
 	"propositions": ["p", "q"],
 	"relations": [["a", 1, "b"], ["c", 2, "d"] ],
-	"valuations": [["a", ["p", "q"]], ["d", ["q"]]],
+	"valuations": [["a", ["p", "q", "d"]], ["d", ["q"]]],
 	"logic": "K(m)"
 }
