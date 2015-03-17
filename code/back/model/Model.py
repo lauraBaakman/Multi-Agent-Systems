@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import state
+import relation
 
 __author__ = 'laura'
 
@@ -30,7 +31,32 @@ class Model(object):
 
     def __repr__(self):
         """Print friendly representation"""
+        # TODO relations op een zinnige manier afdrukken.
         return "States:\n {obj.states}\nRelations: {obj.relations}".format(obj=self)
+
+    def to_json(self):
+        # TODO bouwen
+        raise NotImplementedError
+
+    def add_relation(self, relation):
+        if relation.agent in self.relations:
+            self.relations[relation.agent].append(relation)
+        else:
+            self.relations[relation.agent] = [relation]
+
+
+    def get_state_by_name(self, name):
+        """
+        Get a state in the  model by its name.
+        :param name: the name of the state
+        :return: the state with the name name
+        :raises: modelError if name does not represent an existing state.
+        """
+        state = self.states.get(name)
+        if state:
+            return state
+        else:
+            raise ModelError()
 
     @staticmethod
     def from_json(json_data):
@@ -51,13 +77,41 @@ class Model(object):
         # TODO: Select correct model constructor given the logic.
 
         try:
+            # Create states
             propositions = json_data['propositions']
             states = {state_name: state.State(state_name, propositions) for state_name in json_data['states']}
+
+            # Set the correct truth value of each proposition for each state
             [states[state_name].set_true(propositions) for [state_name, propositions] in json_data['valuations']]
+
+            # Create the model
+            model = Model(states)
+
+            # Set the relations
+            for [source_state_name, agent, destination_state_name] in json_data['relations']:
+                try:
+                    # TODO refactor, hele spul naar hulp functie ofzo, dit is niet heel leesbaar.
+                    source = model.get_state_by_name(source_state_name)
+                    destination = model.get_state_by_name(destination_state_name)
+                    relationship = relation.Relation(agent, source, destination)
+                    model.add_relation(relationship)
+                    source.add_outgoing_relation(relationship)
+                    destination.add_incoming_relation(relationship)
+                except ModelError:
+                    raise ModelError(
+                        "The relationship {source}R_{agent}{destination} is not between existing states".format(
+                            source=source,
+                            destination=destination,
+                            agent=agent
+                        )
+                    )
         except ModelError:
             raise
 
         return Model(states)
+
+
+
 
         # Add relationshipsq
 

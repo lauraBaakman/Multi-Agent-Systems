@@ -25,6 +25,24 @@ class State(object):
         self.outgoing = {}
         self.valuations = {proposition: False for proposition in propositions}
 
+    def add_outgoing_relation(self, relation):
+        """
+        Add outgoing relation to the state, do nothing if the relation already exists.
+        :param relation: the relation
+        :return: void
+        """
+        #TODO Implementeren
+        raise NotImplementedError
+
+    def add_incoming_relation(self, relation):
+        """
+        Add incoming relation to the state, do nothing if the relation already exists.
+        :param relation: the relation
+        :return: void
+        """
+        #TODO Implementeren
+        raise NotImplementedError
+
     def set_true(self, propositions):
         """
         Set the truth value of each propositions in propositions to true.
