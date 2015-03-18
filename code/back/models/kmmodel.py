@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import json
+
 import state
 import relation
 from modelerror import  ModelError
@@ -26,13 +28,43 @@ class KMModel(object):
         """Print friendly representation"""
         return "States:\n {obj.states}\nRelations: {obj.relations}".format(obj=self)
 
+    def get_propositions(self):
+        """
+        Return the list of propositions of which the valuation is determined in this model. If the model does not
+        have any states it does not have any propositions, thus an empty list is returned.
+        :return:
+        """
+        if self.states:
+            return self.states.values()[0].valuations.keys()
+        else:
+            return []
+
+
+    def get_states_for_json_dump(self):
+        return [state.to_json_dump() for state in self.states.values()]
+
+    def get_relations_for_json_dumps(self):
+        """
+        Return the relations of the objects in the format required for to_json.
+        :return:
+        """
+        list = []
+        for relation_list in self.relations.values():
+            list.extend([relation.to_json_dump() for relation in relation_list])
+        return list
+
     def to_json(self):
         """
         Generate a JSON representation of the model.
         :return: JSON object.
         """
-        # TODO to_json() bouwen voor model
-        raise NotImplementedError
+        return json.dumps(
+            {
+                'propositions'  : self.get_propositions(),
+                'states'        : self.get_states_for_json_dump(),
+                'relations'     : self.get_relations_for_json_dumps(),
+            }
+        )
 
     def add_relation(self, relation):
         """
@@ -115,6 +147,7 @@ class KMModel(object):
                 )
             except:
                 raise
+        # TODO raise an error if the list of states is empty after this function has been called.
 
     def add_relations_from_json(self, json_data):
         """

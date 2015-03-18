@@ -56,6 +56,7 @@ if __name__ == "__main__":
     data = json.load(json_data, object_hook=_decode_dict)
     json_data.close()
     model = models.kmmodel.KMModel.from_json(data)
-    print model
+
+    print model.to_json()
 
 

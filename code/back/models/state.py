@@ -41,11 +41,10 @@ class State(object):
         """
         self._add_relation(self.outgoing, relation)
 
-
-
     def add_incoming_relation(self, relation):
         """
         Add incoming relation to the state, do nothing if the relation already exists.
+        :rtype : None
         :param relation: the relation
         :return: void
         """
@@ -62,3 +61,9 @@ class State(object):
     def __eq__(self, other):
         """Compare self with other."""
         return self.__dict__ == other.__dict__
+
+    def to_json_dump(self):
+        return {
+            'id' : self.name,
+            'vals': self.valuations.values()
+        }

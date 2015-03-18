@@ -33,3 +33,10 @@ class Relation(object):
     def __eq__(self, other):
         """Compare self with other."""
         return self.__dict__ == other.__dict__
+
+    def to_json_dump(self):
+        """
+        Return the object as the format required by to_json.
+        :return:
+        """
+        return [self.source.name, self.agent, self.destination.name]
