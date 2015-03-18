@@ -4,7 +4,6 @@ import json
 
 import state
 import relation
-from modelerror import  ModelError
 
 __author__ = 'laura'
 
@@ -38,7 +37,6 @@ class KMModel(object):
             return self.states.values()[0].valuations.keys()
         else:
             return []
-
 
     def get_states_for_json_dump(self):
         return [state.to_json_dump() for state in self.states.values()]
@@ -175,6 +173,21 @@ class KMModel(object):
                         agent=agent
                     )
                 )
+
+    def is_true(self, formula, state=None):
+        """
+        Determine the truth value for formula in this model and state
+        :param formula: formula as an AST
+        :param state: optional, state to evaluate the formula in. Default is None. If None the formula is
+        evaluated in all states.
+        :return: Truth value or a list of truth values
+        """
+        if not state:
+            result = []
+            for state in self.states.keys():
+                result.append(self.is_true(formula, state))
+        else:
+            return formula.is_true(formula, self, state)
 
     @classmethod
     def from_json(cls, json_data):

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import kmmodel
+import errors
 
 __author__ = 'laura'
 
@@ -49,6 +49,18 @@ class State(object):
         :return: void
         """
         self._add_relation(self.incoming, relation)
+
+    def is_true(self, proposition):
+        """
+        Returns the truth value of the proposition
+        :param proposition: the proposition
+        :return: the truth value of the proposition
+        """
+        truth_value = self.valuations.get(proposition, None)
+        if not truth_value:
+            raise errors.ValuationError("The model contained propositions that are not in the model.")
+        return truth_value
+
 
     def __repr__(self):
         return (

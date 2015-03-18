@@ -6,6 +6,7 @@ Classes that define the nodes of the AST
 
 __author__ = 'laura'
 
+from tokenize import operators
 
 class Node(object):
     """General node class"""
@@ -27,6 +28,9 @@ class Unary(Node):
             "({obj.type} {obj.lhs})".format(obj=self)
         )
 
+    def is_true(self, model, state):
+        raise NotImplementedError
+
 class Agent(Unary):
 
     def __init__(self, token):
@@ -42,6 +46,9 @@ class Agent(Unary):
         return (
             "({obj.type}_{obj.agent} {obj.lhs})".format(obj=self)
         )
+
+    def is_true(self, model, state):
+        raise NotImplementedError
 
 
 class Binary(Node):
@@ -62,6 +69,10 @@ class Binary(Node):
             "({obj.lhs} {obj.type} {obj.rhs})".format(obj=self)
         )
 
+    def is_true(self, model, state):
+        raise NotImplementedError
+
+
 class Proposition(Node):
 
     def __init__(self, token):
@@ -72,3 +83,6 @@ class Proposition(Node):
         return (
             "{obj.name}".format(obj=self)
         )
+
+    def is_true(self, model, state):
+        return model.get_state_by_name(state)

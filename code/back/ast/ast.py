@@ -29,5 +29,7 @@ class Ast(object):
         """
         return "Tree: {obj.root}".format(obj = self)
 
+    def is_true(self, model, state):
+        return self.root.is_true(model, state)
 
 
