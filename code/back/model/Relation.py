@@ -29,3 +29,7 @@ class Relation(object):
     def __repr__(self):
         """Print friendly representation."""
         return "{obj.source}{obj.agent}{obj.destination}".format(obj=self)
+
+    def __eq__(self, other):
+        """Compare self with other."""
+        return self.__dict__ == other.__dict__

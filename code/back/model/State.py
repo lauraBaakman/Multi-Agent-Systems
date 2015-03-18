@@ -15,19 +15,23 @@ class State(object):
         - valuations: dictionary of valuations, indexed by proposition.
     """
 
-    def __init__(self, name, propositions):
+    def __init__(self, name, valuations):
         """
         Constructor for State object
-        :param propositions: list of strings representing the propositions in the model.
+        :param valuations: dictionary with the propositions and their valuations.
         :param name: name of the state
         """
         self.name = name
         self.incoming = {}
         self.outgoing = {}
-        self.valuations = {proposition: False for proposition in propositions}
+        self.valuations = valuations
 
     def _add_relation(self, dictionary, relation):
-        if relation.agent in dictionary:
+        relations = dictionary.get(relation.agent)
+        if relations:
+            relations.append(relation)
+        else:
+            dictionary[relation.agent] = [relation]
 
     def add_outgoing_relation(self, relation):
         """
@@ -35,8 +39,7 @@ class State(object):
         :param relation: the relation
         :return: void
         """
-        #TODO Implementeren
-        raise NotImplementedError
+        self._add_relation(self.outgoing, relation)
 
 
 
@@ -46,34 +49,12 @@ class State(object):
         :param relation: the relation
         :return: void
         """
-        #TODO Implementeren
-        raise NotImplementedError
-
-    def set_true(self, propositions):
-        """
-        Set the truth value of each propositions in propositions to true.
-        :param propositions: list of propositions.
-        :return: void
-        """
-        try:
-            [self._set_truth_value(proposition) for proposition in propositions]
-        except model.ModelError:
-            raise
-
-
-    def _set_truth_value(self, proposition, truth_value=True):
-        """
-        Set the truth value of a proposition.
-        :param proposition: the proposition to set the truth value of.
-        :param truth_value: [optional] the truth value to set, default is true.
-        :return: void
-        """
-        if proposition in self.valuations:
-            self.valuations[proposition] = truth_value
-        else:
-            raise model.ModelError('Tried to set the truth value of a non-existent proposition.')
+        self._add_relation(self.incoming, relation)
 
     def __repr__(self):
         # TODO show incoming, outgoing states and valuation as well.
         return "{obj.name} [in: [], out: [], valuations: {obj.valuations}]\n".format(obj = self)
 
+    def __eq__(self, other):
+        """Compare self with other."""
+        return self.__dict__ == other.__dict__
