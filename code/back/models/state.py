@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import model
+import kmmodel
 
 __author__ = 'laura'
 
@@ -52,8 +52,12 @@ class State(object):
         self._add_relation(self.incoming, relation)
 
     def __repr__(self):
-        # TODO show incoming, outgoing states and valuation as well.
-        return "{obj.name} [in: [], out: [], valuations: {obj.valuations}]\n".format(obj = self)
+        return (
+            "{obj.name} [in: {obj.incoming}, out: {obj.outgoing}, valuations: {obj.valuations}]\n"
+            .format(
+                obj=self,
+            )
+        )
 
     def __eq__(self, other):
         """Compare self with other."""

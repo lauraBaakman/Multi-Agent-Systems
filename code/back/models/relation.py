@@ -6,7 +6,7 @@ import state
 
 class Relation(object):
     """
-    Represents relations in a Kripke Model
+    Represents relations in a Kripke KMModel
 
     Attributes:
         - agent: The agent of the relation
@@ -28,7 +28,7 @@ class Relation(object):
 
     def __repr__(self):
         """Print friendly representation."""
-        return "{obj.source}{obj.agent}{obj.destination}".format(obj=self)
+        return "{obj.source.name}{obj.agent}{obj.destination.name}".format(obj=self)
 
     def __eq__(self, other):
         """Compare self with other."""

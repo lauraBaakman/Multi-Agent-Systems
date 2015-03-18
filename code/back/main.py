@@ -9,7 +9,7 @@ import json
 import tokenize.tokenizer as tokenizer
 import parser
 from ast import ast
-import model.model
+import models.kmmodel
 
 def _decode_list(data):
     rv = []
@@ -55,7 +55,7 @@ if __name__ == "__main__":
     json_data = open(file)
     data = json.load(json_data, object_hook=_decode_dict)
     json_data.close()
-    model = model.model.Model.from_json(data)
+    model = models.kmmodel.KMModel.from_json(data)
     print model
 
 
