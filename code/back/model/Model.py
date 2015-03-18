@@ -39,10 +39,18 @@ class Model(object):
         raise NotImplementedError
 
     def add_relation(self, relation):
+        """
+        Add the realtion to the list of relations of the model and add the relation to respectively the incoming and
+        outgoing list its the destination and source node.
+        :param relation: Relation
+        :return: void
+        """
         if relation.agent in self.relations:
             self.relations[relation.agent].append(relation)
         else:
             self.relations[relation.agent] = [relation]
+        relation.source.add_outgoing_relation(relation)
+        relation.destination.add_incoming_relation(relation)
 
 
     def get_state_by_name(self, name):
@@ -57,6 +65,7 @@ class Model(object):
             return state
         else:
             raise ModelError()
+
 
     @staticmethod
     def from_json(json_data):
@@ -88,20 +97,19 @@ class Model(object):
             model = Model(states)
 
             # Set the relations
-            for [source_state_name, agent, destination_state_name] in json_data['relations']:
+            for [source_name, agent, destination_name] in json_data['relations']:
                 try:
-                    # TODO refactor, hele spul naar hulp functie ofzo, dit is niet heel leesbaar.
-                    source = model.get_state_by_name(source_state_name)
-                    destination = model.get_state_by_name(destination_state_name)
-                    relationship = relation.Relation(agent, source, destination)
+                    relationship = relation.Relation(
+                        agent,
+                        model.get_state_by_name(source_name),
+                        model.get_state_by_name(destination_name)
+                    )
                     model.add_relation(relationship)
-                    source.add_outgoing_relation(relationship)
-                    destination.add_incoming_relation(relationship)
                 except ModelError:
                     raise ModelError(
                         "The relationship {source}R_{agent}{destination} is not between existing states".format(
-                            source=source,
-                            destination=destination,
+                            source=source_name,
+                            destination=destination_name,
                             agent=agent
                         )
                     )

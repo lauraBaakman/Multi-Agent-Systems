@@ -4,6 +4,7 @@ import model
 
 __author__ = 'laura'
 
+
 class State(object):
     """
     State object
@@ -25,6 +26,9 @@ class State(object):
         self.outgoing = {}
         self.valuations = {proposition: False for proposition in propositions}
 
+    def _add_relation(self, dictionary, relation):
+        if relation.agent in dictionary:
+
     def add_outgoing_relation(self, relation):
         """
         Add outgoing relation to the state, do nothing if the relation already exists.
@@ -33,6 +37,8 @@ class State(object):
         """
         #TODO Implementeren
         raise NotImplementedError
+
+
 
     def add_incoming_relation(self, relation):
         """
