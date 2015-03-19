@@ -18,7 +18,7 @@ import nodes
 __author__ = 'laura'
 
 
-# TODO bouwen volgens http://www.engr.mun.ca/~theo/Misc/exp_parsing.htm#classic
+# Inspired by http://www.engr.mun.ca/~theo/Misc/exp_parsing.htm#classic
 
 class ParserError(IOError):
     """
@@ -116,7 +116,6 @@ class Parser(object):
             node.lhs = t
             t = node
         return t
-
 
     def parse(self, tokens):
         """
