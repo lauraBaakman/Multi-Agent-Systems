@@ -70,7 +70,27 @@ class Binary(Node):
         )
 
     def is_true(self, model, state):
-        raise NotImplementedError
+        def conjunction(lhs, rhs):
+            return lhs.is_true() and rhs.is_true()
+
+        def disjunction(lhs, rhs):
+            return lhs.is_true() or rhs.is_true()
+
+        def implication(lhs, rhs):
+            return (not lhs.is_true()) or rhs.is_true()
+
+        def biimplication(lsh, rhs):
+            return conjunction(
+                implication(lsh, rhs), implication(rhs, lsh)
+            )
+
+        operator_to_function = {
+            operators.Binary.conjunction: conjunction,
+            operators.Binary.disjunction: disjunction,
+            operators.Binary.implication: implication,
+            operators.Binary.biimplication: biimplication
+        }
+        return operator_to_function.get(self.type)(self.lhs, self.rhs)
 
 
 class Proposition(Node):
@@ -85,4 +105,4 @@ class Proposition(Node):
         )
 
     def is_true(self, model, state):
-        return model.get_state_by_name(state)
+        return model.get_state_by_name(state).is_true(self.name)
