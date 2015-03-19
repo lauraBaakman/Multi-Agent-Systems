@@ -18,16 +18,6 @@ if __name__ == "__main__":
     logic = "KM"
     filename = '../model.json'
 
-    # try:
-    #     tokens = tokenizer.tokenize(logic, input)
-    #     print tokens
-    #     tree = ast.Ast(tokens)
-    #     print tree
-    # except tokenizer.TokenizeError as e:
-    #     print e.msg
-    # except parser.ParserError as e:
-    #     print e.message
-
     tree = {}
     try:
         tree = ast.Ast.from_string(formula, logic)
