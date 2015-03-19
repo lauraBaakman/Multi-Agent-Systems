@@ -14,8 +14,8 @@ class TestBinary(TestCase):
         self.model = KMModel()
         json_data = utils.read_json('./models/test_model_km.json')
         self.model.from_json(json_data)
-        self.lhs = tokens.Proposition('p')
-        self.rhs = tokens.Proposition('q')
+        self.lhs = Proposition(tokens.Proposition('p'))
+        self.rhs = Proposition(tokens.Proposition('q'))
 
     def test_is_true_conjunction(self):
         node = Binary(
@@ -72,3 +72,26 @@ class TestBinary(TestCase):
         self.assertFalse(node.is_true(self.model, self.model.get_state_by_name('sb')))
         self.assertTrue(node.is_true(self.model, self.model.get_state_by_name('sc')))
         self.assertFalse(node.is_true(self.model, self.model.get_state_by_name('sd')))
+
+
+class TestProposition(TestCase):
+    def setUp(self):
+        self.model = KMModel()
+        json_data = utils.read_json('./models/test_model_km.json')
+        self.model.from_json(json_data)
+
+    def test_is_true(self):
+        node = Proposition(tokens.Proposition('p'))
+        self.assertTrue(node.is_true(self.model, self.model.get_state_by_name('sa')))
+        self.assertTrue(node.is_true(self.model, self.model.get_state_by_name('sb')))
+        self.assertFalse(node.is_true(self.model, self.model.get_state_by_name('sc')))
+
+        node = Proposition(tokens.Proposition('q'))
+        self.assertTrue(node.is_true(self.model, self.model.get_state_by_name('sa')))
+        self.assertFalse(node.is_true(self.model, self.model.get_state_by_name('sb')))
+        self.assertFalse(node.is_true(self.model, self.model.get_state_by_name('sc')))
+
+        node = Proposition(tokens.Proposition('r'))
+        self.assertFalse(node.is_true(self.model, self.model.get_state_by_name('sa')))
+        self.assertTrue(node.is_true(self.model, self.model.get_state_by_name('sb')))
+        self.assertTrue(node.is_true(self.model, self.model.get_state_by_name('sc')))
