@@ -13,7 +13,7 @@ class TestBinary(TestCase):
     def setUp(self):
         self.model = KMModel()
         json_data = utils.read_json('./models/test_model_km.json')
-        self.model.from_json(json_data)
+        self.model = KMModel.from_json(json_data)
         self.lhs = Proposition(tokens.Proposition('p'))
         self.rhs = Proposition(tokens.Proposition('q'))
 
