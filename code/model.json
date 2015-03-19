@@ -1,23 +1,23 @@
 {
     "states":[
       {
-        "id": "a",
-        "vals": [true, false, false, false]
-      },
-      {
-        "id": "b",
-        "vals": [true, false, false, true]
-      },
-      {
-        "id": "c",
+        "id": "sa",
         "vals": [true, false, true, false]
       },
       {
-        "id": "d",
+        "id": "sb",
+        "vals": [true, false, false, true]
+      },
+      {
+        "id": "sc",
+        "vals": [true, false, true, false]
+      },
+      {
+        "id": "sd",
         "vals": [false, true, false, false]
       }
     ],
 	"propositions": ["p", "q", "r", "s"],
-	"relations": [["a", 1, "b"], ["c", 2, "d"] ],
+	"relations": [["sa", 1, "sb"], ["sc", 2, "sd"] ],
 	"logic": "K(m)"
 }
