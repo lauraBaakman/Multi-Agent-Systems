@@ -6,7 +6,7 @@ Class that defines the abstract syntax tree
 
 __author__ = 'laura'
 
-from logicparser import LogicParser
+from logicparser import Parser
 from tokenize import tokenizer
 
 class Ast(object):
@@ -19,7 +19,7 @@ class Ast(object):
         :return: an AST representing formula.
         :rtype : Ast
         """
-        parser = LogicParser()
+        parser = Parser()
         self.root = parser.parse(tokens)
 
     def __repr__(self):

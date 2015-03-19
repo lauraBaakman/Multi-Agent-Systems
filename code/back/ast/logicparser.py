@@ -33,8 +33,8 @@ class ParserError(IOError):
         self.msg = msg
 
 
-class LogicParser(object):
-    """LogicParser object"""
+class Parser(object):
+    """Parser object"""
 
     def __init__(self, precedence=None):
         """
