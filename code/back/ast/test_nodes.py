@@ -78,7 +78,8 @@ class TestProposition(TestCase):
     def setUp(self):
         self.model = KMModel()
         json_data = utils.read_json('./models/test_model_km.json')
-        self.model.from_json(json_data)
+        self.model = KMModel.from_json(json_data)
+        pass
 
     def test_is_true(self):
         node = Proposition(tokens.Proposition('p'))
