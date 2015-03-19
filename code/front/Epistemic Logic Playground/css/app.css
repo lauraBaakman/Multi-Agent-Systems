@@ -1,0 +1,16 @@
+path.link {
+  fill: none;
+  stroke: #000;
+  stroke-width: 4px;
+  cursor: default;
+}
+
+text.id {
+  text-anchor: middle;
+  font-weight: bold;
+}
+
+#app-canvas {
+	min-height: 500px;
+}
+
