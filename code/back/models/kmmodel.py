@@ -4,6 +4,7 @@ import json
 
 import state
 import relation
+import errors
 
 __author__ = 'laura'
 
@@ -101,8 +102,7 @@ class KMModel(object):
         state = self.states.get(name)
         if state:
             return state
-        else:
-            raise ModelError()
+        raise errors.ModelError()
 
     def add_states_from_json(self, json_data):
         """
@@ -165,8 +165,8 @@ class KMModel(object):
                         self.get_state_by_name(destination_name)
                     )
                 )
-            except ModelError:
-                raise ModelError(
+            except errors.ModelError:
+                raise errors.ModelError(
                     "The relationship {source}R_{agent}{destination} is not between existing states".format(
                         source=source_name,
                         destination=destination_name,
