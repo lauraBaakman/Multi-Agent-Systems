@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from unittest import TestCase
 
-from kmmodel import  KMModel
+from models.kmmodel import  KMModel
 import utils
 
 __author__ = 'laura'
@@ -11,7 +11,7 @@ class TestKMModel(TestCase):
 
     def setUp(self):
         self.model = KMModel()
-        json_data = utils.read_json('../model.json')
+        json_data = utils.read_json('.models/test_model_km.json')
         self.model.from_json(json_data)
 
     def test_get_propositions(self):
@@ -20,4 +20,4 @@ class TestKMModel(TestCase):
         self.assertItemsEqual(expected_result, computed_result)
 
     def test_is_true_1(self):
-        formula = "a & b"
+        raise NotImplementedError

@@ -178,16 +178,20 @@ class KMModel(object):
         """
         Determine the truth value for formula in this model and state
         :param formula: formula as an AST
-        :param state: optional, state to evaluate the formula in. Default is None. If None the formula is
+        :param state: optional string, state to evaluate the formula in. Default is None. If None the formula is
         evaluated in all states.
         :return: Truth value or a list of truth values
         """
         if not state:
             result = []
-            for state in self.states.keys():
+            for state in self.states:
                 result.append(self.is_true(formula, state))
         else:
-            return formula.is_true(formula, self, state)
+            return formula.is_true(
+                formula,
+                self,
+                self.get_state_by_name(state)
+            )
 
     @classmethod
     def from_json(cls, json_data):
