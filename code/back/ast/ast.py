@@ -7,7 +7,7 @@ Class that defines the abstract syntax tree
 __author__ = 'laura'
 
 from parser import  Parser
-import nodes
+from tokenize import tokenizer
 
 class Ast(object):
     """Class to represent an abstract syntax tree."""
@@ -28,6 +28,14 @@ class Ast(object):
         :return: string
         """
         return "Tree: {obj.root}".format(obj = self)
+
+    @classmethod
+    def from_string(cls, string, logic):
+        try:
+            tokens = tokenizer.tokenize(logic, string)
+            return Ast(tokens)
+        except:
+            raise
 
     def is_true(self, model, state):
         return self.root.is_true(model, state)
