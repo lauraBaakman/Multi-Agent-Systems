@@ -14,9 +14,10 @@ import utils
 
 
 if __name__ == "__main__":
-    # input = "C ~ a & (b -> d)"
-    # logic = "S5EC"
-    #
+    formula = "K_1 ~ a & (b -> d)"
+    logic = "KM"
+    filename = '../model.json'
+
     # try:
     #     tokens = tokenizer.tokenize(logic, input)
     #     print tokens
@@ -27,11 +28,20 @@ if __name__ == "__main__":
     # except parser.ParserError as e:
     #     print e.message
 
+    tree = {}
+    try:
+        tree = ast.Ast.from_string(formula, logic)
+    except tokenizer.TokenizeError as e:
+        print e.msg
+    except parser.ParserError as e:
+        print e.message
 
-    filename = '../model.json'
+    print tree
+
     data = utils.read_json(filename)
     model = models.kmmodel.KMModel.from_json(data)
 
-    print model.to_json()
+    print model
+
 
 
