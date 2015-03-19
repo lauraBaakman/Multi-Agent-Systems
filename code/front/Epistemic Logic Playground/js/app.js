@@ -1,4 +1,4 @@
-define("app", ["d3", "gui_graph_canvas", "gui_info_panel", "epl_model"], function(d3, GraphCanvas, InfoPanel, EplModel) {
+define("app", ["d3", "gui_graph_canvas", "gui_info_panel", "epl_model", "mathjax"], function(d3, GraphCanvas, InfoPanel, EplModel, MathJax) {
 
     function App(graph_id, info_id) {
 
