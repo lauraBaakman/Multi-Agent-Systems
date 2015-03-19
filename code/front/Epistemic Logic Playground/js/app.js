@@ -19,17 +19,18 @@ define("app", ["d3", "gui_graph_canvas", "gui_info_panel", "epl_model", "mathjax
         // model.edit_state(0, [true, true]);
 
         model.add_link(0, 1);
+        model.add_link(1, 0);
         model.add_link(1, 2);
         model.add_link(2, 0);
 
-        model.set_prop_count(3);
-        model.set_prop_count(6);
+        // model.set_prop_count(3);
+        // model.set_prop_count(6);
 
-        model.edit_state(0, [true, false, true]);
-        model.edit_state(2, [false, true]);
+        // model.edit_state(0, [true, false, true]);
+        // model.edit_state(2, [false, true]);
 
-        model.remove_state(1);
-        model.add_state();
+        // model.remove_state(1);
+        // model.add_state();
 
         // Info
         var container = d3.select(info_id);

@@ -13,20 +13,27 @@ define("epl_model", [], function() {
         var default_propositions = ['p', 'q', 'r', 's', 't'];
         var proposition_counter = 2;
 
+        var max_num_agents = 5;
+        var max_num_props = 5;
+
 
         this.get_prop_count = function() {
         	return proposition_counter;
-        }
+        };
 
         this.set_prop_count = function(count) {
-        	if(count < 0 || count > 5) return;
+        	if(count < 0 || count > max_num_props) return;
 
         	proposition_counter = count;
-        }
+        };
 
         this.get_default_props = function() {
         	return default_propositions;
-        }
+        };
+
+        this.get_num_agents = function() {
+        	return max_num_agents;
+        };
 
         // Todo: Agent
         this.add_link = function(source_id, target_id) {
@@ -42,7 +49,8 @@ define("epl_model", [], function() {
                 source: source,
                 target: target,
                 left: false,
-                right: true
+                right: true,
+   				agents: [0]
             };
             links.push(link);
         };

@@ -5,6 +5,11 @@ path.link {
   cursor: default;
 }
 
+path.label {
+	text-anchor: middle;
+	font-weight: bold;
+}
+
 text.id {
   text-anchor: middle;
   font-weight: bold;

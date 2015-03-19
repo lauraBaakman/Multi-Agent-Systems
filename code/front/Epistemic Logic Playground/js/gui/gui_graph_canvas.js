@@ -14,7 +14,8 @@ define("gui_graph_canvas", ["d3"], function(d3) {
 
         // Specific/model :p visualisation variables
         var nodes = null,
-            links = null;
+            links = null,
+            link_labels = null;
 
         var selected_link = null;
         var selected_node = null;
@@ -31,17 +32,11 @@ define("gui_graph_canvas", ["d3"], function(d3) {
         }
 
         function init_layout() {
-            // console.log("states in init_layout: ");
-            // console.log(model.get_states());
-
-            // console.log("links in init_layout: ");
-            // console.log(model.get_links());
-
             layout = d3.layout.force()
                 .nodes(model.get_states())
                 .links(model.get_links())
                 .size([width, height])
-                .linkDistance(150)
+                .linkDistance(250)
                 .charge(-500)
                 .on('tick', tick);
         }
@@ -60,8 +55,11 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                     targetX = d.target.x - (targetPadding * normX),
                     targetY = d.target.y - (targetPadding * normY);
                 return 'M' + sourceX + ',' + sourceY + 'L' + targetX + ',' + targetY;
-
             });
+
+            // link_labels.attr("transform", function(d) {
+            //     return 'translate(' + d.x + ',' + d.y + ')';
+            // });
 
             nodes.attr('transform', function(d) {
                 return 'translate(' + d.x + ',' + d.y + ')';
@@ -101,6 +99,7 @@ define("gui_graph_canvas", ["d3"], function(d3) {
         function init_handles() {
             links = canvas.append('svg:g').selectAll('path');
             nodes = canvas.append('svg:g').selectAll('g');
+            link_labels = canvas.append('svg:g').selectAll('g.link_labels');
         }
 
         function draw_paths() {
@@ -129,10 +128,29 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                 })
                 .style('marker-end', function(d) {
                     return d.right ? 'url(#end-arrow)' : '';
+                })
+                .attr("id", function(d, i) {
+                    return "linkId_" + i;
                 });
 
             // remove old links
             links.exit().remove();
+
+            link_labels = link_labels.data(model.get_links());
+
+            link_labels.enter().append("g").attr("class", "link_label_holder")
+                .append("text")
+                .attr("class", "link_label")
+                .attr("dx", 110)
+                .attr("dy", -8)
+                .attr("text-anchor", "middle")
+                .append("textPath")
+                .attr("xlink:href", function(d, i) {
+                    return "#linkId_" + i;
+                })
+                .text(function(d) {
+                    return 'R\u208D\u2080 \u2081 \u2082 \u2083 \u2084 \u208E';
+                });
         }
 
         function valuation_to_string(node) {
@@ -155,7 +173,7 @@ define("gui_graph_canvas", ["d3"], function(d3) {
             // update existing nodes (reflexive & selected visual states)
             nodes.selectAll('circle')
                 .style('fill', function(d) {
-                    return (d === selected_node) ? d3.rgb(colors(d.id)).brighter().toString() : colors(d.id);
+                    return (d === selected_node) ? d3.rgb('#DDD').brighter().toString() : d3.rgb('#DDD');
                 })
                 .classed('reflexive', function(d) {
                     return d.reflexive;
@@ -168,10 +186,10 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                 .attr('class', 'node')
                 .attr('r', 12)
                 .style('fill', function(d) {
-                    return (d === selected_node) ? d3.rgb(colors(d.id)).brighter().toString() : colors(d.id);
+                    return (d === selected_node) ? d3.rgb('#DDD').brighter().toString() : d3.rgb('#DDD');
                 })
                 .style('stroke', function(d) {
-                    return d3.rgb(colors(d.id)).darker().toString();
+                    return d3.rgb('#DDD').darker().toString();
                 })
                 .classed('reflexive', function(d) {
                     return d.reflexive;
