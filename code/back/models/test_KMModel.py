@@ -1,39 +1,23 @@
 # -*- coding: utf-8 -*-
 from unittest import TestCase
 
+from kmmodel import  KMModel
+import utils
+
 __author__ = 'laura'
 
 
 class TestKMModel(TestCase):
+
+    def setUp(self):
+        self.model = KMModel()
+        json_data = utils.read_json('../model.json')
+        self.model.from_json(json_data)
+
     def test_get_propositions(self):
-        self.fail()
+        computed_result = self.model.get_propositions()
+        expected_result = ['p', 'q', 'r']
+        self.assertItemsEqual(expected_result, computed_result)
 
-    def test_get_states_for_json_dump(self):
-        self.fail()
-
-    def test_get_relations_for_json_dumps(self):
-        self.fail()
-
-    def test_to_json(self):
-        self.fail()
-
-    def test_add_relation(self):
-        self.fail()
-
-    def test_add_state(self):
-        self.fail()
-
-    def test_get_state_by_name(self):
-        self.fail()
-
-    def test_add_states_from_json(self):
-        self.fail()
-
-    def test_add_relations_from_json(self):
-        self.fail()
-
-    def test_is_true(self):
-        self.fail()
-
-    def test_from_json(self):
-        self.fail()
+    def test_is_true_1(self):
+        formula = "a & b"
