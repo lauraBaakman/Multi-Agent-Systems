@@ -1,110 +1,79 @@
-# -*- coding: utf-8 -*-
+# coding=utf-8
 
-"""
-This module tokenizes a string
-"""
+"""."""
+import re
 
-__author__ = 'laura'
-
-from enum import Enum
-
-import tokenhandlers as token_handler
+import config
+from tokenize.operators import Binary, Unary, Agent
+import tokens
 
 
-class ParseError(Exception):
-    """Parse errors"""
+class TokenizeError(IOError):
+    """
+    Exception raised when the string cannot be tokenized.
+    """
 
-    def __init__(self, **kwargs):
+    def __init__(self, expr, msg):
         """
-        Create a parse error.
-        :param kwargs: Either the message as a string, under the keyword message, or the expected, read, and previous
-        character with the keys forward, expected, read.
-        :return ParseError
+        Constructor for TokenizeError
+        :param expr: input expression in which the error occurred
+        :param msg: explanation of the error
         """
-        if(kwargs.has_key('message')):
-            message = kwargs['message']
-        else:
-            message = 'After "{forward}" "{expected}" is expected not "{read}"'.format(
-                forward = kwargs.get('forward', '?'),
-                expected = kwargs.get('expected', '?'),
-                read = kwargs.get('read', '?')
-            )
-        super(Exception, self).__init__(message)
+        self.expr = expr
+        self.msg = msg
 
 
-class LogicError(Exception):
-    """Logic errors"""
-    pass
-
-
-class BinaryOperators(Enum):
-    or_op = "|"
-    and_op = "&"
-    implication_op = "->"
-    bi_implication_op = "<->"
-
-
-def select_parser(logic):
+def _get_lexicon(logic):
     """
-    Select the logic to be used.
-    :param logic: The name of the logic as a string, options: KM, S5, S5EC
-    :return: Dictionary with the parse functions.
+    Select the lexicon for the scanner based on the logic.
+    :param logic: the logic to be used, options: KM, S5, S5EC
+    :return: list[(regular_expression, lambda function)]
     """
+    km_s5_expressions = [
+        (config.kms5['knowledge'], lambda scanner, token: tokens.AgentOperator(token, Agent.knowledge)),
+        (config.kms5['possible'],  lambda scanner, token: tokens.AgentOperator(token, Agent.possible))
+    ]
 
-    km = {
-        'K': token_handler.knows_handler,
-        'M': token_handler.possible_handler,
-        'T': token_handler.true_handler,
-        'F': token_handler.false_handler,
+    s5EC_expressions = [
+        (config.common['common'], lambda scanner, _: tokens.UnaryOperator(Unary.common))
+    ]
+    s5EC_expressions.extend(km_s5_expressions)
 
-        '(': token_handler.bracket_open_handler,
-        ')': token_handler.bracket_close_handler,
-
-        '&': token_handler.simple_binary_handler,
-        '|': token_handler.simple_binary_handler,
-
-        '-': token_handler.implication_handler,
-        '<': token_handler.bi_implication_handler,
-
-        '!': token_handler.not_handler,
-
-        ' ': token_handler.space_handler,
-        '\t': token_handler.space_handler,
-        '\n': token_handler.space_handler
+    expressions_per_logic = {
+        "KM":   km_s5_expressions,
+        "S5":   km_s5_expressions,
+        "S5EC": s5EC_expressions
     }
 
-    km_copy = km.copy()
-    ec_part = {
-        'C': token_handler.common_knowledge_handler
-    }
-    ec = km_copy.update(ec_part)
+    expressions = [
+        (config.propositional['conjunction'],      lambda scanner,      _: tokens.BinaryOperator(Binary.conjunction)),
+        (config.propositional['disjunction'],      lambda scanner,      _: tokens.BinaryOperator(Binary.disjunction)),
+        (config.propositional['implication'],      lambda scanner,      _: tokens.BinaryOperator(Binary.implication)),
+        (config.propositional['bi-implication'],   lambda scanner,      _: tokens.BinaryOperator(Binary.biimplication)),
+        (config.propositional['negation'],         lambda scanner,      _: tokens.UnaryOperator(Unary.negation)),
+        (r"[a-z]\w*",                              lambda scanner,  token: tokens.Proposition(token)),
+        (r"[[{(<]",                                lambda scanner,      _: tokens.BracketOpen()),
+        (r"[]})>]",                                lambda scanner,      _: tokens.BracketClose()),
+        (r"\s+",                                   None), # None == skip token.
+    ]
 
-    logic_to_parser_functions_mapping = {
-        "KM": km,
-        "S5": km,
-        "S5EC": ec
-    }
-    parser = logic_to_parser_functions_mapping.get(logic)
+    expressions.extend(expressions_per_logic.get(logic, []))
+    return expressions
 
-    if parser is None:
-        raise ('The logic {logic} is not supported'.format(logic=logic))
-
-    return parser
-
-
-def tokenize(formula, logic="KM"):
+def tokenize(logic, string):
     """
-    Tokenize the formula.
-    :param formula: A formula in the logic of your choice to be tokenized.
-    :return: List of tokens
-    :param logic: The logic to be parsed as a string, options: KM, S5, S5EC. Default: KM
-    :type logic: String
+    Tokenize the inputted string to a list of tokens
+    :param loigc: The logic of the string, options: KM, S5, S5EC
+    :param string: The string to be converted to tokens.
+    :raise TokenizeError: if a unknown character is in the string.
+    :return:[object]
     """
-    token_handlers = select_parser(logic)
-    rest = formula.strip()
-    tokens = []
-    while rest:
-        (token, rest) = token_handlers.get(rest[0], token_handler.proposition_handler)(rest)
-        if token:
-            tokens.append(token)
-    return tokens
+    regular_expressions = _get_lexicon(logic);
+    scan = re.Scanner(regular_expressions)
+    results, remainder=scan.scan(string)
+
+    if remainder:
+        msg = "Could not parse some part of the expression \"...{expression}\", you probably " \
+              "used an operator that is not defined (for this logic).".format(expression = remainder)
+        raise TokenizeError(remainder, msg)
+    return results

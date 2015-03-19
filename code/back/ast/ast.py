@@ -1,33 +1,33 @@
 # -*- coding: utf-8 -*-
 
 """
-This module can be used to build an abstract syntax tree.
+Class that defines the abstract syntax tree
 """
 
 __author__ = 'laura'
 
+from parser import  Parser
+import nodes
 
 class Ast(object):
     """Class to represent an abstract syntax tree."""
 
-    def __init__(self, formula):
-        """Create an AST from formula.
-        :param formula: the formula to create an AST for.
-        :type formula: string
+    def __init__(self, tokens):
+        """Create an AST from a list of tokens.
+        :param tokens: the lsit of tokens to create an AST for.
+        :type tokens: [Tokens]
         :return: an AST representing formula.
         :rtype : Ast
         """
-        print(formula)
+        parser = Parser()
+        self.root = parser.parse(tokens)
 
-class Knowledge(object):
-    """Class to represent the knowledge operator."""
-
-    def __init__(self, ast, agent):
-        """Create an K node for an AST
-        :param ast: the ast that hangs in the K node.
-        :type ast: Ast
-        :param agent: the number of the agent
-        :type agent: int
-        :return: a K node
-        :rtype : node
+    def __repr__(self):
         """
+        Print friendly representation of the AST object
+        :return: string
+        """
+        return "Tree: {obj.root}".format(obj = self)
+
+
+

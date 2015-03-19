@@ -14,5 +14,5 @@ def read_file(file):
 
 
 if __name__ == "__main__":
-    data = read_file('../../model.json')
+    data = read_file('../../models.json')
     print data["states"][0]
