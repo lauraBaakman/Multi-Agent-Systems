@@ -87,7 +87,7 @@ class KMModel(object):
         """
         if state.name in self.states:
             if not state == self.states[state.name]:
-                raise ModelError(
+                raise errors.ModelError(
                     "The state '{state.name}' has two different definitions.".format(state=state)
                 )
         self.states[state.name] = state
@@ -129,7 +129,7 @@ class KMModel(object):
             :return: dictionary with valutions.
             """
             if not len(propositions) == len(valuations):
-                raise ModelError(
+                raise errors.ModelError(
                     "The length of the list of valuations and the list of propositions differs."
                 )
             return dict(zip(propositions, valuations))
