@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from unittest import TestCase
 
-from ast.nodes import Binary, Proposition
+from nodes import Binary, Proposition
 from models.kmmodel import KMModel
 from tokenize import operators, tokens
 import utils
