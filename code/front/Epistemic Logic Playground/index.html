@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,700">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/ours.css">
 
     <script data-main="js/config" src="js/libs/require.js"></script>
 </head>
@@ -22,6 +23,7 @@
         </section>
         <!-- <section class="row" id="report">
             <h2>Introduction</h2>
+
                 <h3>Logic systems</h3>
                     <h4>The axiom system $K_{(m)}$</h4>
 
@@ -31,8 +33,135 @@
 
                     <h4>The axiom system $S5EC_{(m)}$</h4>
 
-
             <h2>Implementation</h2>
+                In this section we discuss how we represented the models and formulas within the model checker. Furthermore we also explain how the model checker verifies if a formula is true or not using these representations.
+
+                <h3>Formula</h3>
+                    Since the axiom system $S5EC_{(m)}$ is a superset of $S5_{(m)}$, and $S5_{(m)}$ is a super set of $K_{(m)}$ we only discuss the representation of formulas in the axiom system $S5EC_{(m)}$. <br>
+
+                    
+                    Formulas are entered using the representation presented in the table below. 
+                    <table class="table table-striped table-hover table-condensed">
+                        <tr>
+                            <th></th>
+                            <th>Conventional notation</th>
+                            <th>Input format</th>
+                            <th>Notes</th>
+                        </tr>
+                        <tr>
+                            <td>Proposition</td>
+                            <td>$A$</td>
+                            <td><code>a</code></td>
+                            <td>The name of a proposition must start with a small letter.</td>
+                        </tr>                                    
+                        <tr>
+                            <td>Negation</td>
+                            <td>$\lnot A$</td>
+                            <td><code>~a</code></td>
+                            <td></td>
+                        </tr>                    
+                        <tr>
+                            <td>Conjunction</td>
+                            <td>$A \land B$</td>
+                            <td><code>a &amp; b</code></td>
+                            <td></td>
+                        </tr>                    
+                        <tr>
+                            <td>Conjunction</td>
+                            <td>$A \land B$</td>
+                            <td><code>a &amp; b</code></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Disjunction</td>
+                            <td>$A \lor B$</td>
+                            <td><code>a | b</code></td>
+                            <td></td>
+                        </tr>                    
+                        <tr>
+                            <td>Implication</td>
+                            <td>$A \to B$</td>
+                            <td><code>a -&gt; b</code></td>
+                            <td></td>
+                        </tr>                                  
+                        <tr>
+                            <td>Implication</td>
+                            <td>$A \leftrightarrow B$</td>
+                            <td><code>a &lt;-&gt; b</code></td>
+                            <td></td>
+                        </tr>                                    
+                        <tr>
+                            <td>Knowledge</td>
+                            <td>$K_i$</td>
+                            <td><code>K_i</code></td>
+                            <td>The name of the agent must be a number.</td>
+                        </tr>                    
+                        <tr>
+                            <td>Possible</td>
+                            <td>$M_i$</td>
+                            <td><code>M_i</code></td>
+                            <td>The name of the agent must be a number.</td>
+                        </tr>                             
+                        <tr>
+                            <td>Common knowledge</td>
+                            <td>$C$</td>
+                            <td><code>C</code></td>
+                            <td></td>
+                        </tr>                              
+                    </table>
+
+                    To represent that it is common knowledge that agent $1$ knows that it is not the case that both $a$ and $b$ hold, i.e.
+                        \begin{equation}
+                             C K_1 \lnot (a \land b) 
+                            \label{eq:exampleFormula}
+                        \end{equation}                
+                     one would use <code>C K_1 ~(a &amp; b)</code>. 
+
+                    <h4>Tokens</h4>
+                         Formulas that enter the model checker are converted to a list of tokens. The tokenized version of \eqref{eq:exampleFormula} is shown in the figure.
+                            <figure>
+                                 <object data="./img/tokenization.svg" type="image/svg+xml" align="middle">
+                                    <img src="./img/tokenization.png" />
+                                </object>                    
+                                <figcaption>Tokenization of formula \eqref{eq:exampleFormula}</figcaption>
+                            </figure>
+                        The advantage of tokenizing is that it is easier to change the definition of the non terminals of the grammar without having to change the parser it self. Another upside of representing the formula as a list of tokens before parsing it is that we can already detect some errors in the formulas. For example if a user has selected the axiom system $S5_{(m)}$ and inputs formula \eqref{eq:exampleFormula} the process that generates the list of tokens detects that the formula is not valid in that language. Since the operator $C$ is not defined in $S5_{(m)}$. 
+                            <figure class="float-right">
+                                 <object data="./img/ast.svg" type="image/svg+xml">
+                                    <img src="./img/ast.png" />
+                                </object>                    
+                                <figcaption>Expression tree of formula \eqref{eq:exampleFormula}</figcaption>
+                            </figure> 
+
+                    <!-- AST -->
+                    <h4>Expression Tree</h4>
+                        If we have the list op token we need to build the expression tree. We do that using this grammar:
+                            \begin{array}{cccl}
+                                E & :=  & ~ &             \langle T \rangle \land            \langle T \rangle
+                                                \; | \;   \langle T \rangle \lor             \langle T \rangle
+                                                \; | \;   \langle T \rangle \to              \langle T \rangle
+                                                \; | \;   \langle T \rangle \leftrightarrow  \langle T \rangle\\
+                                T & :=  & ~ &             C \langle F \rangle
+                                                \; | \;   K_i \langle F \rangle
+                                                \; | \;   M_i \langle F \rangle\\
+                                F & :=  & ~ &           \left( \langle E \rangle \right)
+                                                \; | \;   ~ \lnot \langle E \rangle
+                                                \; | \;    \mathit{proposition}\\                    
+                            \end{array}                    
+                        In this grammar, non-terminals are presented in pointy brackets, terminals are represented as their logic symbol or in recursive text. Based on this grammar we can parse the tokenized expression using a recursive descent parser. This results in an expression tree.<br>
+
+                        The structure of the tree represents the order in which parts of the formula should be evaluated. For example, $a \land b$ should be evaluated first, and the result of that expression should be negated. If we had not placed brackets around the conjunction the negation node would have been a child of the conjunction node. <br>
+
+                        All binary operators in the grammar are right-associative, i.e. the expression $a \land b \land c$ is parsed as $(a \land (b \land c))$. 
+
+
+
+                        <!-- Right associative -->
+                    
+
+                <h3>Model</h3>
+
+                <h3>Checker</h3>
 
             <h2>Visualisation</h2>
 

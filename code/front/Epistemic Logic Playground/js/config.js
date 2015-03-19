@@ -14,7 +14,12 @@ require.config({
 			export: "MathJax",
 			init: function() {
 				MathJax.Hub.Config({
-					tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+					tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+					TeX: { 
+						equationNumbers: { 
+							autoNumber: "AMS" 
+						} 
+					}					
 				});
 				MathJax.Hub.Startup.onload();
 				return MathJax;
