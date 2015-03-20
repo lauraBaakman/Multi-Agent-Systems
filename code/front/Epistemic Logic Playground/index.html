@@ -132,8 +132,26 @@
             <!-- Right associative -->
             <h3>Model</h3>
             <h3>Checker</h3>
+            
             <h2>Visualisation</h2>
-            <h3> How to use </h3> Don't know yet.
+                The visualisation depicts a Kripke model as a graph. The worlds have a label that shows the valuations of the atomic propositions at that world. Reflexive relations are not supported at this moment.
+
+            <h3> How to use </h3> 
+                At this stage the user interface is not quite finished yet and a (probably) temporal solution is in place. This temporal solution includes an json editor in which the model can be edited. Our goal is to include a more user friendly interface where states and links can be added by simply clicking in the in the graph canvas.
+
+                <h4>JSON Format</h4>
+                    An example is included in the editor for this. It contains an object called model. Within this model the states, relations, and logic system are defined. 
+
+                    <ul>
+                        <li><strong>States</strong> is an array of objects. Each object represents a state and needs to have an "id" field followed by an integer. This id is used later in the relations. The "vals" field is followed by an array of valuations. The order of these valuations needs to be the same as that of the propositions array</li>
+
+                        <li><strong>Relations</strong>This object needs to be an array of arrays. The inner arrays describe a relation between two states and of which of the maximum 5 agents this relations belongs to.</li>
+
+                        <li><strong>Logic System</strong>The logic system the Kripke belongs to. Will in final version compute the reflexive transitive etc. closures when that is necessary. Options for the logic system are "KM", "S5", and S5CE</li>
+                    </ul>
+
+                    The model object is followed by the formula you want to check on the system. Syntax is described in the table at the top of the page. The state field tells the model checker in which state the formula should hold.
+
         </section>
         <footer>
             Epistemic Logic Playground is an adaption of <a href="https://github.com/rkirsling/modallogic">Modal Logic Playground</a> by <a href="https://bitbucket.org/rick_van_veen">Rick van Veen</a> and <a href="https://github.com/lauraBaakman">Laura Baakman</a>, released under the <a href="http://opensource.org/licenses/mit-license.php">MIT License</a>.

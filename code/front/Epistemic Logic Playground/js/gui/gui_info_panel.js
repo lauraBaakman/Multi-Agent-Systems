@@ -24,7 +24,6 @@ define("gui_info_panel", ["d3", "json_editor"], function(d3, JSONEditor) {
                         "id": "2",
                         "vals": [false, false]
                     }],
-                    "propositions": ["p", "q"],
                     "relations": [
                         ["0", 0, "1"],
                         ["0", 1, "1"],
