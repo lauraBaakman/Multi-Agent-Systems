@@ -11,6 +11,10 @@
       {
         "id": "sc",
         "vals": [false, false, true]
+      },
+      {
+        "id": "sd",
+        "vals": [false, true, false]
       }
     ],
 	"propositions": ["p", "q", "r"],

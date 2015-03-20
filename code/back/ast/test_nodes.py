@@ -30,7 +30,7 @@ class TestBinary(TestCase):
         self.assertTrue(node.is_true(self.model.get_state_by_name('sa')))
         self.assertFalse(node.is_true(self.model.get_state_by_name('sb')))
         self.assertFalse(node.is_true(self.model.get_state_by_name('sc')))
-        # self.assertFalse(node.is_true(self.model.get_state_by_name('sd')))
+        self.assertFalse(node.is_true(self.model.get_state_by_name('sd')))
 
     def test_is_true_disjunction(self):
         node = Binary(
@@ -44,7 +44,7 @@ class TestBinary(TestCase):
         self.assertTrue(node.is_true(self.model.get_state_by_name('sa')))
         self.assertTrue(node.is_true(self.model.get_state_by_name('sb')))
         self.assertFalse(node.is_true(self.model.get_state_by_name('sc')))
-        # self.assertTrue(node.is_true(self.model.get_state_by_name('sd')))
+        self.assertTrue(node.is_true(self.model.get_state_by_name('sd')))
 
     def test_is_true_implication(self):
         node = Binary(
@@ -58,7 +58,7 @@ class TestBinary(TestCase):
         self.assertTrue(node.is_true(self.model.get_state_by_name('sa')))
         self.assertFalse(node.is_true(self.model.get_state_by_name('sb')))
         self.assertTrue(node.is_true(self.model.get_state_by_name('sc')))
-        # self.assertTrue(node.is_true(self.model.get_state_by_name('sd')))
+        self.assertTrue(node.is_true(self.model.get_state_by_name('sd')))
 
     def test_is_true_biimplication(self):
         node = Binary(
@@ -72,7 +72,7 @@ class TestBinary(TestCase):
         self.assertTrue(node.is_true(self.model.get_state_by_name('sa')))
         self.assertFalse(node.is_true(self.model.get_state_by_name('sb')))
         self.assertTrue(node.is_true(self.model.get_state_by_name('sc')))
-        # self.assertFalse(node.is_true(self.model.get_state_by_name('sd')))
+        self.assertFalse(node.is_true(self.model.get_state_by_name('sd')))
 
 
 class TestProposition(TestCase):
