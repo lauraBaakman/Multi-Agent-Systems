@@ -45,9 +45,9 @@ class Unary(Node):
             raise NotImplementedError
 
         operator_to_function = {
-            operators.Unary.negation: negation(),
-            operators.Unary.common: common(),
-            operators.Unary.everybody: everybody()
+            operators.Unary.negation: negation,
+            operators.Unary.common: common,
+            operators.Unary.everybody: everybody
         }
         return operator_to_function.get(self.type)(self.lhs, state)
 
@@ -77,20 +77,33 @@ class Agent(Unary):
         # TODO geeft true terug als er geen relaties zijn voor deze agent uit die staat, is dat correct?
         def knowledge(lhs, state, agent):
             truth_value = True
-            for state in state.outgoing.get(agent, []):
-                truth_value = lhs.is_true(state)
+            for outgoing_relation in state.outgoing.get(agent, []):
+                truth_value = lhs.is_true(outgoing_relation.destination)
                 if not truth_value:
-                    return truth_value
+                    break
             return truth_value
 
         def possible(lhs, state, agent):
-            raise NotImplementedError
+            temp =  (
+                Unary(
+                    type=operators.Unary.negation,
+                    lhs=Agent(
+                        type=operators.Agent.knowledge,
+                        agent=agent,
+                        lhs=Unary(
+                            type=operators.Unary.negation,
+                            lhs=lhs
+                        )
+                    )
+                ).is_true(state)
+            )
+            return temp
 
         operator_to_function = {
-            operators.Agent.knowledge: knowledge(),
-            operators.Agent.possible: possible(),
+            operators.Agent.knowledge: knowledge,
+            operators.Agent.possible: possible
         }
-        return operator_to_function.get(self.type)(self.lhs, state, agent)
+        return operator_to_function.get(self.type)(self.lhs, state, self.agent)
 
 
 class Binary(Node):
