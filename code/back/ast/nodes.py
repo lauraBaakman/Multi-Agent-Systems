@@ -69,20 +69,18 @@ class Binary(Node):
             "({obj.lhs} {obj.type} {obj.rhs})".format(obj=self)
         )
 
-    def is_true(self, model, state):
-        def conjunction(lhs, rhs, model, state):
-            return lhs.is_true(model, state) and rhs.is_true(model, state)
+    def is_true(self, state):
+        def conjunction(lhs, rhs,  state):
+            return lhs.is_true(state) and rhs.is_true(state)
 
-        def disjunction(lhs, rhs, model, state):
-            return lhs.is_true(model, state) or rhs.is_true(model, state)
+        def disjunction(lhs, rhs, state):
+            return lhs.is_true(state) or rhs.is_true(state)
 
-        def implication(lhs, rhs, model, state):
-            return (not lhs.is_true(model, state)) or rhs.is_true(model, state)
+        def implication(lhs, rhs, state):
+            return (not lhs.is_true(state)) or rhs.is_true(state)
 
-        def biimplication(lsh, rhs, model, state):
-            return conjunction(
-                implication(lsh, rhs), implication(rhs, lsh)
-            )
+        def biimplication(lsh, rhs, state):
+            return implication(lsh, rhs, state) and implication(rhs, lsh, state)
 
         operator_to_function = {
             operators.Binary.conjunction: conjunction,
@@ -90,7 +88,7 @@ class Binary(Node):
             operators.Binary.implication: implication,
             operators.Binary.biimplication: biimplication
         }
-        return operator_to_function.get(self.type)(self.lhs, self.rhs, model, state)
+        return operator_to_function.get(self.type)(self.lhs, self.rhs, state)
 
 
 class Proposition(Node):

@@ -99,7 +99,7 @@ class KMModel(object):
         :return: the state with the name name
         :raises: modelError if name does not represent an existing state.
         """
-        state = self.states.get(name)
+        state = self.states.get(name, None)
         if state:
             return state
         raise errors.ModelError()
