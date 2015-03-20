@@ -187,6 +187,7 @@ class KMModel(object):
             for state in self.states:
                 result.append(self.is_true(formula, state))
         else:
+            # TODO check of de state in het model zit, anders error.
             return formula.is_true(
                 formula,
                 self,

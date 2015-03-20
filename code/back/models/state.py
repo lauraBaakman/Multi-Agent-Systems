@@ -56,10 +56,19 @@ class State(object):
         :param proposition: the proposition
         :return: the truth value of the proposition
         """
-        truth_value = self.valuations.get(proposition, None)
-        if not truth_value:
-            raise errors.ValuationError("The model contained propositions that are not in the model.")
-        return truth_value
+        result = self.valuations.get(
+            proposition,
+            errors.ValuationError(
+                "The proposition '{proposition}' does not have a valuation in state '{state_name}'"
+                .format(
+                    proposition=proposition,
+                    state_name=self.name
+                )
+            ),
+        )
+        if isinstance(result, errors.ValuationError):
+            raise result
+        return result
 
 
     def __repr__(self):

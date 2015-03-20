@@ -105,4 +105,14 @@ class Proposition(Node):
         )
 
     def is_true(self, model, state):
-        return model.get_state_by_name(state).is_true(self.name)
+        """
+        Return true if this proposition is true in the passed state in the passed model.
+        :param model: A mdoel
+        :param state: A state object
+        :return: Boolean
+        """
+        try:
+            return state.is_true(self.name)
+        except:
+            raise
+

@@ -8,6 +8,7 @@ import utils
 
 __author__ = 'laura'
 
+import models.errors as errors
 
 class TestBinary(TestCase):
     def setUp(self):
