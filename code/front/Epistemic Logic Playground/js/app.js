@@ -20,8 +20,18 @@ define("app", ["d3", "gui_graph_canvas", "gui_info_panel", "epl_model", "mathjax
 
         model.add_link(0, 1);
         model.add_link(1, 0);
+
         model.add_link(1, 2);
+        // model.add_link(2, 1);
+
         model.add_link(2, 0);
+        model.add_link(0, 2);
+        
+
+        model.edit_link(0, [0,1,2]);
+        model.edit_link(1, [0,1,2,3]);
+        model.edit_link(2, [0,1,2,3,4]);
+        
 
         // model.set_prop_count(3);
         // model.set_prop_count(6);

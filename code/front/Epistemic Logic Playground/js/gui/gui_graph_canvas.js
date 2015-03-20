@@ -37,29 +37,44 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                 .links(model.get_links())
                 .size([width, height])
                 .linkDistance(250)
-                .charge(-500)
+                .charge(-50)
                 .on('tick', tick);
         }
 
         function tick() {
             links.attr('d', function(d) {
-                var deltaX = d.target.x - d.source.x,
-                    deltaY = d.target.y - d.source.y,
-                    dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY),
-                    normX = deltaX / dist,
-                    normY = deltaY / dist,
-                    sourcePadding = d.left ? 17 : 12,
-                    targetPadding = d.right ? 17 : 12,
-                    sourceX = d.source.x + (sourcePadding * normX),
-                    sourceY = d.source.y + (sourcePadding * normY),
-                    targetX = d.target.x - (targetPadding * normX),
-                    targetY = d.target.y - (targetPadding * normY);
-                return 'M' + sourceX + ',' + sourceY + 'L' + targetX + ',' + targetY;
-            });
+                var dx = d.target.x - d.source.x,
+                    dy = d.target.y - d.source.y,
 
-            // link_labels.attr("transform", function(d) {
-            //     return 'translate(' + d.x + ',' + d.y + ')';
-            // });
+                    // Piet
+                    dist = Math.sqrt(dx * dx + dy * dy),
+                    norm_x = dx / dist,
+                    norm_y = dy / dist,
+                    
+                    source_padding = 0,
+                    target_padding = 26,
+
+                    source_x = d.source.x + (source_padding * norm_x),
+                    source_y = d.source.y + (source_padding * norm_y),
+                    target_x = d.target.x - (target_padding * norm_x),
+                    target_y = d.target.y - (target_padding * norm_y);
+
+                var source_id = d.source.id;
+                var target_id = d.target.id
+
+                if (model.is_target_state(source_id, target_id)) {
+                    return 'M' +
+                        source_x + ',' +
+                        source_y + 'A' +
+                        dist + ',' + dist + ' 0 0,1 ' +
+                        target_x + ',' + 
+                        target_y;
+                }
+                return 'M' +
+                    source_x + ',' +
+                    source_y + 'L' +
+                    target_x + ',' + target_y;
+            });
 
             nodes.attr('transform', function(d) {
                 return 'translate(' + d.x + ',' + d.y + ')';
@@ -71,22 +86,11 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                 .attr('id', 'end-arrow')
                 .attr('viewBox', '0 -5 10 10')
                 .attr('refX', 6)
-                .attr('markerWidth', 3)
-                .attr('markerHeight', 3)
+                .attr('markerWidth', 6)
+                .attr('markerHeight', 6)
                 .attr('orient', 'auto')
                 .append('svg:path')
                 .attr('d', 'M0,-5L10,0L0,5')
-                .attr('fill', '#000');
-
-            canvas.append('svg:defs').append('svg:marker')
-                .attr('id', 'start-arrow')
-                .attr('viewBox', '0 -5 10 10')
-                .attr('refX', 4)
-                .attr('markerWidth', 3)
-                .attr('markerHeight', 3)
-                .attr('orient', 'auto')
-                .append('svg:path')
-                .attr('d', 'M10,-5L0,0L10,5')
                 .attr('fill', '#000');
         }
 
@@ -102,6 +106,24 @@ define("gui_graph_canvas", ["d3"], function(d3) {
             link_labels = canvas.append('svg:g').selectAll('g.link_labels');
         }
 
+        function relation_to_string(link) {
+            var agent_to_unicode = {
+                0: '\u2080',
+                1: '\u2081',
+                2: '\u2082',
+                3: '\u2083',
+                4: '\u2084',
+            }
+
+            var str = 'R\u208D ';
+
+            link.agents.forEach(function(agent) {
+                str += agent_to_unicode[agent];
+            });
+
+            return str + ' \u208E'
+        }
+
         function draw_paths() {
             // path (link) group
             links = links.data(model.get_links());
@@ -110,11 +132,8 @@ define("gui_graph_canvas", ["d3"], function(d3) {
             links.classed('selected', function(d) {
                     return d === selected_link;
                 })
-                .style('marker-start', function(d) {
-                    return d.left ? 'url(#start-arrow)' : '';
-                })
                 .style('marker-end', function(d) {
-                    return d.right ? 'url(#end-arrow)' : '';
+                    return 'url(#end-arrow)';
                 });
 
             // add new links
@@ -123,14 +142,11 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                 .classed('selected', function(d) {
                     return d === selected_link;
                 })
-                .style('marker-start', function(d) {
-                    return d.left ? 'url(#start-arrow)' : '';
-                })
                 .style('marker-end', function(d) {
-                    return d.right ? 'url(#end-arrow)' : '';
+                    return 'url(#end-arrow)';
                 })
-                .attr("id", function(d, i) {
-                    return "linkId_" + i;
+                .attr("id", function(d) {
+                    return "linkId_" + d.id;
                 });
 
             // remove old links
@@ -145,12 +161,10 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                 .attr("dy", -8)
                 .attr("text-anchor", "middle")
                 .append("textPath")
-                .attr("xlink:href", function(d, i) {
-                    return "#linkId_" + i;
+                .attr("xlink:href", function(d) {
+                    return "#linkId_" + d.id;
                 })
-                .text(function(d) {
-                    return 'R\u208D\u2080 \u2081 \u2082 \u2083 \u2084 \u208E';
-                });
+                .text(relation_to_string);
         }
 
         function valuation_to_string(node) {
@@ -184,7 +198,7 @@ define("gui_graph_canvas", ["d3"], function(d3) {
 
             g.append('svg:circle')
                 .attr('class', 'node')
-                .attr('r', 12)
+                .attr('r', 22)
                 .style('fill', function(d) {
                     return (d === selected_node) ? d3.rgb('#DDD').brighter().toString() : d3.rgb('#DDD');
                 })
@@ -206,14 +220,14 @@ define("gui_graph_canvas", ["d3"], function(d3) {
 
             // text shadow
             g.append('svg:text')
-                .attr('x', 16)
+                .attr('x', 24)
                 .attr('y', 4)
                 .attr('class', 'shadow')
                 .text(valuation_to_string);
 
             // text foreground
             g.append('svg:text')
-                .attr('x', 16)
+                .attr('x', 24)
                 .attr('y', 4)
                 .text(valuation_to_string);
 

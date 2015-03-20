@@ -48,18 +48,16 @@ define("epl_model", [], function() {
                 id: link_counter++,
                 source: source,
                 target: target,
-                left: false,
-                right: true,
    				agents: [0]
             };
             links.push(link);
         };
 
-        this.edit_link = function(link_id, relations) {
+        this.edit_link = function(link_id, agents) {
             var link = self.get_link(link_id);
             if (!link) return;
 
-            link.relations = relations;
+            link.agents = agents;
         };
 
         // Todo: Agent
@@ -127,6 +125,16 @@ define("epl_model", [], function() {
                 return state.id === state_id;
             })[0];
         };
+
+        this.is_target_state = function(source_id, target_id) {
+        	var is_target = false;
+        	links.forEach(function(link) {
+        		if(link.target.id === source_id && link.source.id === target_id) {
+        			is_target = true;
+        		}
+        	});
+        	return is_target;
+        }
 
         this.get_states = function() {
             return states;
