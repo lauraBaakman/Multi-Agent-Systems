@@ -104,10 +104,10 @@ class Proposition(Node):
             "{obj.name}".format(obj=self)
         )
 
-    def is_true(self, model, state):
+    def is_true(self, state):
         """
         Return true if this proposition is true in the passed state in the passed model.
-        :param model: A mdoel
+        :param model: A model
         :param state: A state object
         :return: Boolean
         """

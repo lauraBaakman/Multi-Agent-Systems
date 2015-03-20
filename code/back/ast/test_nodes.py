@@ -84,16 +84,16 @@ class TestProposition(TestCase):
 
     def test_is_true(self):
         node = Proposition(tokens.Proposition('p'))
-        self.assertTrue(node.is_true(self.model, self.model.get_state_by_name('sa')))
-        self.assertTrue(node.is_true(self.model, self.model.get_state_by_name('sb')))
-        self.assertFalse(node.is_true(self.model, self.model.get_state_by_name('sc')))
+        self.assertTrue(node.is_true(self.model.get_state_by_name('sa')))
+        self.assertTrue(node.is_true(self.model.get_state_by_name('sb')))
+        self.assertFalse(node.is_true(self.model.get_state_by_name('sc')))
 
         node = Proposition(tokens.Proposition('q'))
-        self.assertTrue(node.is_true(self.model, self.model.get_state_by_name('sa')))
-        self.assertFalse(node.is_true(self.model, self.model.get_state_by_name('sb')))
-        self.assertFalse(node.is_true(self.model, self.model.get_state_by_name('sc')))
+        self.assertTrue(node.is_true(self.model.get_state_by_name('sa')))
+        self.assertFalse(node.is_true(self.model.get_state_by_name('sb')))
+        self.assertFalse(node.is_true(self.model.get_state_by_name('sc')))
 
         node = Proposition(tokens.Proposition('r'))
-        self.assertFalse(node.is_true(self.model, self.model.get_state_by_name('sa')))
-        self.assertTrue(node.is_true(self.model, self.model.get_state_by_name('sb')))
-        self.assertTrue(node.is_true(self.model, self.model.get_state_by_name('sc')))
+        self.assertFalse(node.is_true(self.model.get_state_by_name('sa')))
+        self.assertTrue(node.is_true(self.model.get_state_by_name('sb')))
+        self.assertTrue(node.is_true(self.model.get_state_by_name('sc')))
