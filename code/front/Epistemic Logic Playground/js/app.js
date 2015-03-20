@@ -27,12 +27,11 @@ define("app", ["d3", "gui_graph_canvas", "gui_info_panel", "epl_model", "mathjax
         model.add_link(2, 0);
         model.add_link(0, 2);
         
-
         model.edit_link(0, [0,1,2]);
         model.edit_link(1, [0,1,2,3]);
         model.edit_link(2, [0,1,2,3,4]);
 
-       	model.load_from_model_object(model.save_to_model_object());
+       	console.log(model.save_to_model_object());
         
 
         // model.set_prop_count(3);
@@ -47,6 +46,7 @@ define("app", ["d3", "gui_graph_canvas", "gui_info_panel", "epl_model", "mathjax
         // Info
         var container = d3.select(info_id);
         var info_panel = new InfoPanel(container, model);
+        info_panel.init();
 
         // Graph
         container = d3.select(graph_id);

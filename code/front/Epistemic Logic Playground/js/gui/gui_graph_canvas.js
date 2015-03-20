@@ -22,8 +22,9 @@ define("gui_graph_canvas", ["d3"], function(d3) {
 
         function init_canvas() {
             // Get meassurement of the container of the graph canvas
-            width = container.node().getBoundingClientRect().width;
-            height = container.node().getBoundingClientRect().height;
+            var padding = 5;
+            width = container.node().getBoundingClientRect().width - padding;
+            height = container.node().getBoundingClientRect().height - padding;
             colors = d3.scale.category10();
             canvas = container
                 .append('svg')

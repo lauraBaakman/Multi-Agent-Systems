@@ -175,7 +175,7 @@ define("epl_model", [], function() {
         this.save_to_model_object = function() {
         	var sendable_states = states.map(function(state) {
         		return {
-        			"id": 's' + state.id.toString(),
+        			"id": state.id.toString(),
         			"vals": state.vals.slice(0, proposition_counter)
         		};
         	});
@@ -187,9 +187,9 @@ define("epl_model", [], function() {
         	links.forEach(function(link) {
         		var relations = link.agents.map(function(agent) {
         			return [
-        				's' + link.source.id.toString(),
+        				link.source.id.toString(),
         				agent,
-        				's' + link.target.id.toString()
+        				link.target.id.toString()
         			];
         		});
         		relations.forEach(function(relation) {
