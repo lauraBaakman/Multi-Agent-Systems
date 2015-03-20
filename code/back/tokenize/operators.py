@@ -18,7 +18,9 @@ class Binary(Operator):
 class Unary(Operator):
     negation = 5
     common = 6
+    # TODO everybody operator implementeren!!!!
+    everybody = 7
 
 class Agent(Operator):
-    knowledge = 7
-    possible = 8
+    knowledge = 8
+    possible = 9

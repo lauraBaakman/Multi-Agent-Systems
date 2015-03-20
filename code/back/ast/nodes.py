@@ -6,21 +6,21 @@ Classes that define the nodes of the AST
 
 __author__ = 'laura'
 
-from tokenize import operators
+from tokenize import operators, tokens
 
 class Node(object):
     """General node class"""
 
 class Unary(Node):
 
-    def __init__(self, token):
+    def __init__(self, token, lhs=None):
         """
         Constructor for unary nodes
         :param token: unary token
         :return: Unary Node
         """
         self.type = token.type
-        self.lhs = None
+        self.lhs = lhs
 
     def __repr__(self):
         """Print-friendly infix representation."""
@@ -28,8 +28,25 @@ class Unary(Node):
             "({obj.type} {obj.lhs})".format(obj=self)
         )
 
-    def is_true(self, model, state):
-        raise NotImplementedError
+    def is_true(self, state):
+        def negation(lhs, state):
+            return not lhs.is_true(state)
+
+        def common(lhs, state):
+            # TODO implement
+            raise NotImplementedError
+
+        def everybody(lhs, state):
+            #TODO implement
+            raise NotImplementedError
+
+        operator_to_function = {
+            operators.Unary.negation: negation(),
+            operators.Unary.common: common(),
+            operators.Unary.everybody: everybody()
+        }
+        return operator_to_function.get(self.type)(self.lhs, state)
+
 
 class Agent(Unary):
 
@@ -41,14 +58,35 @@ class Agent(Unary):
         """
         super(Unary, self).__init__(token)
         self.agent = token.agent
+
     def __repr__(self):
         """Print-friendly infix representation."""
         return (
             "({obj.type}_{obj.agent} {obj.lhs})".format(obj=self)
         )
 
-    def is_true(self, model, state):
-        raise NotImplementedError
+    def is_true(self, state):
+        # TODO geeft true terug als er geen relaties zijn voor deze agent uit die staat, is dat correct?
+        def knowledge(lhs, state, agent):
+            truth_value = True
+            for state in state.outgoing.get(agent, []):
+                truth_value = lhs.is_true(state)
+                if not truth_value:
+                    break
+            return truth_value
+
+        def possible(lhs, state, agent):
+            lhs_with_negation = Unary(
+
+            )
+
+
+
+        operator_to_function = {
+            operators.Agent.knowledge: knowledge(),
+            operators.Agent.possible: possible(),
+        }
+        return operator_to_function.get(self.type)(self.lhs, state, agent)
 
 
 class Binary(Node):
