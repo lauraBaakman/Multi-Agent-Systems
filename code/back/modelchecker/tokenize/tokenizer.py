@@ -3,24 +3,10 @@
 """."""
 import re
 
-import config
-from tokenize.operators import Binary, Unary, Agent
-import tokens
-
-
-class TokenizeError(IOError):
-    """
-    Exception raised when the string cannot be tokenized.
-    """
-
-    def __init__(self, expr, msg):
-        """
-        Constructor for TokenizeError
-        :param expr: input expression in which the error occurred
-        :param msg: explanation of the error
-        """
-        self.expr = expr
-        self.msg = msg
+from modelchecker.operators import Binary, Unary, Agent
+from modelchecker.errors import TokenizeError
+from modelchecker.tokenize import tokens
+from modelchecker import config
 
 
 def _get_lexicon(logic):

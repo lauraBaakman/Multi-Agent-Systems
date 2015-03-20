@@ -6,7 +6,8 @@ Classes that define the nodes of the AST
 
 __author__ = 'laura'
 
-from tokenize import operators, tokens
+from modelchecker import operators
+
 
 class Node(object):
     """General node class"""

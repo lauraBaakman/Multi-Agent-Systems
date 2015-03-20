@@ -2,8 +2,6 @@
 
 __author__ = 'laura'
 
-import state
-
 class Relation(object):
     """
     Represents relations in a Kripke KMModel

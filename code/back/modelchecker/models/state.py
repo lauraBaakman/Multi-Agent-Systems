@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import errors
+from modelchecker import errors
 
 __author__ = 'laura'
 

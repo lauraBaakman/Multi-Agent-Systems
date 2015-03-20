@@ -4,7 +4,7 @@ import json
 
 import state
 import relation
-import errors
+from modelchecker import errors
 
 __author__ = 'laura'
 

@@ -4,13 +4,14 @@
 Main for coding
 """
 
-import tokenize.tokenizer as tokenizer
 import parser
-from ast import ast
+from modelchecker.errors import TokenizeError
+
+import modelchecker.tokenize.tokenizer as tokenizer
+from modelchecker import ast
 import models.kmmodel
 import models.errors
 import utils
-
 
 
 if __name__ == "__main__":
@@ -25,7 +26,7 @@ if __name__ == "__main__":
         data = utils.read_json(filename)
         model = models.kmmodel.KMModel.from_json(data)
         print model
-    except tokenizer.TokenizeError as e:
+    except TokenizeError as e:
         print e.msg
     except parser.ParserError as e:
         print e.message

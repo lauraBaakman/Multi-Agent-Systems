@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from unittest import TestCase
 
-from nodes import Proposition, Binary, Agent, Unary
-from models.kmmodel import KMModel
-from tokenize import operators
-import utils
+from modelchecker.ast.nodes import Proposition, Binary, Agent, Unary
+from modelchecker.models.kmmodel import KMModel
+from modelchecker import operators
+from modelchecker import utils
+
 
 __author__ = 'laura'
 

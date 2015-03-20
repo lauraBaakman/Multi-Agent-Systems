@@ -11,28 +11,15 @@ The parser handles the actual parsing of expressions.
 
 """
 
-import tokenize.operators as operators
-import tokenize.tokens as tokens
-import nodes
+from modelchecker import operators
+from modelchecker.errors import ParserError
+import modelchecker.tokenize.tokens as tokens
+from modelchecker.ast import nodes
 
 __author__ = 'laura'
 
 
 # Inspired by http://www.engr.mun.ca/~theo/Misc/exp_parsing.htm#classic
-
-# TODO worden expressies met modal operators wel geparsed? Idem voor C en E
-
-class ParserError(IOError):
-    """
-    Exception raised when the string cannot be parsed
-    """
-
-    def __init__(self, msg):
-        """
-        Constructor for TokenizeError
-        :param msg: explanation of the error
-        """
-        self.msg = msg
 
 
 class Parser(object):

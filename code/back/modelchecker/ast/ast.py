@@ -6,8 +6,9 @@ Class that defines the abstract syntax tree
 
 __author__ = 'laura'
 
-from logicparser import Parser
-from tokenize import tokenizer
+from modelchecker.ast.logicparser import Parser
+from modelchecker.tokenize import tokenizer
+
 
 class Ast(object):
     """Class to represent an abstract syntax tree."""
