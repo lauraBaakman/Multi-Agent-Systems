@@ -2,16 +2,28 @@
     "state": "1",
     "formula": "p & q",
     "model": {
-      "states":[
+      "states": [
         {
           "id": "1",
-          "vals": [true, true, false]
+          "vals": [
+            true,
+            true,
+            false
+          ]
         }
       ],
-      "propositions": ["p", "q", "r"],
+      "propositions": [
+        "p",
+        "q",
+        "r"
+      ],
       "relations": [
-          ["sc", 1, "sa"]
+        [
+          "1",
+          1,
+          "1"
+        ]
       ],
       "logic": "KM"
-  }
+    }
 }

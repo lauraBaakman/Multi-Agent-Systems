@@ -85,7 +85,7 @@ class Agent(Unary):
             return truth_value
 
         def possible(lhs, state, agent):
-            temp =  (
+            return (
                 Unary(
                     type=operators.Unary.negation,
                     lhs=Agent(
@@ -98,7 +98,6 @@ class Agent(Unary):
                     )
                 ).is_true(state)
             )
-            return temp
 
         operator_to_function = {
             operators.Agent.knowledge: knowledge,

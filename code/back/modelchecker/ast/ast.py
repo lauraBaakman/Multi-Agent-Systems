@@ -38,7 +38,7 @@ class Ast(object):
         except:
             raise
 
-    def is_true(self, model, state):
-        return self.root.is_true(model, state)
+    def is_true(self, state):
+        return self.root.is_true(state)
 
 

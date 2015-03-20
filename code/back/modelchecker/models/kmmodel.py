@@ -190,7 +190,6 @@ class KMModel(object):
         else:
             # TODO check of de state in het model zit, anders error.
             return formula.is_true(
-                formula,
                 self.get_state_by_name(state)
             )
 
