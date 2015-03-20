@@ -1,0 +1,8 @@
+figure.float-right {
+	float: right;
+	margin: 10px 10px 10px 0;
+}
+
+.alert-info{
+	width: 70%;
+}
