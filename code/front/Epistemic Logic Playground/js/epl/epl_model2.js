@@ -169,11 +169,40 @@ define("epl_model", [], function() {
         };
 
         this.load_from_model_object = function(model_object) {
-            return;
+          	
         };
 
         this.save_to_model_object = function() {
-            return;
+        	var sendable_states = states.map(function(state) {
+        		return {
+        			"id": 's' + state.id.toString(),
+        			"vals": state.vals.slice(0, proposition_counter)
+        		};
+        	});
+
+        	var sendable_propositions = default_propositions.slice(0, proposition_counter);
+
+        	var sendable_relations = [];
+        	
+        	links.forEach(function(link) {
+        		var relations = link.agents.map(function(agent) {
+        			return [
+        				's' + link.source.id.toString(),
+        				agent,
+        				's' + link.target.id.toString()
+        			];
+        		});
+        		relations.forEach(function(relation) {
+        			sendable_relations.push(relation);
+        		});
+        	});
+
+        	return {
+        		"states": sendable_states,
+        		"propositions": sendable_propositions,
+        		"relations": sendable_relations,
+        		"logic": "K(m)"
+        	}
         };
     }
     return EplModel;

@@ -62,6 +62,7 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                 var source_id = d.source.id;
                 var target_id = d.target.id
 
+                // Curvy lines
                 if (model.is_target_state(source_id, target_id)) {
                     return 'M' +
                         source_x + ',' +
@@ -69,7 +70,7 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                         dist + ',' + dist + ' 0 0,1 ' +
                         target_x + ',' + 
                         target_y;
-                }
+                } // Straight lines
                 return 'M' +
                     source_x + ',' +
                     source_y + 'L' +
@@ -178,7 +179,6 @@ define("gui_graph_canvas", ["d3"], function(d3) {
         }
 
         function draw_nodes() {
-            // circle (node) group
             // NB: the function arg is crucial here! nodes are known by id, not by index!
             nodes = nodes.data(model.get_states(), function(d) {
                 return d.id;

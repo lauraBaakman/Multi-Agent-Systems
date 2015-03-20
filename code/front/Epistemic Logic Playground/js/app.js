@@ -31,6 +31,8 @@ define("app", ["d3", "gui_graph_canvas", "gui_info_panel", "epl_model", "mathjax
         model.edit_link(0, [0,1,2]);
         model.edit_link(1, [0,1,2,3]);
         model.edit_link(2, [0,1,2,3,4]);
+
+       	model.load_from_model_object(model.save_to_model_object());
         
 
         // model.set_prop_count(3);
