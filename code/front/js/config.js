@@ -4,11 +4,9 @@ require.config({
 		'd3': 'libs/d3.min',
 		'mathjax': '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML',
 		// Our own shit
-		'epl_converters': 'epl/epl_converters',
-		'epl_regexp': 'epl/epl_regexp',
-		'epl_model': 'epl/epl_model',
-		'epl_formula': 'epl/epl_formula',
-		'epl_valuation': 'epl/epl_valuation'
+		'gui_graph_canvas': 'gui/gui_graph_canvas',
+		'gui_info_panel': 'gui/gui_info_panel',
+		'epl_model': 'epl/epl_model2'
 	},
 
 	shim: {
@@ -16,7 +14,12 @@ require.config({
 			export: "MathJax",
 			init: function() {
 				MathJax.Hub.Config({
-					tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+					tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+					TeX: { 
+						equationNumbers: { 
+							autoNumber: "AMS" 
+						} 
+					}					
 				});
 				MathJax.Hub.Startup.onload();
 				return MathJax;
@@ -25,11 +28,6 @@ require.config({
 	}
 });
 
-require(['app'],function(app){
-	// Start app.js
-    app.setAppMode(app.MODE.EDIT);
-
-    // ugly
-    window.app = app;
+require(['app'],function(App){
+    var app = new App("#app-canvas", "#app-info");
 });
-
