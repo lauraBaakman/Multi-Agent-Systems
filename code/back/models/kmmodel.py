@@ -184,7 +184,7 @@ class KMModel(object):
         """
         if not state:
             result = []
-            for state in self.states:
+            for state.name in self.states:
                 # TODO een boolean teruggeven, stoppen met checken zodra het in een state false is, of de resutlaten per state op slaan.
                 result.append(self.is_true(formula, state))
         else:

@@ -1,0 +1,17 @@
+{
+    "state": "1",
+    "formula": "p & q",
+    "model": {
+      "states":[
+        {
+          "id": "1",
+          "vals": [true, true, false]
+        }
+      ],
+      "propositions": ["p", "q", "r"],
+      "relations": [
+          ["sc", 1, "sa"]
+      ],
+      "logic": "KM"
+  }
+}
