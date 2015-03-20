@@ -13,14 +13,18 @@ class Node(object):
 
 class Unary(Node):
 
-    def __init__(self, token, lhs=None):
+    def __init__(self, type, lhs=None):
         """
         Constructor for unary nodes
         :param token: unary token
         :return: Unary Node
         """
-        self.type = token.type
+        self.type = type
         self.lhs = lhs
+
+    @classmethod
+    def fromToken(cls, token):
+        return cls(token.type)
 
     def __repr__(self):
         """Print-friendly infix representation."""
@@ -50,14 +54,18 @@ class Unary(Node):
 
 class Agent(Unary):
 
-    def __init__(self, token):
+    def __init__(self, type, agent, lhs=None):
         """
         Constructor for Agent nodes
         :param token: unary token
         :return:
         """
-        super(Unary, self).__init__(token)
-        self.agent = token.agent
+        super(Agent, self).__init__(type, lhs)
+        self.agent = agent
+
+    @classmethod
+    def fromToken(cls, token):
+        return cls(token.type, token.agent)
 
     def __repr__(self):
         """Print-friendly infix representation."""
@@ -72,15 +80,11 @@ class Agent(Unary):
             for state in state.outgoing.get(agent, []):
                 truth_value = lhs.is_true(state)
                 if not truth_value:
-                    break
+                    return truth_value
             return truth_value
 
         def possible(lhs, state, agent):
-            lhs_with_negation = Unary(
-
-            )
-
-
+            raise NotImplementedError
 
         operator_to_function = {
             operators.Agent.knowledge: knowledge(),
@@ -91,15 +95,19 @@ class Agent(Unary):
 
 class Binary(Node):
 
-    def __init__(self, token):
+    def __init__(self, type, lhs=None, rhs=None):
         """
         Constructor for binary nodes
         :param token: binary token
         :return: Binary Node
         """
-        self.type = token.type
-        self.rhs = None
-        self.lhs = None
+        self.type = type
+        self.rhs = rhs
+        self.lhs = lhs
+
+    @classmethod
+    def fromToken(cls, token):
+        return cls(token.type)
 
     def __repr__(self):
         """Print-friendly infix representation."""
@@ -131,8 +139,12 @@ class Binary(Node):
 
 class Proposition(Node):
 
-    def __init__(self, token):
-        self.name = token.name
+    def __init__(self, name):
+        self.name = name
+
+    @classmethod
+    def fromToken(cls, token):
+        return cls(token.name)
 
     def __repr__(self):
         """Print-friendly infix representation."""
