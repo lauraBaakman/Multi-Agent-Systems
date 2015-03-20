@@ -21,13 +21,19 @@ Go to the folder `back` run the following command:
 
     pip install -r requirements
 
-To start the server go to the folder `api` and run the following command:
+To start the server run the following command:
     
     gunicorn app
 
-To communicate with the server use:
+After running this command you get output that looks like this:
+	2015-03-20 20:57:03 +0100] [63203] [INFO] Starting gunicorn 19.3.0
+	[2015-03-20 20:57:03 +0100] [63203] [INFO] Listening at: http://127.0.0.1:8000 (63203)
+	[2015-03-20 20:57:03 +0100] [63203] [INFO] Using worker: sync
+	[2015-03-20 20:57:03 +0100] [63206] [INFO] Booting worker with pid: 63206	
+
+The adress that the server is listening at should be used to communicate with the server in this command:
     
-    http POST 127.0.0.1:8000 < test_request.json 
+    http POST 127.0.0.1:8000/valuate < test_request.json 
 
 The file `test_request.json` contains a json object representing an example request. One cane edit this file 
 

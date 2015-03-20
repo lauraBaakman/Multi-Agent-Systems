@@ -4,7 +4,7 @@ __author__ = 'laura'
 
 import falcon
 
-import resources
+import api.resources as resources
 
 api = application = falcon.API()
 
