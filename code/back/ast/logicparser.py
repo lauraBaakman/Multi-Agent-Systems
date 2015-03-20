@@ -20,6 +20,8 @@ __author__ = 'laura'
 
 # Inspired by http://www.engr.mun.ca/~theo/Misc/exp_parsing.htm#classic
 
+# TODO worden expressies met modal operators wel geparsed? Idem voor C en E
+
 class ParserError(IOError):
     """
     Exception raised when the string cannot be parsed
@@ -36,7 +38,7 @@ class ParserError(IOError):
 class Parser(object):
     """Parser object"""
 
-    def __init__(self, precedence=None):
+    def __init__(self):
         """
         Constructor for parser object
         :return: AST
@@ -83,7 +85,7 @@ class Parser(object):
 
     def f(self):
         if isinstance(self.next(), tokens.Proposition):
-            t = nodes.Proposition(self.next())
+            t = nodes.Proposition.fromToken(self.next())
             self.consume()
             return t
         elif isinstance(self.next(), tokens.BracketOpen):
@@ -92,24 +94,27 @@ class Parser(object):
             self.expect(tokens.BracketClose)
             return t
         elif self.next().type == operators.Unary.negation:
-            node = nodes.Unary(self.next())
+            node = nodes.Unary.fromToken(self.next())
             node.lhs = self.e()
         else:
             raise ParserError("Could not parse the expression.")
 
     def t(self):
-        if isinstance(self.next(), (tokens.BracketOpen, tokens.Proposition, tokens.BracketClose)):
+        if isinstance(self.next(), (tokens.BracketOpen, tokens.Proposition)):
             return self.f()
+        elif isinstance(self.next(), tokens.AgentOperator):
+            node = nodes.Agent.fromToken(self.next())
         else:
-            node = nodes.Unary(self.next())
-            self.consume()
-            node.lhs = self.e()
-            return node
+            node = nodes.Unary.fromToken(self.next())
+        # Execute this for both agent and unary tokens
+        self.consume()
+        node.lhs = self.e()
+        return node
 
     def e(self):
         t = self.t()
         while isinstance(self.next(), tokens.BinaryOperator):
-            node = nodes.Binary(self.next())
+            node = nodes.Binary.fromToken(self.next())
             self.consume()
             t1 = self.t()
             node.rhs = t1
