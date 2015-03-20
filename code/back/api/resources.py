@@ -6,7 +6,7 @@ import json
 
 import falcon
 
-# import modelchecker.utils as utils
+import modelchecker.utils as utils
 # import modelchecker.models as models
 # import modelchecker.errors as errors
 # import modelchecker.tokenize as tokenize
@@ -22,21 +22,21 @@ import falcon
 #             message
 #         )
 #
-# def read_json(request):
-#     try:
-#         raw_json = request.stream.read()
-#     except Exception as ex:
-#         raise falcon.HTTPError(falcon.HTTP_400,
-#             'Error',
-#             ex.message)
-#
-#     try:
-#         return json.loads(raw_json, encoding='utf-8', object_hook=utils.decode_dict)
-#     except ValueError:
-#         raise falcon.HTTPError(falcon.HTTP_400,
-#             'Malformed JSON',
-#             'Could not decode the request body. The '
-#             'JSON was incorrect.')
+def read_json(request):
+    try:
+        raw_json = request.stream.read()
+    except Exception as ex:
+        raise falcon.HTTPError(falcon.HTTP_400,
+            'Error',
+            ex.message)
+
+    try:
+        return json.loads(raw_json, encoding='utf-8', object_hook=utils.decode_dict)
+    except ValueError:
+        raise falcon.HTTPError(falcon.HTTP_400,
+            'Malformed JSON',
+            'Could not decode the request body. The '
+            'JSON was incorrect.')
 #
 # def get_logic_from_data(data):
 #     logic = get_from_data(data, 'logic')
@@ -85,8 +85,8 @@ import falcon
 class Resource(object):
 
     def on_post(self, req, resp):
-        print "Hoi"
-        # json_data = read_json(req)
+        json_data = read_json(req)
+        pass
         # logic = get_logic_from_data(json_data)
         # model = get_model_from_data(logic, json_data)
         # ast = get_ast_from_data(json_data)
