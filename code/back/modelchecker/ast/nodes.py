@@ -198,6 +198,7 @@ class Binary(Node):
             rhs = self.rhs.to_latex()
         )
 
+
 class Proposition(Node):
 
     def __init__(self, name):
@@ -222,31 +223,34 @@ class Proposition(Node):
         """
         try:
             truth_value = state.is_true(self.name)
+            self._condition_conclusion(state, truth_value)
+            return truth_value
         except:
             raise
 
+    def _condition_conclusion(self, state, truth_value):
+
         def truth_condition(state, proposition, value):
             return '$\pi\left({state_name}\\right)\left( {prop_name} \\right) = {value}$'.format(
-                state_name = state.name,
-                prop_name = proposition.name,
-                value = value
+                state_name=state.name,
+                prop_name=proposition.name,
+                value=value
             )
 
-        condition = '{models} iff {condition}.'.format(
-            models = models(state, self, '$'),
-            condition = truth_condition(state, self, 1)
+        self.condition = '{models} iff {condition}.'.format(
+            models=models(state, self, '$'),
+            condition=truth_condition(state, self, 1)
         )
         if truth_value:
-            conclusion = '{models} holds since {condition}.'.format(
-                models = models(state, self, '$'),
+            self.conclusion = '{models} holds since {condition}.'.format(
+                models=models(state, self, '$'),
                 condition=truth_condition(state, self, int(truth_value))
             )
         else:
-            conclusion = '{models} does not hold since {condition}.'.format(
-                models = models(state, self, '$'),
+            self.conclusion = '{models} does not hold since {condition}.'.format(
+                models=models(state, self, '$'),
                 condition=truth_condition(state, self, int(truth_value))
             )
-        return(truth_value, condition, conclusion)
 
     def to_latex(self, delimiter = ''):
         """
