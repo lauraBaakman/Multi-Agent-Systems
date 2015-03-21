@@ -6,8 +6,7 @@ from node import models
 from node import Node
 
 #TODO Should have unary as superclass
-class Negation(Node):
-
+class Common(Node):
     def __init__(self, lhs):
         self.lhs = lhs
 
@@ -25,19 +24,10 @@ class Negation(Node):
         :return: (truthvalue, dict) truthvalue is the truth value of the formula, dict contains the motivation.
         :rtype: (bool, dict)
         """
-        (lhs_truth_value, lhs_result) = self.lhs.is_true(state)
-        truth_value = not lhs_truth_value
-        return (
-            truth_value,
-            {
-                'condition': self._condition(state),
-                'interlude': [lhs_result],
-                'conclusion': self._conclusion(state, truth_value),
-            }
-        )
+        # TODO implement
+        raise NotImplementedError
 
-
-    def _truth_condition(self, state):
+    def _truth_condition(self):
         """
         Return the condition under which this formula is true as a string.
         :param state: the state in which the formula should be evaluated.
@@ -45,9 +35,9 @@ class Negation(Node):
         :return: String with the truth condition
         :rtype: String
         """
-        return 'not {lhs_models}'.format(
-            lhs_models=models(state, self.lhs, '$'),
-        )
+        # TODO implement
+        raise NotImplementedError
+
 
     def _conclusion(self, state, truth_value):
         """
@@ -59,16 +49,6 @@ class Negation(Node):
         :return: String with the motivation
         :rtype: String
         """
-        if (truth_value):
-            return '{models} holds since {condition} does not hold.'.format(
-                models=models(state, self, '$'),
-                condition=models(state, self.lhs, '$')
-            )
-        else:
-            return '{models} does not hold since {condition} holds.'.format(
-                models=models(state, self, '$'),
-                condition=models(state, self.lhs, '$')
-            )
 
     def to_latex(self, delimiter=''):
         """
@@ -78,7 +58,7 @@ class Negation(Node):
         :return: LaTeX representation
         :rtype: str
         """
-        return '{delimiter} \\lnot \\left({lhs}\\right){delimiter}'.format(
+        return '{delimiter} \\text{C} \\left({lhs}\\right){delimiter}'.format(
             delimiter=delimiter,
             lhs=self.lhs.to_latex(),
-        )
+            )
