@@ -192,7 +192,6 @@ class Binary(Node):
                     rhs=lhs
                 )
             ).is_true(state)
-            # return implication(lsh, rhs, state) and implication(rhs, lsh, state)
 
         operator_to_function = {
             operators.Binary.conjunction: conjunction,
@@ -242,33 +241,35 @@ class Proposition(Node):
         """
         try:
             truth_value = state.is_true(self.name)
-            self._condition_conclusion(state, truth_value)
+            self._set_condition(state)
+            self._set_conclusion(state, truth_value)
             return truth_value
         except:
             raise
 
-    def _condition_conclusion(self, state, truth_value):
-
-        def truth_condition(state, proposition, value):
-            return '$\pi\left({state_name}\\right)\left( {prop_name} \\right) = {value}$'.format(
-                state_name=state.name,
-                prop_name=proposition.name,
-                value=value
-            )
-
+    def _set_condition(self, state):
         self.condition = '{models} iff {condition}.'.format(
             models=models(state, self, '$'),
-            condition=truth_condition(state, self, 1)
+            condition=self._truth_condition(state, 1)
         )
+
+    def _truth_condition(self, state, value):
+        return '$\pi\left({state_name}\\right)\left( {prop_name} \\right) = {value}$'.format(
+            state_name=state.name,
+            prop_name=self.name,
+            value=value
+        )
+
+    def _set_conclusion(self, state, truth_value):
         if truth_value:
             self.conclusion = '{models} holds since {condition}.'.format(
                 models=models(state, self, '$'),
-                condition=truth_condition(state, self, int(truth_value))
+                condition=self._truth_condition(state, int(truth_value))
             )
         else:
             self.conclusion = '{models} does not hold since {condition}.'.format(
                 models=models(state, self, '$'),
-                condition=truth_condition(state, self, int(truth_value))
+                condition=self._truth_condition(state, int(truth_value))
             )
 
     def to_latex(self, delimiter = ''):
