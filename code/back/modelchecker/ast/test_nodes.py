@@ -54,24 +54,23 @@ class TestBinary(TestCase):
 class TestProposition(TestCase):
     def setUp(self):
         self.model = KMModel()
-        json_data = utils.read_json('modelchecker/models/test_model_km.json')
+        json_data = utils.read_json('./modelchecker/models/test_model_km.json')
         self.model = KMModel.from_json(json_data)
 
-    def test_is_true(self):
+    def test_is_true_true(self):
         node = Proposition('p')
-        self.assertTrue(node.is_true(self.model.get_state_by_name('sa')))
-        self.assertTrue(node.is_true(self.model.get_state_by_name('sb')))
-        self.assertFalse(node.is_true(self.model.get_state_by_name('sc')))
+        (truth_value, condition, conclusion) = node.is_true(self.model.get_state_by_name('sa'))
+        print condition
+        print conclusion
+        self.assertTrue(truth_value)
 
-        node = Proposition('q')
-        self.assertTrue(node.is_true(self.model.get_state_by_name('sa')))
-        self.assertFalse(node.is_true(self.model.get_state_by_name('sb')))
-        self.assertFalse(node.is_true(self.model.get_state_by_name('sc')))
 
-        node = Proposition('r')
-        self.assertFalse(node.is_true(self.model.get_state_by_name('sa')))
-        self.assertTrue(node.is_true(self.model.get_state_by_name('sb')))
-        self.assertTrue(node.is_true(self.model.get_state_by_name('sc')))
+    def test_is_true_false(self):
+        node = Proposition('p')
+        (truth_value, condition, conclusion) = node.is_true(self.model.get_state_by_name('sc'))
+        print condition
+        print conclusion
+        self.assertFalse(truth_value)
 
 
 class TestAgent(TestCase):

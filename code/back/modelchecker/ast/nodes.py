@@ -9,8 +9,8 @@ __author__ = 'laura'
 from modelchecker import operators
 
 def models(state, formula, delimiter=''):
-    return "{delimiter}\left(M, \\text{{ {state} }} \\right) \models {formula}{delimiter}".format(
-        state=state,
+    return "{delimiter}\left(M, \\text{{{state}}} \\right) \models {formula}{delimiter}".format(
+        state=state.name,
         formula=formula.to_latex(),
         delimiter=delimiter
     )
@@ -224,22 +224,29 @@ class Proposition(Node):
             truth_value = state.is_true(self.name)
         except:
             raise
-        truth_condition = '{models} iff \\pi\\left( {name} \\right) = 1.'.format(
+
+        def truth_condition(state, proposition, value):
+            return '$\pi\left({state_name}\\right)\left( {prop_name} \\right) = {value}$'.format(
+                state_name = state.name,
+                prop_name = proposition.name,
+                value = value
+            )
+
+        condition = '{models} iff {condition}.'.format(
             models = models(state, self, '$'),
-            name = self.name
+            condition = truth_condition(state, self, 1)
         )
         if truth_value:
-            truth_conclusion = '{models} holds since \\pi\\left( {name} \\right) = 1.'.format(
+            conclusion = '{models} holds since {condition}.'.format(
                 models = models(state, self, '$'),
-                name = self.name
+                condition=truth_condition(state, self, int(truth_value))
             )
         else:
-            truth_conclusion = '{models} does not hold since \\pi\\left( {name} \\right) = 0.'.format(
-                models=models(state, self, '$'),
-                name=self.name
+            conclusion = '{models} does not hold since {condition}.'.format(
+                models = models(state, self, '$'),
+                condition=truth_condition(state, self, int(truth_value))
             )
-        return truth_value
-        # return(truth_value, truth_condition, truth_conclusion)
+        return(truth_value, condition, conclusion)
 
     def to_latex(self, delimiter = ''):
         """
