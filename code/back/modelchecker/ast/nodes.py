@@ -124,7 +124,6 @@ class Agent(Unary):
         }
         return operator_to_function.get(self.type)(self.lhs, state, self.agent)
 
-
     def to_latex(self, delimiter=''):
         """
         Return LaTeX representation
@@ -170,7 +169,16 @@ class Binary(Node):
             return lhs.is_true(state) or rhs.is_true(state)
 
         def implication(lhs, rhs, state):
-            return (not lhs.is_true(state)) or rhs.is_true(state)
+            return Binary(
+                    type=operators.Binary.disjunction,
+                    lhs=Unary(
+                        operators.Unary.negation,
+                        lhs
+                    ),
+                    rhs=rhs
+                ).is_true(state)
+
+            # return (not lhs.is_true(state)) or rhs.is_true(state)
 
         def biimplication(lsh, rhs, state):
             return implication(lsh, rhs, state) and implication(rhs, lsh, state)
