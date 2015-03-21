@@ -5,7 +5,9 @@ import operator as op
 from modelchecker import operators
 from modelchecker.ast.nodes.node import Node
 from negation import Negation
-from conjunction import  Conjunction
+from conjunction import Conjunction
+from disjunction import Disjunction
+from implication import Implication
 from node import models
 
 
@@ -27,7 +29,9 @@ class Binary(Node):
     @classmethod
     def fromToken(cls, token):
         token_to_node = {
-            operators.Binary.conjunction : Conjunction,
+            operators.Binary.conjunction : Conjunction(),
+            operators.Binary.disjunction: Disjunction(),
+            operators.Binary.implication: Implication(),
         }
         return token_to_node.get(token.type, cls(token.type))
 
@@ -44,16 +48,6 @@ class Binary(Node):
 
 
     def is_true(self, state):
-        def implication(lhs, rhs, state):
-            (truth_value, dict) =  Binary(
-                    type=operators.Binary.disjunction,
-                    lhs=Negation(
-                        lhs
-                    ),
-                    rhs=rhs
-                ).is_true(state)
-            dict['interlude'].insert(0, self._condition(state))
-            return (truth_value, dict)
 
         def biimplication(lhs, rhs, state):
             (truth_value, dict) =Conjunction(
@@ -72,7 +66,6 @@ class Binary(Node):
             return (truth_value, dict)
 
         operator_to_function = {
-            operators.Binary.implication: implication,
             operators.Binary.biimplication: biimplication
         }
         return operator_to_function.get(self.type)(self.lhs, self.rhs, state)
@@ -85,12 +78,6 @@ class Binary(Node):
 
     def _truth_condition(self, state):
 
-        def implication(self, state):
-            return 'not {lhs_models} or {rhs_models}'.format(
-                lhs_models=models(state, self.lhs, '$'),
-                rhs_models=models(state, self.rhs, '$'),
-            )
-
         def biimplication():
             return '{lhs_models} and {rhs_models}'.format(
                 lhs_models=models(state, Binary(operators.Binary.biimplication, self.lhs, self.rhs, '$')),
@@ -98,7 +85,6 @@ class Binary(Node):
             )
 
         operator_to_condition = {
-            operators.Binary.implication: implication,
             operators.Binary.biimplication: biimplication
         }
         return operator_to_condition.get(self.type)(self, state)

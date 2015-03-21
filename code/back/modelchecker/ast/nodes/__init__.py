@@ -2,22 +2,15 @@
 
 __author__ = 'laura'
 
-import agent
-import binary
-import proposition
-import unary
-import negation
-import everybody
-import common
-import conjunction
-import disjunction
 
-Agent = agent.Agent
-Binary = binary.Binary
-Proposition = proposition.Proposition
-Unary = unary.Unary
-Negation = negation.Negation
-Common = common.Common
-Everybody = everybody.Everybody
-Conjunction = conjunction.Conjunction
-Disjunction = disjunction.Disjunction
+from agent import Agent
+from unary import  Unary
+from binary import Binary
+
+from proposition import Proposition
+from negation import Negation
+from everybody import  Everybody
+from common import Common
+from conjunction import Conjunction
+from disjunction import Disjunction
+from implication import Implication

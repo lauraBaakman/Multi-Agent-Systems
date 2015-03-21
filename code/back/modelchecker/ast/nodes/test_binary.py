@@ -2,7 +2,7 @@
 from unittest import TestCase
 
 __author__ = 'laura'
-from modelchecker.ast.nodes import Proposition, Binary, Conjunction, Disjunction
+from modelchecker.ast.nodes import Proposition, Binary, Conjunction, Disjunction, Implication
 from modelchecker.models.kmmodel import KMModel
 from modelchecker import operators
 from modelchecker import utils
@@ -44,8 +44,8 @@ class TestBinary(TestCase):
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sd'))
 
         self.assertFalse(truth_value)
-        print dict['condition'] + '\\\\'
-        print dict['conclusion']
+        # print dict['condition'] + '\\\\'
+        # print dict['conclusion']
 
 
     def test_is_true_disjunction_1(self):
@@ -77,12 +77,12 @@ class TestBinary(TestCase):
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sd'))
 
         self.assertTrue(truth_value)
-        print dict['condition'] + '\\\\'
-        print dict['conclusion']
+        # print dict['condition'] + '\\\\'
+        # print dict['conclusion']
 
 
     def test_is_true_implication_1(self):
-        node = Binary(operators.Binary.implication, self.lhs, self.rhs)
+        node = Implication(self.lhs, self.rhs)
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sd'))
 
         self.assertTrue(truth_value)
@@ -91,16 +91,16 @@ class TestBinary(TestCase):
         print dict['interlude']
 
     def test_is_true_implication_2(self):
-        node = Binary(operators.Binary.implication, self.lhs, self.rhs)
+        node = Implication(self.lhs, self.rhs)
         (truth_value, _) = node.is_true(self.model.get_state_by_name('sb'))
         self.assertFalse(truth_value)
 
     def test_is_true_implication_3(self):
-        node = Binary(operators.Binary.implication, self.lhs, self.rhs)
+        node = Implication(self.lhs, self.rhs)
         (truth_value, _) = node.is_true(self.model.get_state_by_name('sc'))
         self.assertTrue(truth_value)
 
     def test_is_true_implication_4(self):
-        node = Binary(operators.Binary.implication, self.lhs, self.rhs)
+        node = Implication(self.lhs, self.rhs)
         (truth_value, _) = node.is_true(self.model.get_state_by_name('sa'))
         self.assertTrue(truth_value)
