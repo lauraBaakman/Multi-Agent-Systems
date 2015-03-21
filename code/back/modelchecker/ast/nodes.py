@@ -178,10 +178,21 @@ class Binary(Node):
                     rhs=rhs
                 ).is_true(state)
 
-            # return (not lhs.is_true(state)) or rhs.is_true(state)
-
-        def biimplication(lsh, rhs, state):
-            return implication(lsh, rhs, state) and implication(rhs, lsh, state)
+        def biimplication(lhs, rhs, state):
+            return Binary(
+                type=operators.Binary.conjunction,
+                lhs=Binary(
+                    type=operators.Binary.implication,
+                    lhs=lhs,
+                    rhs=rhs
+                ),
+                rhs=Binary(
+                    type=operators.Binary.implication,
+                    lhs=rhs,
+                    rhs=lhs
+                )
+            ).is_true(state)
+            # return implication(lsh, rhs, state) and implication(rhs, lsh, state)
 
         operator_to_function = {
             operators.Binary.conjunction: conjunction,
