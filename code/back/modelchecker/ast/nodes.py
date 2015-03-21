@@ -220,7 +220,10 @@ class Binary(Node):
             )
 
         def disjunction():
-            raise NotImplementedError
+            return '{lhs_models} or {rhs_models}'.format(
+                lhs_models=models(state, self.lhs, '$'),
+                rhs_models=models(state, self.rhs, '$'),
+            )
 
         def implication():
             raise NotImplementedError
@@ -246,22 +249,37 @@ class Binary(Node):
             elif lhs_truth_value:
                 self.conclusion = '{models} does not hold since {condition} does not hold.'.format(
                     models=models(state, self, '$'),
-                    condition=self.rhs._truth_condition(state, int(not rhs_truth_value))
+                    condition=models(state, self.rhs, '$')
                 )
             elif rhs_truth_value:
                 self.conclusion = '{models} does not hold since {condition} does not hold.'.format(
                     models=models(state, self, '$'),
-                    condition=self.lhs._truth_condition(state, int(not lhs_truth_value))
+                    condition=models(state, self.lhs, '$')
                 )
             else:
                 self.conclusion = '{models} does not hold since neither {condition_lhs} nor {condition_rhs} holds.'.format(
                     models=models(state, self, '$'),
-                    condition_lhs=self.lhs._truth_condition(state, int(not lhs_truth_value)),
-                    condition_rhs=self.rhs._truth_condition(state, int(not rhs_truth_value))
+                    condition_lhs=models(state, self.lhs, '$'),
+                    condition_rhs=models(state, self.rhs, '$')
                 )
 
-        def disjunction():
-            raise NotImplementedError
+        def disjunction(self, state, lhs_truth_value, rhs_truth_value, truth_value):
+            if (lhs_truth_value):
+                self.conclusion = '{models} holds since {condition}.'.format(
+                    models=models(state, self, '$'),
+                    condition=self.lhs._truth_condition(state, 1)
+                )
+            elif rhs_truth_value:
+                self.conclusion = '{models} holds since {condition}.'.format(
+                    models=models(state, self, '$'),
+                    condition=self.rhs._truth_condition(state, 1)
+                )
+            else:
+                self.conclusion = '{models} does not hold since neither {condition_lhs} nor {condition_rhs} holds.'.format(
+                    models=models(state, self, '$'),
+                    condition_lhs=self.lhs._truth_condition(state, 1),
+                    condition_rhs=self.rhs._truth_condition(state, 1)
+                )
 
         def implication():
             raise NotImplementedError
