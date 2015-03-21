@@ -7,6 +7,7 @@ Classes that define the nodes of the AST
 __author__ = 'laura'
 
 from modelchecker import operators
+from string import Template
 
 def models(state, formula, delimiter=''):
     return "{delimiter}\left(M, \\text{{{state}}} \\right) \models {formula}{delimiter}".format(
@@ -246,22 +247,19 @@ class Binary(Node):
                     models=models(state, self, '$'),
                     condition=self._truth_condition(state, int(truth_value))
                 )
-            elif lhs_truth_value:
-                self.conclusion = '{models} does not hold since {condition} does not hold.'.format(
-                    models=models(state, self, '$'),
-                    condition=models(state, self.rhs, '$')
-                )
-            elif rhs_truth_value:
-                self.conclusion = '{models} does not hold since {condition} does not hold.'.format(
-                    models=models(state, self, '$'),
-                    condition=models(state, self.lhs, '$')
-                )
             else:
-                self.conclusion = '{models} does not hold since neither {condition_lhs} nor {condition_rhs} holds.'.format(
-                    models=models(state, self, '$'),
-                    condition_lhs=models(state, self.lhs, '$'),
-                    condition_rhs=models(state, self.rhs, '$')
-                )
+                conclusion = Template('$models does not hold since $reason.')
+
+                if lhs_truth_value:
+                    reason = '{condition} does not hold'.format(condition=models(state, self.rhs, '$'))
+                elif rhs_truth_value:
+                    reason = '{condition} does not hold'.format(condition=models(state, self.lhs, '$'))
+                else:
+                    reason = '{condition_lhs} and {condition_rhs} do not hold'.format(
+                        condition_lhs=models(state, self.lhs, '$'),
+                        condition_rhs=models(state, self.rhs, '$')
+                    )
+                self.conclusion = conclusion.substitute(reason=reason, models=models(state, self, '$'))
 
         def disjunction(self, state, lhs_truth_value, rhs_truth_value, truth_value):
             if (lhs_truth_value):
