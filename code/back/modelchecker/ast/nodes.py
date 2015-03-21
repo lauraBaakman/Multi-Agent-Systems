@@ -163,6 +163,7 @@ class Binary(Node):
         )
 
     def is_true(self, state):
+        # TODO handle code duplication
         def conjunction(lhs, rhs,  state):
             lhs_truth_value = lhs.is_true(state)
             rhs_truth_value = rhs.is_true(state)
@@ -172,7 +173,12 @@ class Binary(Node):
             return truth_value
 
         def disjunction(lhs, rhs, state):
-            return lhs.is_true(state) or rhs.is_true(state)
+            lhs_truth_value = lhs.is_true(state)
+            rhs_truth_value = rhs.is_true(state)
+            truth_value = lhs_truth_value or rhs_truth_value
+            self._set_condition(state)
+            self._set_conclusion(state, lhs_truth_value, rhs_truth_value, truth_value)
+            return truth_value
 
         def implication(lhs, rhs, state):
             return Binary(
@@ -220,7 +226,7 @@ class Binary(Node):
                 rhs_models=models(state, self.rhs, '$'),
             )
 
-        def disjunction():
+        def disjunction(self, state, value):
             return '{lhs_models} or {rhs_models}'.format(
                 lhs_models=models(state, self.lhs, '$'),
                 rhs_models=models(state, self.rhs, '$'),
@@ -265,18 +271,18 @@ class Binary(Node):
             if (lhs_truth_value):
                 self.conclusion = '{models} holds since {condition}.'.format(
                     models=models(state, self, '$'),
-                    condition=self.lhs._truth_condition(state, 1)
+                    condition=models(state, self.lhs, '$')
                 )
             elif rhs_truth_value:
                 self.conclusion = '{models} holds since {condition}.'.format(
                     models=models(state, self, '$'),
-                    condition=self.rhs._truth_condition(state, 1)
+                    condition=models(state, self.rhs, '$')
                 )
             else:
                 self.conclusion = '{models} does not hold since neither {condition_lhs} nor {condition_rhs} holds.'.format(
                     models=models(state, self, '$'),
-                    condition_lhs=self.lhs._truth_condition(state, 1),
-                    condition_rhs=self.rhs._truth_condition(state, 1)
+                    condition_lhs=models(state, self.lhs, '$'),
+                    condition_rhs=models(state, self.rhs, '$')
                 )
 
         def implication():
