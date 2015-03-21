@@ -29,14 +29,14 @@ class Proposition(Node):
         """
         try:
             truth_value = state.is_true(self.name)
-            self._set_condition(state)
-            self._set_conclusion(state, truth_value)
-            return truth_value
+            condition = self._condition(state)
+            conclusion = self._conclusion(state, truth_value)
+            return (truth_value, condition, conclusion)
         except:
             raise
 
-    def _set_condition(self, state):
-        self.condition = '{models} iff {condition}.'.format(
+    def _condition(self, state):
+        return '{models} iff {condition}.'.format(
             models=models(state, self, '$'),
             condition=self._truth_condition(state, 1)
         )
@@ -48,14 +48,14 @@ class Proposition(Node):
             value=value
         )
 
-    def _set_conclusion(self, state, truth_value):
+    def _conclusion(self, state, truth_value):
         if truth_value:
-            self.conclusion = '{models} holds since {condition}.'.format(
+            return '{models} holds since {condition}.'.format(
                 models=models(state, self, '$'),
                 condition=self._truth_condition(state, int(truth_value))
             )
         else:
-            self.conclusion = '{models} does not hold since {condition}.'.format(
+            return '{models} does not hold since {condition}.'.format(
                 models=models(state, self, '$'),
                 condition=self._truth_condition(state, int(truth_value))
             )
