@@ -16,15 +16,15 @@ class TestProposition(TestCase):
 
     def test_is_true_true(self):
         node = Proposition('p')
-        (truth_value, condition, conclusion) = node.is_true(self.model.get_state_by_name('sa'))
-        self.assertTrue(truth_value)
+        res = node.is_true(self.model.get_state_by_name('sa'))
+        self.assertTrue(res['truth value'])
         # print condition + '\\\\'
         # print conclusion + '\\\\'
 
 
     def test_is_true_false(self):
         node = Proposition('p')
-        (truth_value, condition, conclusion) = node.is_true(self.model.get_state_by_name('sc'))
-        self.assertFalse(truth_value)
+        res = node.is_true(self.model.get_state_by_name('sc'))
+        self.assertFalse(res['truth value'])
         # print condition + '\\\\'
         # print conclusion + '\\\\'

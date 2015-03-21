@@ -33,8 +33,8 @@ class Binary(Node):
     def is_true(self, state):
         # TODO handle code duplication
         def conjunction(lhs, rhs,  state):
-            lhs_truth_value = lhs.is_true(state)
-            rhs_truth_value = rhs.is_true(state)
+            (lhs_truth_value, lhs_condition, lhs_conclusion)  = lhs.is_true(state)
+            (rhs_truth_value, lhs_condition, lhs_conclusion) = lhs.is_true(state)
             truth_value = lhs_truth_value and rhs_truth_value
             self._set_condition(state)
             self._set_conclusion(state, lhs_truth_value, rhs_truth_value, truth_value)

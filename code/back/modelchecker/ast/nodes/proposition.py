@@ -31,7 +31,11 @@ class Proposition(Node):
             truth_value = state.is_true(self.name)
             condition = self._condition(state)
             conclusion = self._conclusion(state, truth_value)
-            return (truth_value, condition, conclusion)
+            return {
+                       'truth value': truth_value,
+                       'condition': condition,
+                       'conclusion': conclusion
+            }
         except:
             raise
 
