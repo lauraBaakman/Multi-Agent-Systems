@@ -10,6 +10,7 @@ import negation
 import everybody
 import common
 import conjunction
+import disjunction
 
 Agent = agent.Agent
 Binary = binary.Binary
@@ -19,3 +20,4 @@ Negation = negation.Negation
 Common = common.Common
 Everybody = everybody.Everybody
 Conjunction = conjunction.Conjunction
+Disjunction = disjunction.Disjunction

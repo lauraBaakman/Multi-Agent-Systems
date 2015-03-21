@@ -2,7 +2,7 @@
 from unittest import TestCase
 
 __author__ = 'laura'
-from modelchecker.ast.nodes import Proposition, Binary, Conjunction
+from modelchecker.ast.nodes import Proposition, Binary, Conjunction, Disjunction
 from modelchecker.models.kmmodel import KMModel
 from modelchecker import operators
 from modelchecker import utils
@@ -49,7 +49,7 @@ class TestBinary(TestCase):
 
 
     def test_is_true_disjunction_1(self):
-        node = Binary(operators.Binary.disjunction, self.lhs, self.rhs)
+        node = Disjunction(self.lhs, self.rhs)
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sa'))
 
         self.assertTrue(truth_value)
@@ -57,7 +57,7 @@ class TestBinary(TestCase):
         # print dict['conclusion']
 
     def test_is_true_disjunction_2(self):
-        node = Binary(operators.Binary.disjunction, self.lhs, self.rhs)
+        node = Disjunction(self.lhs, self.rhs)
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sb'))
 
         self.assertTrue(truth_value)
@@ -65,7 +65,7 @@ class TestBinary(TestCase):
         # print dict['conclusion']
 
     def test_is_true_disjunction_3(self):
-        node = Binary(operators.Binary.disjunction, self.lhs, self.rhs)
+        node = Disjunction(self.lhs, self.rhs)
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sc'))
 
         self.assertFalse(truth_value)
@@ -73,12 +73,12 @@ class TestBinary(TestCase):
         # print dict['conclusion']
 
     def test_is_true_disjunction_4(self):
-        node = Binary(operators.Binary.disjunction, self.lhs, self.rhs)
+        node = Disjunction(self.lhs, self.rhs)
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sd'))
 
         self.assertTrue(truth_value)
-        # print dict['condition'] + '\\\\'
-        # print dict['conclusion']
+        print dict['condition'] + '\\\\'
+        print dict['conclusion']
 
 
     def test_is_true_implication_1(self):
@@ -95,12 +95,10 @@ class TestBinary(TestCase):
         (truth_value, _) = node.is_true(self.model.get_state_by_name('sb'))
         self.assertFalse(truth_value)
 
-
     def test_is_true_implication_3(self):
         node = Binary(operators.Binary.implication, self.lhs, self.rhs)
         (truth_value, _) = node.is_true(self.model.get_state_by_name('sc'))
         self.assertTrue(truth_value)
-
 
     def test_is_true_implication_4(self):
         node = Binary(operators.Binary.implication, self.lhs, self.rhs)

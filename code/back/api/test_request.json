@@ -1,6 +1,6 @@
 {
     "state": "1",
-    "formula": "~ (p & q)",
+    "formula": "~ (p | q)",
     "model": {
       "states": [
         {

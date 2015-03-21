@@ -44,23 +44,6 @@ class Binary(Node):
 
 
     def is_true(self, state):
-
-        def simple_binary(lhs, rhs, state, operator):
-            (lhs_truth_value, lhs_result) = lhs.is_true(state)
-            (rhs_truth_value, rhs_result) = rhs.is_true(state)
-            truth_value = operator(lhs_truth_value, rhs_truth_value)
-            return (
-                truth_value,
-                {
-                    'condition': self._condition(state),
-                    'interlude': [lhs_result, rhs_result],
-                    'conclusion': self._conclusion(state, lhs_truth_value, rhs_truth_value, truth_value),
-                }
-            )
-
-        def disjunction(lhs, rhs, state):
-            return simple_binary(lhs, rhs, state, op.or_)
-
         def implication(lhs, rhs, state):
             (truth_value, dict) =  Binary(
                     type=operators.Binary.disjunction,
@@ -89,7 +72,6 @@ class Binary(Node):
             return (truth_value, dict)
 
         operator_to_function = {
-            operators.Binary.disjunction: disjunction,
             operators.Binary.implication: implication,
             operators.Binary.biimplication: biimplication
         }
@@ -102,12 +84,6 @@ class Binary(Node):
         )
 
     def _truth_condition(self, state):
-
-        def disjunction(self, state):
-            return '{lhs_models} or {rhs_models}'.format(
-                lhs_models=models(state, self.lhs, '$'),
-                rhs_models=models(state, self.rhs, '$'),
-            )
 
         def implication(self, state):
             return 'not {lhs_models} or {rhs_models}'.format(
@@ -122,36 +98,10 @@ class Binary(Node):
             )
 
         operator_to_condition = {
-            operators.Binary.disjunction: disjunction,
             operators.Binary.implication: implication,
             operators.Binary.biimplication: biimplication
         }
         return operator_to_condition.get(self.type)(self, state)
-
-    def _conclusion(self, state, lhs_truth_value, rhs_truth_value, truth_value):
-
-        def disjunction(self, state, lhs_truth_value, rhs_truth_value, truth_value):
-            if (lhs_truth_value):
-                return '{models} holds since {condition}.'.format(
-                    models=models(state, self, '$'),
-                    condition=models(state, self.lhs, '$')
-                )
-            elif rhs_truth_value:
-                return '{models} holds since {condition}.'.format(
-                    models=models(state, self, '$'),
-                    condition=models(state, self.rhs, '$')
-                )
-            else:
-                return '{models} does not hold since neither {condition_lhs} nor {condition_rhs} holds.'.format(
-                    models=models(state, self, '$'),
-                    condition_lhs=models(state, self.lhs, '$'),
-                    condition_rhs=models(state, self.rhs, '$')
-                )
-
-        operator_to_condition = {
-            operators.Binary.disjunction: disjunction,
-        }
-        return operator_to_condition.get(self.type)(self, state, lhs_truth_value, rhs_truth_value, truth_value)
 
     def to_latex(self, delimiter=''):
         """
