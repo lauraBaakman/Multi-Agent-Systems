@@ -2,7 +2,7 @@
 from unittest import TestCase
 
 __author__ = 'laura'
-from modelchecker.ast.nodes import Proposition, Binary, Conjunction, Disjunction, Implication
+from modelchecker.ast.nodes import Proposition, Conjunction, Disjunction, Implication, BiImplication
 from modelchecker.models.kmmodel import KMModel
 from modelchecker import operators
 from modelchecker import utils
@@ -86,9 +86,8 @@ class TestBinary(TestCase):
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sd'))
 
         self.assertTrue(truth_value)
-        print dict['condition'] + '\\\\'
-        print dict['conclusion']
-        print dict['interlude']
+        # print dict['condition'] + '\\\\\n'
+        # print dict['conclusion']
 
     def test_is_true_implication_2(self):
         node = Implication(self.lhs, self.rhs)
@@ -104,3 +103,16 @@ class TestBinary(TestCase):
         node = Implication(self.lhs, self.rhs)
         (truth_value, _) = node.is_true(self.model.get_state_by_name('sa'))
         self.assertTrue(truth_value)
+
+    def test_is_true_biimplication_1(self):
+        node = BiImplication(self.lhs, self.rhs)
+        (truth_value, dict) = node.is_true(self.model.get_state_by_name('sa'))
+        self.assertTrue(truth_value)
+        # print dict['condition'] + '\\\\'
+        # print dict['conclusion'] + '\\\\'
+        # print dict['interlude']
+
+    def test_is_true_biimplication_2(self):
+        node = BiImplication(self.lhs, self.rhs)
+        (truth_value, _) = node.is_true(self.model.get_state_by_name('sb'))
+        self.assertFalse(truth_value)

@@ -3,10 +3,10 @@
 __author__ = 'laura'
 
 from node import Node, models
-from disjunction import  Disjunction
-from negation import  Negation
+from conjunction import Conjunction
+from implication import Implication
 
-class Implication(Node):
+class BiImplication(Node):
 
     def __init__(self, lhs=None, rhs=None):
         self.rhs = rhs
@@ -15,7 +15,7 @@ class Implication(Node):
     def __repr__(self):
         """Print-friendly infix representation."""
         return (
-            "({obj.lhs} -> {obj.rhs})".format(obj=self)
+            "({obj.lhs} <-> {obj.rhs})".format(obj=self)
         )
 
     def is_true(self, state):
@@ -26,12 +26,14 @@ class Implication(Node):
         :return: (truthvalue, dict) truthvalue is the truth value of the formula, dict contains the motivation.
         :rtype: (bool, dict)
         """
-        (truth_value, dict) = (
-            Disjunction(
-                lhs=Negation(
-                    self.lhs
-                ),
+        (truth_value, dict) = Conjunction(
+            lhs=Implication(
+                lhs=self.lhs,
                 rhs=self.rhs
+            ),
+            rhs=Implication(
+                lhs=self.rhs,
+                rhs=self.lhs
             )
         ).is_true(state)
         dict['condition'] = '{rewrite} {rewrite_condition}'.format(
@@ -49,9 +51,9 @@ class Implication(Node):
         :return: String with the truth condition
         :rtype: String
         """
-        return 'not {lhs_models} or {rhs_models}'.format(
-            lhs_models=models(state, self.lhs, '$'),
-            rhs_models=models(state, self.rhs, '$'),
+        return '{lhs_models} and {rhs_models}'.format(
+            lhs_models=models(state, Implication(self.lhs, self.rhs), '$'),
+            rhs_models=models(state, Implication(self.rhs, self.lhs), '$'),
         )
 
     def to_latex(self, delimiter=''):
@@ -62,7 +64,7 @@ class Implication(Node):
         :return: LaTeX representation
         :rtype: str
         """
-        return '{delimiter}\\left({lhs}\\to{rhs}\\right){delimiter}'.format(
+        return '{delimiter}\\left({lhs}\\leftrightarrow{rhs}\\right){delimiter}'.format(
             delimiter=delimiter,
             lhs=self.lhs.to_latex(),
             rhs=self.rhs.to_latex()
