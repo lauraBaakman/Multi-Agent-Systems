@@ -92,13 +92,13 @@ class Resource(object):
         (logic, model) = get_model_from_data(json_data)
         ast = get_ast_from_data(logic, json_data)
         state = get_state_from_data(json_data)
-        result = evaluate_model(model, ast, state)
+        (truth_value, motivation) = evaluate_model(model, ast, state)
 
         resp.status = falcon.HTTP_202
         resp.body = json.dumps(
             {
-                'truth_value': result,
-                'motivation' : []
+                'truth_value': truth_value,
+                'motivation' : motivation
             },
              encoding='utf-8'
         )
