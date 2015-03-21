@@ -8,6 +8,12 @@ __author__ = 'laura'
 
 from modelchecker import operators
 
+def models(state, formula, delimiter=''):
+    return "{delimiter}\left(M, \\text{{ {state} }} \\right) \models {formula}{delimiter}".format(
+        state=state,
+        formula=formula.to_latex(),
+        delimiter=delimiter
+    )
 
 class Node(object):
     """General node class"""
@@ -65,7 +71,6 @@ class Unary(Node):
             lhs=self.lhs.to_latex(),
             operator=self.type.to_latex()
         )
-
 
 class Agent(Unary):
 
@@ -134,7 +139,6 @@ class Agent(Unary):
             operator=self.type.to_latex(),
             agent=self.agent
         )
-
 
 class Binary(Node):
 
@@ -217,9 +221,25 @@ class Proposition(Node):
         :return: Boolean
         """
         try:
-            return state.is_true(self.name)
+            truth_value = state.is_true(self.name)
         except:
             raise
+        truth_condition = '{models} iff \\pi\\left( {name} \\right) = 1.'.format(
+            models = models(state, self, '$'),
+            name = self.name
+        )
+        if truth_value:
+            truth_conclusion = '{models} holds since \\pi\\left( {name} \\right) = 1.'.format(
+                models = models(state, self, '$'),
+                name = self.name
+            )
+        else:
+            truth_conclusion = '{models} does not hold since \\pi\\left( {name} \\right) = 0.'.format(
+                models=models(state, self, '$'),
+                name=self.name
+            )
+        return truth_value
+        # return(truth_value, truth_condition, truth_conclusion)
 
     def to_latex(self, delimiter = ''):
         """
@@ -230,9 +250,3 @@ class Proposition(Node):
         :rtype: str
         """
         return '{delimiter}\\text{{{name}}}{delimiter}'.format(delimiter=delimiter, name=self.name)
-
-if __name__ == "__main__":
-    node_a = Proposition('a')
-    node_b = Proposition('b')
-    node_binary = Unary(operators.Unary.negation, node_a)
-    print node_binary.to_latex()

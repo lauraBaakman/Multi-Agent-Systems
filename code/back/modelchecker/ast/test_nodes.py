@@ -13,7 +13,7 @@ __author__ = 'laura'
 class TestBinary(TestCase):
     def setUp(self):
         self.model = KMModel()
-        json_data = utils.read_json('./models/test_model_km.json')
+        json_data = utils.read_json('modelchecker/models/test_model_km.json')
         self.model = KMModel.from_json(json_data)
         self.lhs = Proposition('p')
         self.rhs = Proposition('q')
@@ -54,7 +54,7 @@ class TestBinary(TestCase):
 class TestProposition(TestCase):
     def setUp(self):
         self.model = KMModel()
-        json_data = utils.read_json('./modelchecker/models/test_model_km.json')
+        json_data = utils.read_json('modelchecker/models/test_model_km.json')
         self.model = KMModel.from_json(json_data)
 
     def test_is_true(self):
@@ -77,7 +77,7 @@ class TestProposition(TestCase):
 class TestAgent(TestCase):
     def setUp(self):
         self.model = KMModel()
-        json_data = utils.read_json('./models/test_model_km.json')
+        json_data = utils.read_json('modelchecker/models/test_model_km.json')
         self.model = KMModel.from_json(json_data)
 
     def test_is_true_knowledge_1(self):
