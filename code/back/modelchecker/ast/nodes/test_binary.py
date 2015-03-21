@@ -77,22 +77,32 @@ class TestBinary(TestCase):
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sd'))
 
         self.assertTrue(truth_value)
+        # print dict['condition'] + '\\\\'
+        # print dict['conclusion']
+
+
+    def test_is_true_implication_1(self):
+        node = Binary(operators.Binary.implication, self.lhs, self.rhs)
+        (truth_value, dict) = node.is_true(self.model.get_state_by_name('sd'))
+
+        self.assertTrue(truth_value)
         print dict['condition'] + '\\\\'
         print dict['conclusion']
+        print dict['interlude']
+
+    def test_is_true_implication_2(self):
+        node = Binary(operators.Binary.implication, self.lhs, self.rhs)
+        (truth_value, _) = node.is_true(self.model.get_state_by_name('sb'))
+        self.assertFalse(truth_value)
 
 
-    # def test_is_true_implication(self):
-    #     node = Binary(operators.Binary.implication, self.lhs, self.rhs)
-    #
-    #     self.assertTrue(node.is_true(self.model.get_state_by_name('sa')))
-    #     self.assertFalse(node.is_true(self.model.get_state_by_name('sb')))
-    #     self.assertTrue(node.is_true(self.model.get_state_by_name('sc')))
-    #     self.assertTrue(node.is_true(self.model.get_state_by_name('sd')))
-    #
-    # def test_is_true_biimplication(self):
-    #     node = Binary(operators.Binary.biimplication, self.lhs, self.rhs)
-    #
-    #     self.assertTrue(node.is_true(self.model.get_state_by_name('sa')))
-    #     self.assertFalse(node.is_true(self.model.get_state_by_name('sb')))
-    #     self.assertTrue(node.is_true(self.model.get_state_by_name('sc')))
-    #     self.assertFalse(node.is_true(self.model.get_state_by_name('sd')))
+    def test_is_true_implication_3(self):
+        node = Binary(operators.Binary.implication, self.lhs, self.rhs)
+        (truth_value, _) = node.is_true(self.model.get_state_by_name('sc'))
+        self.assertTrue(truth_value)
+
+
+    def test_is_true_implication_4(self):
+        node = Binary(operators.Binary.implication, self.lhs, self.rhs)
+        (truth_value, _) = node.is_true(self.model.get_state_by_name('sa'))
+        self.assertTrue(truth_value)

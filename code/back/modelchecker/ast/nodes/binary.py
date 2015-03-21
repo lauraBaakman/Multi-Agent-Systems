@@ -58,7 +58,7 @@ class Binary(Node):
             return simple_binary(lhs, rhs, state, op.or_)
 
         def implication(lhs, rhs, state):
-            return Binary(
+            (truth_value, dict) =  Binary(
                     type=operators.Binary.disjunction,
                     lhs=Unary(
                         operators.Unary.negation,
@@ -66,9 +66,11 @@ class Binary(Node):
                     ),
                     rhs=rhs
                 ).is_true(state)
+            dict['interlude'].insert(0, self._condition(state))
+            return (truth_value, dict)
 
         def biimplication(lhs, rhs, state):
-            return Binary(
+            (truth_value, dict) = Binary(
                 type=operators.Binary.conjunction,
                 lhs=Binary(
                     type=operators.Binary.implication,
@@ -81,6 +83,8 @@ class Binary(Node):
                     rhs=lhs
                 )
             ).is_true(state)
+            dict['interlude'].insert(0, self._condition(state))
+            return (truth_value, dict)
 
         operator_to_function = {
             operators.Binary.conjunction: conjunction,
@@ -109,11 +113,17 @@ class Binary(Node):
                 rhs_models=models(state, self.rhs, '$'),
             )
 
-        def implication():
-            raise NotImplementedError
+        def implication(self, state):
+            return 'not {lhs_models} or {rhs_models}'.format(
+                lhs_models=models(state, self.lhs, '$'),
+                rhs_models=models(state, self.rhs, '$'),
+            )
 
         def biimplication():
-            raise NotImplementedError
+            return '{lhs_models} and {rhs_models}'.format(
+                lhs_models=models(state, Binary(operators.Binary.biimplication, self.lhs, self.rhs, '$')),
+                rhs_models=models(state, Binary(operators.Binary.biimplication, self.rhs, self.lhs, '$')),
+            )
 
         operator_to_condition = {
             operators.Binary.conjunction: conjunction,
@@ -162,17 +172,9 @@ class Binary(Node):
                     condition_rhs=models(state, self.rhs, '$')
                 )
 
-        def implication():
-            raise NotImplementedError
-
-        def biimplication():
-            raise NotImplementedError
-
         operator_to_condition = {
             operators.Binary.conjunction: conjunction,
             operators.Binary.disjunction: disjunction,
-            operators.Binary.implication: implication,
-            operators.Binary.biimplication: biimplication
         }
         return operator_to_condition.get(self.type)(self, state, lhs_truth_value, rhs_truth_value, truth_value)
 
