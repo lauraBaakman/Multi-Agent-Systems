@@ -52,6 +52,20 @@ class Unary(Node):
         }
         return operator_to_function.get(self.type)(self.lhs, state)
 
+    def to_latex(self, delimiter=''):
+        """
+        Return LaTeX representation
+        :param delimiter: [optional, default = ''] delimiters for the LaTeX representation.
+        :type delimiter: str
+        :return: LaTeX representation
+        :rtype: str
+        """
+        return '{delimiter} {operator}\\left({lhs}\\right){delimiter}'.format(
+            delimiter=delimiter,
+            lhs=self.lhs.to_latex(),
+            operator=self.type.to_latex()
+        )
+
 
 class Agent(Unary):
 
@@ -106,6 +120,22 @@ class Agent(Unary):
         return operator_to_function.get(self.type)(self.lhs, state, self.agent)
 
 
+    def to_latex(self, delimiter=''):
+        """
+        Return LaTeX representation
+        :param delimiter: [optional, default = ''] delimiters for the LaTeX representation.
+        :type delimiter: str
+        :return: LaTeX representation
+        :rtype: str
+        """
+        return '{delimiter} {operator}_{{\\text{{{agent}}}}}\\left({lhs}\\right){delimiter}'.format(
+            delimiter=delimiter,
+            lhs=self.lhs.to_latex(),
+            operator=self.type.to_latex(),
+            agent=self.agent
+        )
+
+
 class Binary(Node):
 
     def __init__(self, type, lhs=None, rhs=None):
@@ -149,6 +179,20 @@ class Binary(Node):
         }
         return operator_to_function.get(self.type)(self.lhs, self.rhs, state)
 
+    def to_latex(self, delimiter=''):
+        """
+        Return LaTeX representation
+        :param delimiter: [optional, default = ''] delimiters for the LaTeX representation.
+        :type delimiter: str
+        :return: LaTeX representation
+        :rtype: str
+        """
+        return '{delimiter}\\left({lhs}{operator}{rhs}\\right){delimiter}'.format(
+            delimiter=delimiter,
+            lhs = self.lhs.to_latex(),
+            operator = self.type.to_latex(),
+            rhs = self.rhs.to_latex()
+        )
 
 class Proposition(Node):
 
@@ -177,3 +221,18 @@ class Proposition(Node):
         except:
             raise
 
+    def to_latex(self, delimiter = ''):
+        """
+        Return LaTeX representation
+        :param delimiter: [optional, default = ''] delimiters for the LaTeX representation.
+        :type delimiter: str
+        :return: LaTeX representation
+        :rtype: str
+        """
+        return '{delimiter}\\text{{{name}}}{delimiter}'.format(delimiter=delimiter, name=self.name)
+
+if __name__ == "__main__":
+    node_a = Proposition('a')
+    node_b = Proposition('b')
+    node_binary = Unary(operators.Unary.negation, node_a)
+    print node_binary.to_latex()

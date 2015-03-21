@@ -54,7 +54,7 @@ class TestBinary(TestCase):
 class TestProposition(TestCase):
     def setUp(self):
         self.model = KMModel()
-        json_data = utils.read_json('./models/test_model_km.json')
+        json_data = utils.read_json('./modelchecker/models/test_model_km.json')
         self.model = KMModel.from_json(json_data)
 
     def test_is_true(self):
@@ -130,3 +130,5 @@ class TestAgent(TestCase):
         self.assertFalse(
             node.is_true(self.model.get_state_by_name('sb')),
         )
+
+
