@@ -14,7 +14,7 @@ The parser handles the actual parsing of expressions.
 from modelchecker import operators
 from modelchecker.errors import ParserError
 import modelchecker.tokenize.tokens as tokens
-from modelchecker.ast import nodes
+from modelchecker.ast import nodes as nodes
 
 __author__ = 'laura'
 
