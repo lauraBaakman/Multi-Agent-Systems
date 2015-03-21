@@ -15,3 +15,5 @@ from conjunction import Conjunction
 from disjunction import Disjunction
 from implication import Implication
 from biimplication import BiImplication
+from knowledge import Knowledge
+from possible import Possible
