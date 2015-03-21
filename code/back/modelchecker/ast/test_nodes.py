@@ -22,9 +22,17 @@ class TestBinary(TestCase):
         node = Binary(operators.Binary.conjunction, self.lhs, self.rhs)
 
         self.assertTrue(node.is_true(self.model.get_state_by_name('sa')))
+        print node.condition
+        print node.conclusion
+
         self.assertFalse(node.is_true(self.model.get_state_by_name('sb')))
+        print node.conclusion
+
         self.assertFalse(node.is_true(self.model.get_state_by_name('sc')))
+        print node.conclusion
+
         self.assertFalse(node.is_true(self.model.get_state_by_name('sd')))
+        print node.conclusion
 
     def test_is_true_disjunction(self):
         node = Binary(operators.Binary.disjunction, self.lhs, self.rhs)
@@ -61,16 +69,16 @@ class TestProposition(TestCase):
         node = Proposition('p')
         truth_value = node.is_true(self.model.get_state_by_name('sa'))
         self.assertTrue(truth_value)
-        print node.condition
-        print node.conclusion
+        # print node.condition
+        # print node.conclusion
 
 
     def test_is_true_false(self):
         node = Proposition('p')
         truth_value = node.is_true(self.model.get_state_by_name('sc'))
         self.assertFalse(truth_value)
-        print node.condition
-        print node.conclusion
+        # print node.condition
+        # print node.conclusion
 
 
 class TestAgent(TestCase):
