@@ -6,7 +6,7 @@ from node import models
 from node import Node
 
 #TODO Should have unary as superclass
-class Common(Node):
+class Everybody(Node):
     def __init__(self, lhs):
         self.lhs = lhs
 
@@ -58,7 +58,7 @@ class Common(Node):
         :return: LaTeX representation
         :rtype: str
         """
-        return '{delimiter} \\text{C} \\left({lhs}\\right){delimiter}'.format(
+        return '{delimiter} \\text{E} \\left({lhs}\\right){delimiter}'.format(
             delimiter=delimiter,
             lhs=self.lhs.to_latex(),
         )

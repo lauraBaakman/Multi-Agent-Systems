@@ -14,3 +14,4 @@ Proposition = proposition.Proposition
 Unary = unary.Unary
 Negation = negation.Negation
 Common = negation.Common
+Everybody = negation.Everybody
