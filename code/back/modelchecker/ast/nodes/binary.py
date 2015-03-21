@@ -4,7 +4,8 @@ import operator as op
 
 from modelchecker import operators
 from modelchecker.ast.nodes.node import Node
-from modelchecker.ast.nodes.unary import Unary
+from negation import Negation
+from conjunction import  Conjunction
 from node import models
 
 
@@ -25,7 +26,10 @@ class Binary(Node):
 
     @classmethod
     def fromToken(cls, token):
-        return cls(token.type)
+        token_to_node = {
+            operators.Binary.conjunction : Conjunction,
+        }
+        return token_to_node.get(token.type, cls(token.type))
 
     def __repr__(self):
         """Print-friendly infix representation."""
@@ -37,11 +41,14 @@ class Binary(Node):
         lhs = self.lhs.is_true()
         rhs = self.rhs.is_true()
 
+
+
     def is_true(self, state):
+
         def simple_binary(lhs, rhs, state, operator):
             (lhs_truth_value, lhs_result) = lhs.is_true(state)
             (rhs_truth_value, rhs_result) = rhs.is_true(state)
-            truth_value = operator(lhs_truth_value , rhs_truth_value)
+            truth_value = operator(lhs_truth_value, rhs_truth_value)
             return (
                 truth_value,
                 {
@@ -51,17 +58,13 @@ class Binary(Node):
                 }
             )
 
-        def conjunction(lhs, rhs,  state):
-            return simple_binary(lhs, rhs, state, op.and_)
-
         def disjunction(lhs, rhs, state):
             return simple_binary(lhs, rhs, state, op.or_)
 
         def implication(lhs, rhs, state):
             (truth_value, dict) =  Binary(
                     type=operators.Binary.disjunction,
-                    lhs=Unary(
-                        operators.Unary.negation,
+                    lhs=Negation(
                         lhs
                     ),
                     rhs=rhs
@@ -70,8 +73,7 @@ class Binary(Node):
             return (truth_value, dict)
 
         def biimplication(lhs, rhs, state):
-            (truth_value, dict) = Binary(
-                type=operators.Binary.conjunction,
+            (truth_value, dict) =Conjunction(
                 lhs=Binary(
                     type=operators.Binary.implication,
                     lhs=lhs,
@@ -87,7 +89,6 @@ class Binary(Node):
             return (truth_value, dict)
 
         operator_to_function = {
-            operators.Binary.conjunction: conjunction,
             operators.Binary.disjunction: disjunction,
             operators.Binary.implication: implication,
             operators.Binary.biimplication: biimplication
@@ -101,11 +102,6 @@ class Binary(Node):
         )
 
     def _truth_condition(self, state):
-        def conjunction(self, state):
-            return '{lhs_models} and {rhs_models}'.format(
-                lhs_models=models(state, self.lhs, '$'),
-                rhs_models=models(state, self.rhs, '$'),
-            )
 
         def disjunction(self, state):
             return '{lhs_models} or {rhs_models}'.format(
@@ -126,7 +122,6 @@ class Binary(Node):
             )
 
         operator_to_condition = {
-            operators.Binary.conjunction: conjunction,
             operators.Binary.disjunction: disjunction,
             operators.Binary.implication: implication,
             operators.Binary.biimplication: biimplication
@@ -134,25 +129,6 @@ class Binary(Node):
         return operator_to_condition.get(self.type)(self, state)
 
     def _conclusion(self, state, lhs_truth_value, rhs_truth_value, truth_value):
-        def conjunction(self, state, lhs_truth_value, rhs_truth_value, truth_value):
-            if (truth_value):
-                return '{models} holds since {condition}.'.format(
-                    models=models(state, self, '$'),
-                    condition=self._truth_condition(state)
-                )
-            else:
-                conclusion = Template('$models does not hold since $reason.')
-
-                if lhs_truth_value:
-                    reason = '{condition} does not hold'.format(condition=models(state, self.rhs, '$'))
-                elif rhs_truth_value:
-                    reason = '{condition} does not hold'.format(condition=models(state, self.lhs, '$'))
-                else:
-                    reason = '{condition_lhs} and {condition_rhs} do not hold'.format(
-                        condition_lhs=models(state, self.lhs, '$'),
-                        condition_rhs=models(state, self.rhs, '$')
-                    )
-                return conclusion.substitute(reason=reason, models=models(state, self, '$'))
 
         def disjunction(self, state, lhs_truth_value, rhs_truth_value, truth_value):
             if (lhs_truth_value):
@@ -173,7 +149,6 @@ class Binary(Node):
                 )
 
         operator_to_condition = {
-            operators.Binary.conjunction: conjunction,
             operators.Binary.disjunction: disjunction,
         }
         return operator_to_condition.get(self.type)(self, state, lhs_truth_value, rhs_truth_value, truth_value)

@@ -2,7 +2,7 @@
 from unittest import TestCase
 
 __author__ = 'laura'
-from modelchecker.ast.nodes import Proposition, Binary
+from modelchecker.ast.nodes import Proposition, Binary, Conjunction
 from modelchecker.models.kmmodel import KMModel
 from modelchecker import operators
 from modelchecker import utils
@@ -16,7 +16,7 @@ class TestBinary(TestCase):
         self.rhs = Proposition('q')
 
     def test_is_true_conjunction_1(self):
-        node = Binary(operators.Binary.conjunction, self.lhs, self.rhs)
+        node = Conjunction(self.lhs, self.rhs)
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sa'))
 
         self.assertTrue(truth_value)
@@ -24,7 +24,7 @@ class TestBinary(TestCase):
         # print dict['conclusion']
 
     def test_is_true_conjunction_2(self):
-        node = Binary(operators.Binary.conjunction, self.lhs, self.rhs)
+        node = Conjunction(self.lhs, self.rhs)
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sb'))
 
         self.assertFalse(truth_value)
@@ -32,7 +32,7 @@ class TestBinary(TestCase):
         # print dict['conclusion']
 
     def test_is_true_conjunction_3(self):
-        node = Binary(operators.Binary.conjunction, self.lhs, self.rhs)
+        node = Conjunction(self.lhs, self.rhs)
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sc'))
 
         self.assertFalse(truth_value)
@@ -40,12 +40,12 @@ class TestBinary(TestCase):
         # print dict['conclusion']
 
     def test_is_true_conjunction_4(self):
-        node = Binary(operators.Binary.conjunction, self.lhs, self.rhs)
+        node = Conjunction(self.lhs, self.rhs)
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sd'))
 
         self.assertFalse(truth_value)
-        # print dict['condition'] + '\\\\'
-        # print dict['conclusion']
+        print dict['condition'] + '\\\\'
+        print dict['conclusion']
 
 
     def test_is_true_disjunction_1(self):
