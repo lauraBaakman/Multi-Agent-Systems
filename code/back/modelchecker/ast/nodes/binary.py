@@ -93,17 +93,17 @@ class Binary(Node):
     def _condition(self, state):
         return '{models} iff {condition}.'.format(
             models=models(state, self, '$'),
-            condition=self._truth_condition(state, 1)
+            condition=self._truth_condition(state)
         )
 
-    def _truth_condition(self, state, value):
-        def conjunction(self, state, value):
+    def _truth_condition(self, state):
+        def conjunction(self, state):
             return '{lhs_models} and {rhs_models}'.format(
                 lhs_models=models(state, self.lhs, '$'),
                 rhs_models=models(state, self.rhs, '$'),
             )
 
-        def disjunction(self, state, value):
+        def disjunction(self, state):
             return '{lhs_models} or {rhs_models}'.format(
                 lhs_models=models(state, self.lhs, '$'),
                 rhs_models=models(state, self.rhs, '$'),
@@ -121,14 +121,14 @@ class Binary(Node):
             operators.Binary.implication: implication,
             operators.Binary.biimplication: biimplication
         }
-        return operator_to_condition.get(self.type)(self, state, value)
+        return operator_to_condition.get(self.type)(self, state)
 
     def _conclusion(self, state, lhs_truth_value, rhs_truth_value, truth_value):
         def conjunction(self, state, lhs_truth_value, rhs_truth_value, truth_value):
             if (truth_value):
                 return '{models} holds since {condition}.'.format(
                     models=models(state, self, '$'),
-                    condition=self._truth_condition(state, int(truth_value))
+                    condition=self._truth_condition(state)
                 )
             else:
                 conclusion = Template('$models does not hold since $reason.')
