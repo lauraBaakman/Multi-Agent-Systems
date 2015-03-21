@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 from unittest import TestCase
 
-from modelchecker.ast.nodes import Proposition, Unary
+from modelchecker.ast.nodes import Proposition, Negation
 from modelchecker.models.kmmodel import KMModel
-from modelchecker import operators
 from modelchecker import utils
 
 __author__ = 'laura'
@@ -17,17 +16,17 @@ class TestUnary(TestCase):
         self.lhs = Proposition('p')
 
     def test_is_true_1(self):
-        node = Unary(operators.Unary.negation, self.lhs)
+        node = Negation(self.lhs)
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sa'))
 
         self.assertFalse(truth_value)
-        print dict['condition'] + '\\\\'
-        print dict['conclusion']
+        # print dict['condition'] + '\\\\'
+        # print dict['conclusion']
 
     def test_is_true_2(self):
-        node = Unary(operators.Unary.negation, self.lhs)
+        node = Negation(self.lhs)
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sd'))
 
         self.assertTrue(truth_value)
-        print dict['condition'] + '\\\\'
-        print dict['conclusion']
+        # print dict['condition'] + '\\\\'
+        # print dict['conclusion']
