@@ -37,3 +37,11 @@ def read_json(filename):
     data = json.load(json_data, object_hook=decode_dict)
     json_data.close()
     return data
+
+def motivation_to_html(motivation):
+    # TODO Implement
+    raise NotImplementedError
+
+def motivation_to_latex(motivation):
+    # TODO Implement
+    raise NotImplementedError

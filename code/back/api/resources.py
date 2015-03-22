@@ -85,10 +85,6 @@ def evaluate_model(model, formula, state):
     except errors.ModelError as e:
         raise falcon.HTTPError(falcon.HTTP_400, 'Evaluation Error', e.message)
 
-def motivation_to_html(motivation):
-    # TODO Implement
-    raise NotImplementedError
-
 class Resource(object):
 
     def on_post(self, req, resp):

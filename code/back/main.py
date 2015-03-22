@@ -9,9 +9,8 @@ from modelchecker.errors import TokenizeError
 
 import modelchecker.tokenize.tokenizer as tokenizer
 from modelchecker import ast
-import models.kmmodel
-import models.errors
-import utils
+import modelchecker.models as models
+import modelchecker.utils as utils
 
 
 if __name__ == "__main__":
