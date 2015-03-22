@@ -18,15 +18,8 @@ class BiImplication(Binary):
             "({obj.lhs} <-> {obj.rhs})".format(obj=self)
         )
 
-    def is_true(self, state):
-        """
-        Determine the truth value of this formula.
-        :param state: the state in which the formula should be evaluated.
-        :type state: modelchecker.models.state
-        :return: (truthvalue, dict) truthvalue is the truth value of the formula, dict contains the motivation.
-        :rtype: (bool, dict)
-        """
-        (truth_value, dict) = Conjunction(
+    def rewrite(self):
+        return Conjunction(
             lhs=Implication(
                 lhs=self.lhs,
                 rhs=self.rhs
@@ -35,7 +28,17 @@ class BiImplication(Binary):
                 lhs=self.rhs,
                 rhs=self.lhs
             )
-        ).is_true(state)
+        )
+
+    def is_true(self, state):
+        """
+        Determine the truth value of this formula.
+        :param state: the state in which the formula should be evaluated.
+        :type state: modelchecker.models.state
+        :return: (truthvalue, dict) truthvalue is the truth value of the formula, dict contains the motivation.
+        :rtype: (bool, dict)
+        """
+        (truth_value, dict) = self.rewrite().is_true(state)
         dict['condition'] = '{rewrite} {rewrite_condition}'.format(
             rewrite=self._condition(state),
             rewrite_condition=dict['condition']
@@ -51,9 +54,8 @@ class BiImplication(Binary):
         :return: String with the truth condition
         :rtype: String
         """
-        return '{lhs_models} and {rhs_models}'.format(
-            lhs_models=models(state, Implication(self.lhs, self.rhs), '$'),
-            rhs_models=models(state, Implication(self.rhs, self.lhs), '$'),
+        return '{models}'.format(
+            models=models(state, self.rewrite(), '$'),
         )
 
     def to_latex(self, delimiter='', operator='\\leftrightarrow'):

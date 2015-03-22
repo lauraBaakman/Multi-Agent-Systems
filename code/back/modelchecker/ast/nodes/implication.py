@@ -18,6 +18,14 @@ class Implication(Binary):
             "({obj.lhs} -> {obj.rhs})".format(obj=self)
         )
 
+    def rewrite(self):
+        return Disjunction(
+            lhs=Negation(
+                self.lhs
+            ),
+            rhs=self.rhs
+        )
+
     def is_true(self, state):
         """
         Determine the truth value of this formula.
@@ -26,14 +34,7 @@ class Implication(Binary):
         :return: (truthvalue, dict) truthvalue is the truth value of the formula, dict contains the motivation.
         :rtype: (bool, dict)
         """
-        (truth_value, dict) = (
-            Disjunction(
-                lhs=Negation(
-                    self.lhs
-                ),
-                rhs=self.rhs
-            )
-        ).is_true(state)
+        (truth_value, dict) = self.rewrite().is_true(state)
         dict['condition'] = '{rewrite} {rewrite_condition}'.format(
             rewrite=self._condition(state),
             rewrite_condition=dict['condition']
@@ -49,9 +50,8 @@ class Implication(Binary):
         :return: String with the truth condition
         :rtype: String
         """
-        return 'not {lhs_models} or {rhs_models}'.format(
-            lhs_models=models(state, self.lhs, '$'),
-            rhs_models=models(state, self.rhs, '$'),
+        return '{models}'.format(
+            models=models(state, self.rewrite(), '$'),
         )
 
     def to_latex(self, delimiter='', operator='\\to'):

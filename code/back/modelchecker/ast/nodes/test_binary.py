@@ -108,7 +108,7 @@ class TestBinary(TestCase):
         node = BiImplication(self.lhs, self.rhs)
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sa'))
         self.assertTrue(truth_value)
-        # print dict['condition'] + '\\\\'
+        print dict['condition'] + '\\\\'
         # print dict['conclusion'] + '\\\\'
         # print dict['interlude']
 
