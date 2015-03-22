@@ -94,11 +94,14 @@ class Resource(object):
         state = get_state_from_data(json_data)
         (truth_value, motivation) = evaluate_model(model, ast, state)
 
+        print 'HOI!!!!'
+
         resp.status = falcon.HTTP_202
         resp.body = json.dumps(
             {
                 'truth_value': truth_value,
-                'motivation' : motivation
+                'motivation' : utils.motivation_to_html(motivation),
+                'motivation_latex': utils.motivation_to_latex(motivation)
             },
              encoding='utf-8'
         )

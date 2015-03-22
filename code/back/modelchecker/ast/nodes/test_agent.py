@@ -21,6 +21,7 @@ class TestAgent(TestCase):
         self.assertTrue(truth_value, "The formula is true, there is a reflexive relation.")
         # print dict['condition']
         # print dict['conclusion']
+        print dict['interlude']
 
     def test_is_true_knowledge_2(self):
         node = Knowledge(1, Proposition('q'))
@@ -31,9 +32,10 @@ class TestAgent(TestCase):
     def test_is_true_knowledge_3(self):
         # Formula is false
         node = Knowledge(1, Proposition('p'))
+        (truth_value, dict) = node.is_true(self.model.get_state_by_name('sd'))
         self.assertTrue(
-            node.is_true(self.model.get_state_by_name('sc')),
-            "The formula is false, there is no reflexive relation"
+            truth_value,
+            "The formula is false, there no reflexive relation"
         )
 
     def test_is_true_knowledge_4(self):
@@ -42,6 +44,7 @@ class TestAgent(TestCase):
         self.assertTrue(truth_value, "The agent has only one relationship to a state.")
         # print dict['condition']
         # print dict['conclusion']
+        print dict['interlude']
 
     def test_is_true_knowledge_5(self):
         node = Knowledge(1, Proposition('r'))
@@ -49,6 +52,7 @@ class TestAgent(TestCase):
         self.assertFalse(truth_value, "The agent has only one relationship to a state.")
         # print dict['condition']
         # print dict['conclusion']
+        print dict['interlude']
 
 
     def test_is_true_knowledge_6(self):

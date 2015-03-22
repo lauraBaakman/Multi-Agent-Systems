@@ -29,7 +29,13 @@ class Knowledge(Agent):
             # There is no outgoing relation.
             truth_value = True
             conclusion = self._conclusion_no_relations(state)
-            interlude = None
+            return (
+                truth_value,
+                {
+                    'condition': self._condition(state),
+                    'conclusion': conclusion,
+                }
+            )
         elif len(relations) == 1:
             # There is only one outgoing relation.
             destination = relations[0].destination
