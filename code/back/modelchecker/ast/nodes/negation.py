@@ -8,7 +8,7 @@ from node import Node
 #TODO Should have unary as superclass
 class Negation(Node):
 
-    def __init__(self, lhs):
+    def __init__(self, lhs=None):
         self.lhs = lhs
 
     def __repr__(self):

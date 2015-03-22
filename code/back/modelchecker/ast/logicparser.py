@@ -14,7 +14,7 @@ The parser handles the actual parsing of expressions.
 from modelchecker import operators
 from modelchecker.errors import ParserError
 import modelchecker.tokenize.tokens as tokens
-from modelchecker.ast import nodes as nodes
+from modelchecker.ast.nodes import nodeFactory
 
 __author__ = 'laura'
 
@@ -72,7 +72,7 @@ class Parser(object):
 
     def f(self):
         if isinstance(self.next(), tokens.Proposition):
-            t = nodes.Proposition.fromToken(self.next())
+            t = nodeFactory.from_token(self.next())
             self.consume()
             return t
         elif isinstance(self.next(), tokens.BracketOpen):
@@ -81,7 +81,7 @@ class Parser(object):
             self.expect(tokens.BracketClose)
             return t
         elif self.next().type == operators.Unary.negation:
-            node = nodes.Unary.fromToken(self.next())
+            node = nodeFactory.from_token(self.next())
             node.lhs = self.e()
         else:
             raise ParserError("Could not parse the expression.")
@@ -90,9 +90,9 @@ class Parser(object):
         if isinstance(self.next(), (tokens.BracketOpen, tokens.Proposition)):
             return self.f()
         elif isinstance(self.next(), tokens.AgentOperator):
-            node = nodes.Agent.fromToken(self.next())
+            node = nodeFactory.from_token(self.next())
         else:
-            node = nodes.Unary.fromToken(self.next())
+            node = nodeFactory.from_token(self.next())
         # Execute this for both agent and unary tokens
         self.consume()
         node.lhs = self.e()
@@ -101,7 +101,7 @@ class Parser(object):
     def e(self):
         t = self.t()
         while isinstance(self.next(), tokens.BinaryOperator):
-            node = nodes.Binary.fromToken(self.next())
+            node = nodeFactory.from_token(self.next())
             self.consume()
             t1 = self.t()
             node.rhs = t1

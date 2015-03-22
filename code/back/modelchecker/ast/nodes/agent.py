@@ -8,12 +8,5 @@ __author__ = 'laura'
 
 
 class Agent(Unary):
-
-    @classmethod
-    def fromToken(cls, token):
-        token_to_node = {
-            operators.Agent.knowledge : Knowledge,
-            operators.Agent.possible : Possible,
-        }
-        return token_to_node.get(token.type)(token.agent)
+    pass
 

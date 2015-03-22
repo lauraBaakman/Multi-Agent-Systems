@@ -17,3 +17,6 @@ class Node(object):
             models=models(state, self, '$'),
             condition=self._truth_condition(state)
         )
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__

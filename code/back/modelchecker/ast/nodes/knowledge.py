@@ -6,9 +6,8 @@ from node import Node, models
 
 class Knowledge(Node):
 
-    def __init__(self, agent, lhs=None, rhs=None):
+    def __init__(self, agent, lhs=None):
         self.agent = agent
-        self.rhs = rhs
         self.lhs = lhs
 
     def __repr__(self):
