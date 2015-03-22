@@ -2,14 +2,14 @@
 
 __author__ = 'laura'
 
-from node import Node, models
+from node import models
+from binary import Binary
 from string import Template
 
-class Conjunction(Node):
+class Conjunction(Binary):
 
     def __init__(self, lhs=None, rhs=None):
-        self.rhs = rhs
-        self.lhs = lhs
+        super(Conjunction, self).__init__(lhs, rhs)
 
     def __repr__(self):
         """Print-friendly infix representation."""
@@ -79,16 +79,14 @@ class Conjunction(Node):
                 )
             return conclusion.substitute(reason=reason, models=models(state, self, '$'))
 
-    def to_latex(self, delimiter=''):
+    def to_latex(self, delimiter='', operator='\\land'):
         """
         Return LaTeX representation
+        :param: operator: operator
+        :type operator: str
         :param delimiter: [optional, default = ''] delimiters for the LaTeX representation.
         :type delimiter: str
         :return: LaTeX representation
         :rtype: str
         """
-        return '{delimiter}\\left({lhs}\\land{rhs}\\right){delimiter}'.format(
-            delimiter=delimiter,
-            lhs=self.lhs.to_latex(),
-            rhs=self.rhs.to_latex()
-        )
+        return super(Conjunction, self).to_latex(delimiter, operator)

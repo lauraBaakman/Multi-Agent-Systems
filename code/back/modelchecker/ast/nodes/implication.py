@@ -5,12 +5,12 @@ __author__ = 'laura'
 from node import Node, models
 from disjunction import  Disjunction
 from negation import  Negation
+from binary import Binary
 
-class Implication(Node):
+class Implication(Binary):
 
     def __init__(self, lhs=None, rhs=None):
-        self.rhs = rhs
-        self.lhs = lhs
+        super(Implication, self).__init__(lhs, rhs)
 
     def __repr__(self):
         """Print-friendly infix representation."""
@@ -34,10 +34,6 @@ class Implication(Node):
                 rhs=self.rhs
             )
         ).is_true(state)
-        dict['condition'] = '{rewrite} {rewrite_condition}'.format(
-            rewrite=self._condition(state),
-            rewrite_condition=dict['condition']
-        )
         return (truth_value, dict)
 
 
@@ -54,16 +50,14 @@ class Implication(Node):
             rhs_models=models(state, self.rhs, '$'),
         )
 
-    def to_latex(self, delimiter=''):
+    def to_latex(self, delimiter='', operator='\\to'):
         """
         Return LaTeX representation
+        :param: operator: operator
+        :type operator: str
         :param delimiter: [optional, default = ''] delimiters for the LaTeX representation.
         :type delimiter: str
         :return: LaTeX representation
         :rtype: str
         """
-        return '{delimiter}\\left({lhs}\\to{rhs}\\right){delimiter}'.format(
-            delimiter=delimiter,
-            lhs=self.lhs.to_latex(),
-            rhs=self.rhs.to_latex()
-        )
+        return super(Implication, self).to_latex(delimiter, operator)

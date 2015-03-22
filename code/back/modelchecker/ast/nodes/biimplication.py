@@ -5,12 +5,12 @@ __author__ = 'laura'
 from node import Node, models
 from conjunction import Conjunction
 from implication import Implication
+from binary import Binary
 
-class BiImplication(Node):
+class BiImplication(Binary):
 
     def __init__(self, lhs=None, rhs=None):
-        self.rhs = rhs
-        self.lhs = lhs
+        super(BiImplication, self).__init__(lhs, rhs)
 
     def __repr__(self):
         """Print-friendly infix representation."""
@@ -56,16 +56,14 @@ class BiImplication(Node):
             rhs_models=models(state, Implication(self.rhs, self.lhs), '$'),
         )
 
-    def to_latex(self, delimiter=''):
+    def to_latex(self, delimiter='', operator='\\leftrightarrow'):
         """
         Return LaTeX representation
+        :param: operator: operator
+        :type operator: str
         :param delimiter: [optional, default = ''] delimiters for the LaTeX representation.
         :type delimiter: str
         :return: LaTeX representation
         :rtype: str
         """
-        return '{delimiter}\\left({lhs}\\leftrightarrow{rhs}\\right){delimiter}'.format(
-            delimiter=delimiter,
-            lhs=self.lhs.to_latex(),
-            rhs=self.rhs.to_latex()
-        )
+        return super(BiImplication, self).to_latex(delimiter, operator)

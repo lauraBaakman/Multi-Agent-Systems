@@ -3,13 +3,12 @@
 __author__ = 'laura'
 
 from node import Node, models
-from string import Template
+from binary import Binary
 
-class Disjunction(Node):
+class Disjunction(Binary):
 
     def __init__(self, lhs=None, rhs=None):
-        self.rhs = rhs
-        self.lhs = lhs
+        super(Disjunction, self).__init__(lhs, rhs)
 
     def __repr__(self):
         """Print-friendly infix representation."""
@@ -77,16 +76,14 @@ class Disjunction(Node):
                 condition_rhs=models(state, self.rhs, '$')
             )
 
-    def to_latex(self, delimiter=''):
+    def to_latex(self, delimiter='', operator='\\lor'):
         """
         Return LaTeX representation
+        :param: operator: operator
+        :type operator: str
         :param delimiter: [optional, default = ''] delimiters for the LaTeX representation.
         :type delimiter: str
         :return: LaTeX representation
         :rtype: str
         """
-        return '{delimiter}\\left({lhs}\\lor{rhs}\\right){delimiter}'.format(
-            delimiter=delimiter,
-            lhs=self.lhs.to_latex(),
-            rhs=self.rhs.to_latex()
-        )
+        return super(Disjunction, self).to_latex(delimiter, operator)
