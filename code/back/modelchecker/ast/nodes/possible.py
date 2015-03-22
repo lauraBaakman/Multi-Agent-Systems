@@ -3,13 +3,12 @@
 __author__ = 'laura'
 
 from node import Node, models
+from agent import Agent
 
-class Possible(Node):
+class Possible(Agent):
 
-    def __init__(self, agent, lhs=None, rhs=None):
-        self.agent = agent
-        self.rhs = rhs
-        self.lhs = lhs
+    def __init__(self, agent, lhs=None):
+        super(Possible, self).__init__(agent, lhs)
 
     def __repr__(self):
         """Print-friendly infix representation."""
@@ -67,16 +66,14 @@ class Possible(Node):
         """
         raise NotImplementedError
 
-    def to_latex(self, delimiter=''):
+    def to_latex(self, delimiter='', operator='\\text{{M}}'):
         """
         Return LaTeX representation
+        :param: operator: operator
+        :type operator: str
         :param delimiter: [optional, default = ''] delimiters for the LaTeX representation.
         :type delimiter: str
         :return: LaTeX representation
         :rtype: str
         """
-        return '{delimiter} \\text{{M}}_{{\\text{{{agent}}}}}\\left({lhs}\\right){delimiter}'.format(
-            delimiter=delimiter,
-            lhs=self.lhs.to_latex(),
-            agent=self.agent
-        )
+        return super(Possible, self).to_latex(delimiter, operator)

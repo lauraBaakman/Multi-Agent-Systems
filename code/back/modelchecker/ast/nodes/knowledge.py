@@ -2,13 +2,14 @@
 
 __author__ = 'laura'
 
-from node import Node, models
+from node import models
+from modelchecker.ast.nodes.agent import Agent
 
-class Knowledge(Node):
+
+class Knowledge(Agent):
 
     def __init__(self, agent, lhs=None):
-        self.agent = agent
-        self.lhs = lhs
+        super(Knowledge, self).__init__(agent, lhs)
 
     def __repr__(self):
         """Print-friendly infix representation."""
@@ -57,16 +58,14 @@ class Knowledge(Node):
         """
         raise NotImplementedError
 
-    def to_latex(self, delimiter=''):
+    def to_latex(self, delimiter='', operator='\\text{{K}}'):
         """
         Return LaTeX representation
+        :param: operator: operator
+        :type operator: str
         :param delimiter: [optional, default = ''] delimiters for the LaTeX representation.
         :type delimiter: str
         :return: LaTeX representation
         :rtype: str
         """
-        return '{delimiter} \\text{{K}}_{{\\text{{{agent}}}}}\\left({lhs}\\right){delimiter}'.format(
-            delimiter=delimiter,
-            lhs=self.lhs.to_latex(),
-            agent=self.agent
-        )
+        return super(Knowledge, self).to_latex(delimiter, operator)
