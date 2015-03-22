@@ -26,13 +26,17 @@ class Knowledge(Agent):
         """
         relations = state.outgoing.get(self.agent)
         if not relations:
+            # There is no outgoing relation.
             truth_value = True
             conclusion = self._conclusion_no_relations(state)
+            interlude = None
         elif len(relations) == 1:
-        # There is only one outgoing relation.
-            raise NotImplementedError
+            # There is only one outgoing relation.
+            destination = relations[0].destination
+            (truth_value, interlude) = self.lhs.is_true(destination)
+            conclusion =self. _conclusion_one_relation(state, truth_value, destination)
         else:
-        # There are multiple outgoing realtions.
+            # There are multiple outgoing relations.
             raise NotImplementedError
 
 
@@ -40,7 +44,7 @@ class Knowledge(Agent):
             truth_value,
             {
                 'condition': self._condition(state),
-                # 'interlude': [lhs_result],
+                'interlude': interlude,
                 'conclusion': conclusion,
             }
         )
@@ -56,7 +60,7 @@ class Knowledge(Agent):
         return '{lhs_models} for all $t$ with $({state}, t) \\in R_{{{agent}}}$'.format(
             lhs_models=models('t', self.lhs, '$'),
             agent=self.agent,
-            state=state
+            state=state.name
         )
 
     def _conclusion(self, state):
@@ -71,6 +75,26 @@ class Knowledge(Agent):
         """
         raise NotImplementedError
 
+    def _conclusion_one_relation(self, state, truth_value, destination_state):
+        """
+        Return the conclusion motivation the truth value of this formula
+        :param state: the state in which the formula should be evaluated.
+        :type state: modelchecker.models.state
+        :param truth_value: the truth value of this formula
+        :type truth_value: bool
+        :return: String with the motivation
+        :rtype: String
+        """
+        if(truth_value):
+            return '{models} holds since {condition} holds.'.format(
+                models=models(state, self, '$'),
+                condition=models(destination_state, self.lhs, '$')
+            )
+        else:
+            return '{models} does not hold since {condition} does not hold.'.format(
+                models=models(state, self, '$'),
+                condition=models(destination_state, self.lhs, '$')
+            )
 
     def _conclusion_no_relations(self, state):
         """
