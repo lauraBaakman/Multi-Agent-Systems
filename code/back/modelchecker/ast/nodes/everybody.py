@@ -2,18 +2,17 @@
 
 __author__ = 'laura'
 
-from node import models
-from node import Node
 
-#TODO Should have unary as superclass
-class Everybody(Node):
-    def __init__(self, lhs):
-        self.lhs = lhs
+from unary import Unary
+
+class Everybody(Unary):
+    def __init__(self, lhs=None):
+        super(Everybody, self).__init__(lhs)
 
     def __repr__(self):
         """Print-friendly infix representation."""
         return (
-            "(NOT {obj.lhs})".format(obj=self)
+            "(EVERYBODY {obj.lhs})".format(obj=self)
         )
 
     def is_true(self, state):
@@ -50,15 +49,14 @@ class Everybody(Node):
         :rtype: String
         """
 
-    def to_latex(self, delimiter=''):
+    def to_latex(self, delimiter='', operator='\\text{{E}}'):
         """
         Return LaTeX representation
+        :param: operator: operator
+        :type operator: str
         :param delimiter: [optional, default = ''] delimiters for the LaTeX representation.
         :type delimiter: str
         :return: LaTeX representation
         :rtype: str
         """
-        return '{delimiter} \\text{E} \\left({lhs}\\right){delimiter}'.format(
-            delimiter=delimiter,
-            lhs=self.lhs.to_latex(),
-        )
+        return super(Everybody, self).to_latex(operator, delimiter)

@@ -1,12 +1,25 @@
 # -*- coding: utf-8 -*-
-from modelchecker import operators
 from modelchecker.ast.nodes.node import Node
-from modelchecker.ast.nodes.negation import  Negation
-from modelchecker.ast.nodes.common import Common
-from modelchecker.ast.nodes.everybody import Everybody
 
 __author__ = 'laura'
 
 
 class Unary(Node):
-    pass
+    def __init__(self, lhs):
+        self.lhs = lhs
+
+    def to_latex(self, delimiter, operator):
+        """
+        Return LaTeX representation
+        :param: operator: operator
+        :type operator: str
+        :param delimiter: delimiters for the LaTeX representation.
+        :type delimiter: str
+        :return: LaTeX representation
+        :rtype: str
+        """
+        return '{delimiter} {operator} \\left({lhs}\\right){delimiter}'.format(
+            delimiter=delimiter,
+            lhs=self.lhs.to_latex(),
+            operator=operator
+        )

@@ -3,13 +3,11 @@
 __author__ = 'laura'
 
 from node import models
-from node import Node
+from unary import Unary
 
-#TODO Should have unary as superclass
-class Negation(Node):
-
+class Negation(Unary):
     def __init__(self, lhs=None):
-        self.lhs = lhs
+        super(Negation, self).__init__(lhs)
 
     def __repr__(self):
         """Print-friendly infix representation."""
@@ -70,15 +68,14 @@ class Negation(Node):
                 condition=models(state, self.lhs, '$')
             )
 
-    def to_latex(self, delimiter=''):
+    def to_latex(self, delimiter='', operator='\\lnot'):
         """
         Return LaTeX representation
+        :param: operator: operator
+        :type operator: str
         :param delimiter: [optional, default = ''] delimiters for the LaTeX representation.
         :type delimiter: str
         :return: LaTeX representation
         :rtype: str
         """
-        return '{delimiter} \\lnot \\left({lhs}\\right){delimiter}'.format(
-            delimiter=delimiter,
-            lhs=self.lhs.to_latex(),
-        )
+        return super(Negation, self).to_latex(operator, delimiter)

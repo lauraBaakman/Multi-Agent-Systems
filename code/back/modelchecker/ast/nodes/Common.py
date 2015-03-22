@@ -2,18 +2,16 @@
 
 __author__ = 'laura'
 
-from node import models
-from node import Node
+from unary import Unary
 
-#TODO Should have unary as superclass
-class Common(Node):
-    def __init__(self, lhs):
-        self.lhs = lhs
+class Common(Unary):
+    def __init__(self, lhs=None):
+        super(Common, self).__init__(lhs)
 
     def __repr__(self):
         """Print-friendly infix representation."""
         return (
-            "(NOT {obj.lhs})".format(obj=self)
+            "(COMMON {obj.lhs})".format(obj=self)
         )
 
     def is_true(self, state):
@@ -50,15 +48,14 @@ class Common(Node):
         :rtype: String
         """
 
-    def to_latex(self, delimiter=''):
+    def to_latex(self, delimiter='', operator='\\text{{C}}'):
         """
         Return LaTeX representation
+        :param: operator: operator
+        :type operator: str
         :param delimiter: [optional, default = ''] delimiters for the LaTeX representation.
         :type delimiter: str
         :return: LaTeX representation
         :rtype: str
         """
-        return '{delimiter} \\text{C} \\left({lhs}\\right){delimiter}'.format(
-            delimiter=delimiter,
-            lhs=self.lhs.to_latex(),
-        )
+        return super(Common, self).to_latex(operator, delimiter)

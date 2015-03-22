@@ -17,6 +17,7 @@ class TestParser(TestCase):
         computed_tree = Ast.from_string("p", "KM").root
         expected_tree = nodes.Proposition("p")
         self.assertEqual(computed_tree, expected_tree)
+        print computed_tree.to_latex('$') + '\\\\'
 
     def test_parse_conjunction(self):
         computed_tree = Ast.from_string("p & q", "KM").root
@@ -25,6 +26,7 @@ class TestParser(TestCase):
             nodes.Proposition("q")
         )
         self.assertEqual(computed_tree, expected_tree)
+        print computed_tree.to_latex('$') + '\\\\'
 
     def test_parse_disjunction(self):
         computed_tree = Ast.from_string("p | q", "KM").root
@@ -33,6 +35,7 @@ class TestParser(TestCase):
             nodes.Proposition("q")
         )
         self.assertEqual(computed_tree, expected_tree)
+        print computed_tree.to_latex('$') + '\\\\'
 
     def test_parse_implication(self):
         computed_tree = Ast.from_string("p -> q", "KM").root
@@ -41,6 +44,7 @@ class TestParser(TestCase):
             nodes.Proposition("q")
         )
         self.assertEqual(computed_tree, expected_tree)
+        print computed_tree.to_latex('$') + '\\\\'
 
     def test_parse_biimplication(self):
         computed_tree = Ast.from_string("p <-> q", "KM").root
@@ -49,6 +53,7 @@ class TestParser(TestCase):
             nodes.Proposition("q")
         )
         self.assertEqual(computed_tree, expected_tree)
+        print computed_tree.to_latex('$') + '\\\\'
 
     def test_parse_negation(self):
         computed_tree = Ast.from_string("~ p", "KM").root
@@ -56,6 +61,7 @@ class TestParser(TestCase):
             nodes.Proposition("p")
         )
         self.assertEqual(computed_tree, expected_tree)
+        print computed_tree.to_latex('$') + '\\\\'
 
     # def test_parse_common(self):
     #     computed_tree = Ast.from_string("C p", "KM").root
@@ -78,6 +84,7 @@ class TestParser(TestCase):
             nodes.Proposition("p")
         )
         self.assertEqual(computed_tree, expected_tree)
+        print computed_tree.to_latex('$') + '\\\\'
 
 
     def test_parse_possible(self):
@@ -87,3 +94,4 @@ class TestParser(TestCase):
             nodes.Proposition("p")
         )
         self.assertEqual(computed_tree, expected_tree)
+        print computed_tree.to_latex('$') + '\\\\'
