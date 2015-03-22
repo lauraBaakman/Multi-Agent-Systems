@@ -78,4 +78,4 @@ class Negation(Unary):
         :return: LaTeX representation
         :rtype: str
         """
-        return super(Negation, self).to_latex(operator, delimiter)
+        return super(Negation, self).to_latex(delimiter, operator)

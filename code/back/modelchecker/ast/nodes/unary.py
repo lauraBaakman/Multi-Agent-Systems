@@ -3,7 +3,6 @@ from modelchecker.ast.nodes.node import Node
 
 __author__ = 'laura'
 
-
 class Unary(Node):
     def __init__(self, lhs):
         self.lhs = lhs
