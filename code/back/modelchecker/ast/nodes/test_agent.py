@@ -17,10 +17,9 @@ class TestAgent(TestCase):
     def test_is_true_knowledge_1(self):
         # Formula is true
         node = Knowledge(3, Proposition('p'))
-        self.assertTrue(
-            node.is_true(self.model.get_state_by_name('sb')),
-            "The formula is true, there is a reflexive relation."
-        )
+        (truth_value, dict) = node.is_true(self.model.get_state_by_name('sb'))
+        self.assertTrue(truth_value, "The formula is true, there is a reflexive relation.")
+        print dict['condition']
 
 
     def test_is_true_knowledge_2(self):

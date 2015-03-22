@@ -25,16 +25,15 @@ class Knowledge(Agent):
         :return: (truthvalue, dict) truthvalue is the truth value of the formula, dict contains the motivation.
         :rtype: (bool, dict)
         """
-        # todo Implement
-        raise NotImplementedError
-        # return (
-        #     truth_value,
-        #     {
-        #         'condition': self._condition(state),
+        truth_value = True
+        return (
+            truth_value,
+            {
+                'condition': self._condition(state)
         #         'interlude': [lhs_result],
         #         'conclusion': self._conclusion(state, lhs_truth_value, rhs_truth_value, truth_value),
-        #     }
-        # )
+            }
+        )
 
     def _truth_condition(self, state):
         """
@@ -44,7 +43,10 @@ class Knowledge(Agent):
         :return: String with the truth condition
         :rtype: String
         """
-        raise NotImplementedError
+        return '{lhs_models} for all $t$ with $(s, t) \\in R_{{{agent}}}$'.format(
+            lhs_models=models('s', self.lhs, '$'),
+            agent = self.agent
+        )
 
     def _conclusion(self, state, lhs_truth_value, rhs_truth_value, truth_value):
         """
