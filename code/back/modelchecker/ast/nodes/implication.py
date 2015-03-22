@@ -34,6 +34,10 @@ class Implication(Binary):
                 rhs=self.rhs
             )
         ).is_true(state)
+        dict['condition'] = '{rewrite} {rewrite_condition}'.format(
+            rewrite=self._condition(state),
+            rewrite_condition=dict['condition']
+        )
         return (truth_value, dict)
 
 

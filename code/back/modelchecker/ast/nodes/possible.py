@@ -4,6 +4,8 @@ __author__ = 'laura'
 
 from node import Node, models
 from agent import Agent
+from negation import  Negation
+from knowledge import Knowledge
 
 class Possible(Agent):
 
@@ -16,6 +18,17 @@ class Possible(Agent):
             "(M_{obj.agent} {obj.lhs})".format(obj=self)
         )
 
+    def rewrite(self):
+        return Negation(
+            lhs=Knowledge(
+                agent=self.agent,
+                lhs=Negation(
+                    lhs=self.lhs
+                )
+            )
+        )
+
+
     def is_true(self, state):
         """
         Determine the truth value of this formula.
@@ -24,25 +37,12 @@ class Possible(Agent):
         :return: (truthvalue, dict) truthvalue is the truth value of the formula, dict contains the motivation.
         :rtype: (bool, dict)
         """
-        # todo Implement
-        raise NotImplementedError
-        # Negation(
-        #     lhs=Knowledge(
-        #         agent=agent,
-        #         lhs=Negation(
-        #             lhs=lhs
-        #         )
-        #     )
-        # )
-
-        # return (
-        #     truth_value,
-        #     {
-        #         'condition': self._condition(state),
-        #         'interlude': [lhs_result],
-        #         'conclusion': self._conclusion(state, lhs_truth_value, rhs_truth_value, truth_value),
-        #     }
-        # )
+        (truth_value, dict) = self.rewrite().is_true(state)
+        dict['condition'] = '{rewrite} {rewrite_condition}'.format(
+            rewrite=self._condition(state),
+            rewrite_condition=dict['condition']
+        )
+        return (truth_value, dict)
 
     def _truth_condition(self, state):
         """
@@ -52,7 +52,9 @@ class Possible(Agent):
         :return: String with the truth condition
         :rtype: String
         """
-        raise NotImplementedError
+        return '{models}'.format(
+            models=models(state, self.rewrite(), '$'),
+        )
 
     def _conclusion(self, state, lhs_truth_value, rhs_truth_value, truth_value):
         """
