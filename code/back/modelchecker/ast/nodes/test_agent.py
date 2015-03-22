@@ -24,10 +24,9 @@ class TestAgent(TestCase):
 
     def test_is_true_knowledge_2(self):
         node = Knowledge(1, Proposition('q'))
-        self.assertTrue(
-            node.is_true(self.model.get_state_by_name('sd')),
-            "The agent does not have a relationship in the state."
-        )
+        (truth_value, dict) = node.is_true(self.model.get_state_by_name('sd'))
+        self.assertTrue(truth_value, "The agent does not have a relationship in the state.")
+        print dict['conclusion']
 
     def test_is_true_knowledge_3(self):
         # Formula is false

@@ -7,7 +7,6 @@ from modelchecker.ast.nodes.agent import Agent
 
 
 class Knowledge(Agent):
-
     def __init__(self, agent, lhs=None):
         super(Knowledge, self).__init__(agent, lhs)
 
@@ -25,13 +24,24 @@ class Knowledge(Agent):
         :return: (truthvalue, dict) truthvalue is the truth value of the formula, dict contains the motivation.
         :rtype: (bool, dict)
         """
-        truth_value = True
+        relations = state.outgoing.get(self.agent)
+        if not relations:
+            truth_value = True
+            conclusion = self._conclusion_no_relations(state)
+        elif len(relations) == 1:
+        # There is only one outgoing relation.
+            raise NotImplementedError
+        else:
+        # There are multiple outgoing realtions.
+            raise NotImplementedError
+
+
         return (
             truth_value,
             {
-                'condition': self._condition(state)
-        #         'interlude': [lhs_result],
-        #         'conclusion': self._conclusion(state, lhs_truth_value, rhs_truth_value, truth_value),
+                'condition': self._condition(state),
+                # 'interlude': [lhs_result],
+                'conclusion': conclusion,
             }
         )
 
@@ -43,12 +53,13 @@ class Knowledge(Agent):
         :return: String with the truth condition
         :rtype: String
         """
-        return '{lhs_models} for all $t$ with $(s, t) \\in R_{{{agent}}}$'.format(
-            lhs_models=models('s', self.lhs, '$'),
-            agent = self.agent
+        return '{lhs_models} for all $t$ with $({state}, t) \\in R_{{{agent}}}$'.format(
+            lhs_models=models('t', self.lhs, '$'),
+            agent=self.agent,
+            state=state
         )
 
-    def _conclusion(self, state, lhs_truth_value, rhs_truth_value, truth_value):
+    def _conclusion(self, state):
         """
         Return the conclusion motivation the truth value of this formula
         :param state: the state in which the formula should be evaluated.
@@ -59,6 +70,26 @@ class Knowledge(Agent):
         :rtype: String
         """
         raise NotImplementedError
+
+
+    def _conclusion_no_relations(self, state):
+        """
+        Return the conclusion motivation the truth value of this formula
+        :param state: the state in which the formula should be evaluated.
+        :type state: modelchecker.models.state
+        :param truth_value: the truth value of this formula
+        :type truth_value: bool
+        :return: String with the motivation
+        :rtype: String
+        """
+        return (
+            '{models} holds since $\\left\\{{ ({state}, t) | ({state}, t)'
+            ' \\in R_{{{agent}}}\\right\\}} = \\emptyset$.'.format(
+            models=models(state, self, '$'),
+            state=state.name,
+            agent = self.agent
+            )
+        )
 
     def to_latex(self, delimiter='', operator='\\text{{K}}'):
         """
