@@ -3,7 +3,7 @@ from unittest import TestCase
 
 from modelchecker import ast
 import modelchecker.models as models
-from utils import *
+from modelchecker.utils import *
 import os
 
 __author__ = 'laura'
@@ -54,7 +54,7 @@ class TestMotivation_to_latex(TestCase):
         # print motivation_to_latex(motivation)
 
     def test_motivation_to_latex_possible(self):
-        formula = "M_1 p"
+        formula = "K_2 q & (p | r)"
         tree = ast.Ast.from_string(formula, self.logic)
-        (_, motivation) = tree.is_true(self.model.states.get("sa"))
+        (_, motivation) = tree.is_true(self.model.states.get("sc"))
         print motivation_to_latex(motivation)
