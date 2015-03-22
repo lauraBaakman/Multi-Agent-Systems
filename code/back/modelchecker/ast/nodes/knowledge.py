@@ -33,12 +33,26 @@ class Knowledge(Agent):
         elif len(relations) == 1:
             # There is only one outgoing relation.
             destination = relations[0].destination
-            (truth_value, interlude) = self.lhs.is_true(destination)
+            (truth_value, motivation) = self.lhs.is_true(destination)
+            interlude = [motivation]
             conclusion =self. _conclusion_one_relation(state, truth_value, destination)
         else:
             # There are multiple outgoing relations.
-            raise NotImplementedError
-
+            destination_states = []
+            interlude = []
+            for relation in relations:
+                (destination_truth_value, destination_motivation) = self.lhs.is_true(relation.destination)
+                if destination_truth_value:
+                    destination_states.append(relation.destination.name)
+                    interlude.append(destination_motivation)
+                    truth_value = destination_truth_value
+                else:
+                    truth_value = destination_truth_value
+                    interlude = [destination_motivation]
+                    conclusion = self._conclusion_one_relation(state, truth_value, relation.destination)
+                    break
+            if truth_value:
+                conclusion = self._conclusion_multiple_relations(state, destination_states)
 
         return (
             truth_value,
@@ -49,7 +63,7 @@ class Knowledge(Agent):
             }
         )
 
-    def _truth_condition(self, state):
+    def _truth_condition(self, state, states=None):
         """
         Return the condition under which this formula is true as a string.
         :param state: the state in which the formula should be evaluated.
@@ -63,7 +77,7 @@ class Knowledge(Agent):
             state=state.name
         )
 
-    def _conclusion(self, state):
+    def _conclusion_multiple_relations(self, state, destination_states_names):
         """
         Return the conclusion motivation the truth value of this formula
         :param state: the state in which the formula should be evaluated.
@@ -73,7 +87,19 @@ class Knowledge(Agent):
         :return: String with the motivation
         :rtype: String
         """
-        raise NotImplementedError
+        conclusion = '{models} holds since '.format(
+            models=models(state, self, '$'),
+        )
+        for state_idx in range(len(destination_states_names) - 1):
+            destination_state = destination_states_names[state_idx]
+            conclusion = '{old_conclusion} {models}, '.format(
+                old_conclusion=conclusion,
+                models=models(destination_state, self.lhs, '$'),
+            )
+        return '{old_conclusion} and {models}.'.format(
+            old_conclusion=conclusion,
+            models=models(destination_states_names.pop(), self.lhs, '$'),
+        )
 
     def _conclusion_one_relation(self, state, truth_value, destination_state):
         """
