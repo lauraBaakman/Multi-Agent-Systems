@@ -68,7 +68,7 @@ class Negation(Unary):
                 condition=models(state, self.lhs, '$')
             )
 
-    def to_latex(self, delimiter='', operator='\\lnot'):
+    def to_latex(self, delimiter='', operator='\lnot'):
         """
         Return LaTeX representation
         :param: operator: operator

@@ -17,7 +17,7 @@ class Unary(Node):
         :return: LaTeX representation
         :rtype: str
         """
-        return '{delimiter} {operator} \\left({lhs}\\right){delimiter}'.format(
+        return '{delimiter} {operator} \left({lhs}\right){delimiter}'.format(
             delimiter=delimiter,
             lhs=self.lhs.to_latex(),
             operator=operator

@@ -58,7 +58,7 @@ class BiImplication(Binary):
             models=models(state, self.rewrite(), '$'),
         )
 
-    def to_latex(self, delimiter='', operator='\\leftrightarrow'):
+    def to_latex(self, delimiter='', operator='\leftrightarrow'):
         """
         Return LaTeX representation
         :param: operator: operator

@@ -76,7 +76,7 @@ class Disjunction(Binary):
                 condition_rhs=models(state, self.rhs, '$')
             )
 
-    def to_latex(self, delimiter='', operator='\\lor'):
+    def to_latex(self, delimiter='', operator='\lor'):
         """
         Return LaTeX representation
         :param: operator: operator

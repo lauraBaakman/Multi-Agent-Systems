@@ -139,15 +139,15 @@ class Knowledge(Agent):
         :rtype: String
         """
         return (
-            '{models} holds since $\\left\\{{ ({state}, t) | ({state}, t)'
-            ' \\in R_{{{agent}}}\\right\\}} = \\emptyset$.'.format(
+            '{models} holds since $\left\{{ ({state}, t) | ({state}, t)'
+            ' \in R_{{{agent}}}\right\}} = \emptyset$.'.format(
             models=models(state, self, '$'),
             state=state.name,
             agent = self.agent
             )
         )
 
-    def to_latex(self, delimiter='', operator='\\text{{K}}'):
+    def to_latex(self, delimiter='', operator='\text{{K}}'):
         """
         Return LaTeX representation
         :param: operator: operator

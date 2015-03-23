@@ -54,7 +54,7 @@ class Implication(Binary):
             models=models(state, self.rewrite(), '$'),
         )
 
-    def to_latex(self, delimiter='', operator='\\to'):
+    def to_latex(self, delimiter='', operator='\to'):
         """
         Return LaTeX representation
         :param: operator: operator

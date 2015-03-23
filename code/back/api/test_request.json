@@ -1,6 +1,6 @@
 {
   "state": "sc",
-  "formula": "K_2 q & (p | r)",
+  "formula": "p <-> q",
   "model": {
     "states": [
       {

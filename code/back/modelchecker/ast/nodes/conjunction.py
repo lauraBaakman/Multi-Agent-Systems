@@ -79,7 +79,7 @@ class Conjunction(Binary):
                 )
             return conclusion.substitute(reason=reason, models=models(state, self, '$'))
 
-    def to_latex(self, delimiter='', operator='\\land'):
+    def to_latex(self, delimiter='', operator='\land'):
         """
         Return LaTeX representation
         :param: operator: operator

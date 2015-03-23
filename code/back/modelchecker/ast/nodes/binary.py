@@ -18,7 +18,7 @@ class Binary(Node):
         :return: LaTeX representation
         :rtype: str
         """
-        return '{delimiter}\\left({lhs}{operator}{rhs}\\right){delimiter}'.format(
+        return '{delimiter}\left({lhs}{operator}{rhs}\right){delimiter}'.format(
             delimiter=delimiter,
             lhs=self.lhs.to_latex(),
             rhs=self.rhs.to_latex(),
