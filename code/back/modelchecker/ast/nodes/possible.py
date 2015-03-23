@@ -68,7 +68,7 @@ class Possible(Agent):
         """
         raise NotImplementedError
 
-    def to_latex(self, delimiter='', operator='\text{{M}}'):
+    def to_latex(self, delimiter='', operator='\text{M}'):
         """
         Return LaTeX representation
         :param: operator: operator

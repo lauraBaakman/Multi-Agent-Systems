@@ -147,7 +147,7 @@ class Knowledge(Agent):
             )
         )
 
-    def to_latex(self, delimiter='', operator='\text{{K}}'):
+    def to_latex(self, delimiter='', operator='\text{K}'):
         """
         Return LaTeX representation
         :param: operator: operator

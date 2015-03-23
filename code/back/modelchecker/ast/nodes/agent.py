@@ -20,5 +20,5 @@ class Agent(Unary):
         :return: LaTeX representation
         :rtype: str
         """
-        operator_with_agent = '{operator}_{{ \text{{{agent}}} }}'.format(operator=operator, agent=self.agent)
+        operator_with_agent = '{operator}_{{\text{{{agent}}}}}'.format(operator=operator, agent=self.agent)
         return super(Agent, self).to_latex(delimiter, operator_with_agent)
