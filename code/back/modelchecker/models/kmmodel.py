@@ -139,7 +139,7 @@ class KMModel(object):
             try:
                 self.add_state(
                     state.State(
-                        json_state['id'],
+                        str(json_state['id']),
                         _create_valuation(propositions, json_state['vals'])
                     )
                 )
@@ -149,7 +149,7 @@ class KMModel(object):
 
     def add_relations_from_json(self, json_data):
         """
-        Add the staes defined in json_data to the object.
+        Add the states defined in json_data to the object.
         :param json_data: python representation of a json_object, containing at least:
             {
                 'relations': [['a', 1, 'b'], ['c', 2, 'd']],
@@ -160,7 +160,7 @@ class KMModel(object):
             try:
                 self.add_relation(
                     relation.Relation(
-                        agent,
+                        str(agent),
                         self.get_state_by_name(source_name),
                         self.get_state_by_name(destination_name)
                     )

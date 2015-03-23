@@ -10,8 +10,8 @@ class State(object):
     State object
 
     Attributes:
-        - incoming: dictionary of incoming relations, indexed by agent.
-        - outgoing: dictionary of outgoing relations, indexed by agent.
+        - incoming: dictionary of incoming relations, indexed by agent as string.
+        - outgoing: dictionary of outgoing relations, indexed by agent as string.
         - valuations: dictionary of valuations, indexed by proposition.
     """
 

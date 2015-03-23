@@ -7,7 +7,7 @@ class Relation(object):
     Represents relations in a Kripke KMModel
 
     Attributes:
-        - agent: The agent of the relation
+        - agent: The agent of the relation as a string.
         - source: The source of the relation:
         - destination: The destination of the relation.
     """

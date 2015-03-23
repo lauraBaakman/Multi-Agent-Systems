@@ -1,29 +1,98 @@
 {
-    "state": "1",
-    "formula": "(p -> q)",
-    "model": {
-      "states": [
-        {
-          "id": "1",
-          "vals": [
-            true,
-            true,
-            false
-          ]
-        }
-      ],
-      "propositions": [
-        "p",
-        "q",
-        "r"
-      ],
-      "relations": [
-        [
-          "1",
-          1,
-          "1"
+  "state": "sc",
+  "formula": "K_2 q & (p | r)",
+  "model": {
+    "states": [
+      {
+        "id": "sa",
+        "vals": [
+          true,
+          true,
+          false
         ]
+      },
+      {
+        "id": "sb",
+        "vals": [
+          true,
+          false,
+          true
+        ]
+      },
+      {
+        "id": "sc",
+        "vals": [
+          false,
+          false,
+          true
+        ]
+      },
+      {
+        "id": "sd",
+        "vals": [
+          false,
+          true,
+          false
+        ]
+      }
+    ],
+    "propositions": [
+      "p",
+      "q",
+      "r"
+    ],
+    "relations": [
+      [
+        "sc",
+        1,
+        "sa"
       ],
-      "logic": "KM"
-    }
+      [
+        "sa",
+        1,
+        "sa"
+      ],
+      [
+        "sa",
+        2,
+        "sb"
+      ],
+      [
+        "sb",
+        2,
+        "sa"
+      ],
+      [
+        "sb",
+        2,
+        "sc"
+      ],
+      [
+        "sc",
+        2,
+        "sb"
+      ],
+      [
+        "sc",
+        2,
+        "sc"
+      ],
+      [
+        "sb",
+        3,
+        "sb"
+      ],
+      [
+        "sb",
+        3,
+        "sa"
+      ],
+      [
+        "sa",
+        3,
+        "sb"
+      ]
+    ],
+    "logic": "KM"
+  }
 }
