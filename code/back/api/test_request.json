@@ -1,6 +1,6 @@
 {
   "state": "sc",
-  "formula": "K_1 pJKJKL1",
+  "formula": "K_1 M_2 p <-> q",
   "model": {
     "states": [
       {
@@ -37,7 +37,7 @@
       }
     ],
     "propositions": [
-      "pJKJKL1",
+      "p",
       "q",
       "r"
     ],

@@ -214,7 +214,7 @@
                         <code>a</code>
                     </td>
                     <td>
-                        The name of a proposition must start with a small letter.
+                        The name of a proposition must start with a small letter, and may contain only letters and numbers after that.
                     </td>
                 </tr>
                 <tr>
@@ -366,16 +366,54 @@
             <h3>
                 Checker
             </h3>
-                <p>Given the expression tree and the model we can evaluate the expression. We simply start from the root node and follow its truth definition. For each node we generate a condition that needs to be full filled for the node to hold and a conclusion. For all nodes other than the proposition we also generate an 'interlude' which shows why the condition is full filled, or not. For example the formula $SOME FORMULA!$ would result in the following motivation in some model:
-                    <blockquote>
-                        <div class="alert alert-info" role="alert">
-                            Some example
-                        </div>
-                    </blockquote>
-                </p>
-            <div class="alert alert-info" role="alert">
-                Something on how we create the motivation for this evaluation, which is not yet
-            </div>
+            <p>Given the expression tree and the model we can evaluate the expression. We simply start from the root node and follow its truth definition. For each node we generate a condition that needs to be full filled for the node to hold and a conclusion. For all nodes other than the proposition we also generate an 'interlude' which shows why the condition is full filled, or not. For example the formula $K_1 M_2 p \leftrightarrow q$ would result in the following motivation in some model $M$:
+                <blockquote>
+                    <p>$\left(M, \text{sc} \right) \models \text{K}_{ \text{1} } \left( \text{M}_{ \text{2} } \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)\right)$ iff $\left(M, \text{t} \right) \models \text{M}_{ \text{2} } \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)$ for all $t$ with $(sc, t) \in R_{1}$.</p>
+                    <br>
+                    <p>
+                        <br> $\left(M, \text{sa} \right) \models \text{M}_{ \text{2} } \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)$ iff $\left(M, \text{sa} \right) \models \lnot \left( \text{K}_{ \text{2} } \left( \lnot \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)\right)\right)$. $\left(M, \text{sa} \right) \models \lnot \left( \text{K}_{ \text{2} } \left( \lnot \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)\right)\right)$ iff not $\left(M, \text{sa} \right) \models \text{K}_{ \text{2} } \left( \lnot \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)\right)$.
+                        <br>
+                        <br> $\left(M, \text{sa} \right) \models \text{K}_{ \text{2} } \left( \lnot \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)\right)$ iff $\left(M, \text{t} \right) \models \lnot \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)$ for all $t$ with $(sa, t) \in R_{2}$.
+                        <br>
+                        <br> $\left(M, \text{sb} \right) \models \lnot \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)$ iff not $\left(M, \text{sb} \right) \models \left(\text{p}\leftrightarrow\text{q}\right)$.
+                        <br>
+                        <br> $\left(M, \text{sb} \right) \models \left(\text{p}\leftrightarrow\text{q}\right)$ iff $\left(M, \text{sb} \right) \models \left(\left(\text{p}\to\text{q}\right)\land\left(\text{q}\to\text{p}\right)\right)$. $\left(M, \text{sb} \right) \models \left(\left(\text{p}\to\text{q}\right)\land\left(\text{q}\to\text{p}\right)\right)$ iff $\left(M, \text{sb} \right) \models \left(\text{p}\to\text{q}\right)$ and $\left(M, \text{sb} \right) \models \left(\text{q}\to\text{p}\right)$.
+                        <br>
+                        <br> $\left(M, \text{sb} \right) \models \left(\text{p}\to\text{q}\right)$ iff $\left(M, \text{sb} \right) \models \left( \lnot \left(\text{p}\right)\lor\text{q}\right)$. $\left(M, \text{sb} \right) \models \left( \lnot \left(\text{p}\right)\lor\text{q}\right)$ iff $\left(M, \text{sb} \right) \models \lnot \left(\text{p}\right)$ or $\left(M, \text{sb} \right) \models \text{q}$.
+                        <br>
+                        <br> $\left(M, \text{sb} \right) \models \lnot \left(\text{p}\right)$ iff not $\left(M, \text{sb} \right) \models \text{p}$.
+                        <br>
+                        <br> $\left(M, \text{sb} \right) \models \text{p}$ iff $\pi\left(sb\right)\left( p \right) = 1$.
+                        <br> $\left(M, \text{sb} \right) \models \text{p}$ holds since $\pi\left(sb\right)\left( p \right) = 1$.
+                        <br> $\left(M, \text{sb} \right) \models \lnot \left(\text{p}\right)$ does not hold since $\left(M, \text{sb} \right) \models \text{p}$ holds.
+                        <br>
+                        <br> $\left(M, \text{sb} \right) \models \text{q}$ iff $\pi\left(sb\right)\left( q \right) = 1$.
+                        <br> $\left(M, \text{sb} \right) \models \text{q}$ does not hold since $\pi\left(sb\right)\left( q \right) = 0$.
+                        <br> $\left(M, \text{sb} \right) \models \left( \lnot \left(\text{p}\right)\lor\text{q}\right)$ does not hold since neither $\left(M, \text{sb} \right) \models \lnot \left(\text{p}\right)$ nor $\left(M, \text{sb} \right) \models \text{q}$ holds.
+                        <br>
+                        <br> $\left(M, \text{sb} \right) \models \left(\text{q}\to\text{p}\right)$ iff $\left(M, \text{sb} \right) \models \left( \lnot \left(\text{q}\right)\lor\text{p}\right)$. $\left(M, \text{sb} \right) \models \left( \lnot \left(\text{q}\right)\lor\text{p}\right)$ iff $\left(M, \text{sb} \right) \models \lnot \left(\text{q}\right)$ or $\left(M, \text{sb} \right) \models \text{p}$.
+                        <br>
+                        <br> $\left(M, \text{sb} \right) \models \lnot \left(\text{q}\right)$ iff not $\left(M, \text{sb} \right) \models \text{q}$.
+                        <br>
+                        <br> $\left(M, \text{sb} \right) \models \text{q}$ iff $\pi\left(sb\right)\left( q \right) = 1$.
+                        <br> $\left(M, \text{sb} \right) \models \text{q}$ does not hold since $\pi\left(sb\right)\left( q \right) = 0$.
+                        <br> $\left(M, \text{sb} \right) \models \lnot \left(\text{q}\right)$ holds since $\left(M, \text{sb} \right) \models \text{q}$ does not hold.
+                        <br>
+                        <br> $\left(M, \text{sb} \right) \models \text{p}$ iff $\pi\left(sb\right)\left( p \right) = 1$.
+                        <br> $\left(M, \text{sb} \right) \models \text{p}$ holds since $\pi\left(sb\right)\left( p \right) = 1$.
+                        <br> $\left(M, \text{sb} \right) \models \left( \lnot \left(\text{q}\right)\lor\text{p}\right)$ holds since $\left(M, \text{sb} \right) \models \lnot \left(\text{q}\right)$.
+                        <br> $\left(M, \text{sb} \right) \models \left(\left(\text{p}\to\text{q}\right)\land\left(\text{q}\to\text{p}\right)\right)$ does not hold since $\left(M, \text{sb} \right) \models \left(\text{p}\to\text{q}\right)$ does not hold.
+                        <br> $\left(M, \text{sb} \right) \models \lnot \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)$ holds since $\left(M, \text{sb} \right) \models \left(\text{p}\leftrightarrow\text{q}\right)$ does not hold.
+                        <br> $\left(M, \text{sa} \right) \models \text{K}_{ \text{2} } \left( \lnot \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)\right)$ holds since $\left(M, \text{sb} \right) \models \lnot \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)$ holds.
+                        <br> $\left(M, \text{sa} \right) \models \lnot \left( \text{K}_{ \text{2} } \left( \lnot \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)\right)\right)$ does not hold since $\left(M, \text{sa} \right) \models \text{K}_{ \text{2} } \left( \lnot \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)\right)$ holds.
+                        <br>
+                    </p>
+                    <br>
+                    <p>$\left(M, \text{sc} \right) \models \text{K}_{ \text{1} } \left( \text{M}_{ \text{2} } \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)\right)$ does not hold since $\left(M, \text{sa} \right) \models \text{M}_{ \text{2} } \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)$ does not hold.</p>
+                    <br>
+                </blockquote>
+                Currently the evalution is not lazy, that is if the first conjunct of a conjunction is false, the second conjunct is still evaluated. Howeve that is something we intend to change. The conclusion is alrady lazy, that if the first disjunct of a disjunction is true the conclusion of the evaluation of that conjunct states that the disjunction holds since the first disjunct holds.
+            </p>
             <h2>
             Visualisation
         </h2> The visualisation depicts a Kripke model as a graph. The worlds have a label that shows the valuations of the atomic propositions at that world. Reflexive relations are not supported at this moment.
