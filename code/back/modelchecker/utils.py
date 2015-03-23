@@ -64,20 +64,20 @@ def _interlude_to_latex(interlude):
     result = ''
     for element in interlude:
         if isinstance(element, basestring):
-            result = '{} \\\\ {}'.format(result, element)
+            result = '{} \\ {}'.format(result, element)
         if isinstance(element, dict):
-            result = '{} \\\\ {}'.format(result, motivation_to_latex(element))
+            result = '{} \\ {}'.format(result, motivation_to_latex(element))
     return result
 
 def motivation_to_latex(motivation):
     if motivation.has_key('interlude'):
-        return '{condition}\\\\ {interlude}\\\\ {conclusion}\\\\'.format(
+        return '{condition}\\ {interlude}\\ {conclusion}\\'.format(
             condition=motivation['condition'],
             interlude=_interlude_to_latex(motivation['interlude']),
             conclusion=motivation['conclusion']
         )
     else:
-        return '{condition}\\\\  {conclusion}\\\\'.format(
+        return '{condition}\\  {conclusion}\\'.format(
             condition=motivation['condition'],
             conclusion=motivation['conclusion']
         )
