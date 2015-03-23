@@ -82,7 +82,7 @@ def get_state_from_data(data):
 def evaluate_model(model, formula, state):
     try:
         return model.is_true(formula, state)
-    except errors.ModelError as e:
+    except errors.ValuationError as e:
         raise falcon.HTTPError(falcon.HTTP_400, 'Evaluation Error', e.message)
 
 class Resource(object):

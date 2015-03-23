@@ -37,7 +37,7 @@ def _get_lexicon(logic):
         (config.propositional['implication'],      lambda scanner,      _: tokens.BinaryOperator(Binary.implication)),
         (config.propositional['bi-implication'],   lambda scanner,      _: tokens.BinaryOperator(Binary.biimplication)),
         (config.propositional['negation'],         lambda scanner,      _: tokens.UnaryOperator(Unary.negation)),
-        (r"[a-z]\w*",                              lambda scanner,  token: tokens.Proposition(token)),
+        (r"[a-z][a-zA-Z1-9]*",                              lambda scanner,  token: tokens.Proposition(token)),
         (r"[[{(<]",                                lambda scanner,      _: tokens.BracketOpen()),
         (r"[]})>]",                                lambda scanner,      _: tokens.BracketClose()),
         (r"\s+",                                   None), # None == skip token.

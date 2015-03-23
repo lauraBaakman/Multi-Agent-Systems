@@ -1,6 +1,6 @@
 {
   "state": "sc",
-  "formula": "p <-> q",
+  "formula": "K_1 pJKJKL1",
   "model": {
     "states": [
       {
@@ -37,59 +37,59 @@
       }
     ],
     "propositions": [
-      "p",
+      "pJKJKL1",
       "q",
       "r"
     ],
     "relations": [
       [
         "sc",
-        1,
+        "1",
         "sa"
       ],
       [
         "sa",
-        1,
+        "1",
         "sa"
       ],
       [
         "sa",
-        2,
+        "2",
         "sb"
       ],
       [
         "sb",
-        2,
+        "2",
         "sa"
       ],
       [
         "sb",
-        2,
+        "2",
         "sc"
       ],
       [
         "sc",
-        2,
+        "2",
         "sb"
       ],
       [
         "sc",
-        2,
+        "2",
         "sc"
       ],
       [
         "sb",
-        3,
+        "3",
         "sb"
       ],
       [
         "sb",
-        3,
+        "3",
         "sa"
       ],
       [
         "sa",
-        3,
+        "3",
         "sb"
       ]
     ],
