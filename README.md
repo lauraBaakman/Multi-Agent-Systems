@@ -19,11 +19,14 @@ Currently there is no interaction between the front and the back end. The most r
 #### Back End ####
 Go to the folder `back` run the following command:
 
+```
+#!bash
     pip install -r requirements
+```
 
 To start the server run the following command:
-    
-    gunicorn app
+
+    http-server .
 
 After running this command you get output that looks like this:
 
@@ -37,14 +40,20 @@ After running this command you get output that looks like this:
 
 
 The adress that the server is listening at should be used to communicate with the server in this command:
-    
-    http POST 127.0.0.1:8000/valuate < test_request.json 
+   
+```
+#!bash    
+        http POST 127.0.0.1:8000/valuate < test_request.json 
+```
 
 The file `test_request.json` contains a json object representing an example request. One cane edit this file 
 
 #### Front End ####
 Go to the folder `front` and run the following command:
 
+```
+#!bash    
     http-server .
+```
 
 Open the presented addres in a browser. Note that if the file `./front/index.html` is simply opened in a browser the LaTeX in the page will not be evaluated.
