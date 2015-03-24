@@ -26,10 +26,15 @@ To start the server run the following command:
     gunicorn app
 
 After running this command you get output that looks like this:
+
+```
+#!bash
 	2015-03-20 20:57:03 +0100] [63203] [INFO] Starting gunicorn 19.3.0
 	[2015-03-20 20:57:03 +0100] [63203] [INFO] Listening at: http://127.0.0.1:8000 (63203)
 	[2015-03-20 20:57:03 +0100] [63203] [INFO] Using worker: sync
 	[2015-03-20 20:57:03 +0100] [63206] [INFO] Booting worker with pid: 63206	
+```
+
 
 The adress that the server is listening at should be used to communicate with the server in this command:
     
