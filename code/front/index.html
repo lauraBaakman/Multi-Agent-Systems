@@ -360,13 +360,23 @@
             <h3>
                 Model
             </h3>
+
+            <figure>
+                <object data="./img/model.svg" type="image/svg+xml">
+                    <img src="./img/model.png" />
+                </object>
+                <figcaption>
+                    Some model $M$
+                </figcaption>
+            </figure>
+
             <div class="alert alert-info" role="alert">
                 Something on how the model is represented as an adjacency list. Possibly an example of how a specific model is represented as json.
             </div>
             <h3>
                 Checker
             </h3>
-            <p>Given the expression tree and the model we can evaluate the expression. We simply start from the root node and follow its truth definition. For each node we generate a condition that needs to be full filled for the node to hold and a conclusion. For all nodes other than the proposition we also generate an 'interlude' which shows why the condition is full filled, or not. For example the formula $K_1 M_2 p \leftrightarrow q$ would result in the following motivation in some model $M$:
+            <p>Given the expression tree and the model we can evaluate the expression. We simply start from the root node and follow its truth definition. For each node we generate a condition that needs to be full filled for the node to hold and a conclusion. For all nodes other than the proposition we also generate an 'interlude' which shows why the condition is full filled, or not. For example the formula $K_1 M_2 p \leftrightarrow q$ would result in the following motivation in model $M$:
                 <blockquote>
                     <p>$\left(M, \text{sc} \right) \models \text{K}_{ \text{1} } \left( \text{M}_{ \text{2} } \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)\right)$ iff $\left(M, \text{t} \right) \models \text{M}_{ \text{2} } \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)$ for all $t$ with $(sc, t) \in R_{1}$.</p>
                     <br>
