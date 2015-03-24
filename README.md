@@ -21,7 +21,7 @@ Go to the folder `back` run the following command:
 
 ```
 #!bash
-    pip install -r requirements
+pip install -r requirements
 ```
 
 To start the server run the following command:
