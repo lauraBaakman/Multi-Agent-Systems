@@ -51,13 +51,16 @@ define("gui_info_panel", ["d3", "json_editor"], function(d3, JSONEditor) {
             //         console.log(data);
             //     });
 
-            d3.xhr("http://localhost:8000/valuate")
-                // .header("Content-Type", "application/json")
+            d3.json("http://localhost:8000/valuate")
                 .post(
-                    json,
+                    JSON.stringify(json),
                     function(err, data) {
-                        var data = JSON.parse(data);
                         console.log("got response", data);
+                        document.getElementById("response").innerHTML = data.motivation;
+                        // document.getElementById("response").innerHTML = "<p>$K_1$</p>";
+                        // var tmp = document.getElementById("response").firstChild;
+                        // document.getElementById("response").innerHTML = tmp;
+                        // console.log(tmp);   
                     }
                 );
         };
