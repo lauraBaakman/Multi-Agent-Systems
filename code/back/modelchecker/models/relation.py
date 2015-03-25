@@ -32,6 +32,17 @@ class Relation(object):
         """Compare self with other."""
         return self.__dict__ == other.__dict__
 
+    def to_tuple(self):
+        return (self.source, self.destination, self.agent)
+
+    @staticmethod
+    def from_tuple((source, destination, agent)):
+        return Relation(
+            agent,
+            source,
+            destination
+        )
+
     def to_json_dump(self):
         """
         Return the object as the format required by to_json.

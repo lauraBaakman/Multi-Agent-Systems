@@ -1,0 +1,29 @@
+{
+    "states":[
+      {
+        "id": "sa",
+        "vals": [true, true, false]
+      },
+      {
+        "id": "sb",
+        "vals": [true, false,true]
+      },
+      {
+        "id": "sc",
+        "vals": [true, false,true]
+      },
+      {
+        "id": "sd",
+        "vals": [true, false,true]
+      }
+    ],
+	"propositions": ["p", "q", "r"],
+	"relations": [
+        ["sa", 1, "sb"],
+        ["sb", 1, "sc"],
+        ["sa", 2, "sb"],
+        ["sb", 2, "sc"],
+        ["sc", 2, "sd"]
+    ],
+	"logic": "S4"
+}
