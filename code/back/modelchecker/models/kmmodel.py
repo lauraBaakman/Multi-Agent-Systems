@@ -191,9 +191,13 @@ class KMModel(object):
                 result.append(self.is_true(formula, state))
         else:
             # TODO check of de state in het model zit, anders error.
-            return formula.is_true(
-                self.get_state_by_name(state)
-            )
+            state = self.get_state_by_name(state)
+            if state:
+                return formula.is_true(
+                    self.get_state_by_name(state)
+                )
+            else:
+                raise ValueError('The state {state} is not in the model'.format(state = state))
 
     @classmethod
     def from_json(cls, json_data):
