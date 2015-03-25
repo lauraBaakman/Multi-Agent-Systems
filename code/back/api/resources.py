@@ -102,7 +102,7 @@ class Resource(object):
             {
                 'truth_value': truth_value,
                 'motivation' : utils.motivation_to_html(motivation),
-                'model' : model
+                'model' : model.to_json()
             },
              encoding='utf-8'
         )
