@@ -3,6 +3,7 @@
 __author__ = 'laura'
 
 from KMmodel import KMmodel
+from relation import  Relation
 
 class TModel(KMmodel):
     """
@@ -19,7 +20,15 @@ class TModel(KMmodel):
         """
         Compute the reflexive closure of the relations in the model
         """
-        raise NotImplementedError
+        for agent in self.relations.keys():
+            for _, state in self.states.iteritems():
+                self.add_relation(
+                    Relation(
+                        agent,
+                        state,
+                        state
+                    )
+                )
 
     def add_relations_from_json(self, json_data):
         super(TModel, self).add_relations_from_json(json_data)

@@ -4,7 +4,7 @@ __author__ = 'laura'
 
 class Relation(object):
     """
-    Represents relations in a Kripke KMmodel
+    Represents relations in a Kripke
 
     Attributes:
         - agent: The agent of the relation as a string.

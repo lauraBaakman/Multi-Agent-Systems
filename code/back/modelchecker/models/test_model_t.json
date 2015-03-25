@@ -1,0 +1,19 @@
+{
+    "states":[
+      {
+        "id": "sa",
+        "vals": [true, true, false]
+      },
+      {
+        "id": "sb",
+        "vals": [true, false,true]
+      }
+    ],
+	"propositions": ["p", "q", "r"],
+	"relations": [
+        ["sa", 1, "sa"],
+        ["sa", 1, "sb"],
+        ["sb", 2, "sb"]
+    ],
+	"logic": "T"
+}
