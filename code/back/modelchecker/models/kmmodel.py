@@ -74,7 +74,8 @@ class KMmodel(object):
         :return: void
         """
         if relation.agent in self.relations:
-            self.relations[relation.agent].append(relation)
+            if not(relation in self.relations[relation.agent]):
+                self.relations[relation.agent].append(relation)
         else:
             self.relations[relation.agent] = [relation]
         relation.source.add_outgoing_relation(relation)
