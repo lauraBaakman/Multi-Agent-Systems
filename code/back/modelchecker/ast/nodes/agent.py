@@ -7,10 +7,10 @@ __author__ = 'laura'
 class Agent(Unary):
     def __init__(self, agent, lhs=None):
         super(Agent, self).__init__(lhs)
-        self.agent = agent
+        self.agent = str(agent)
 
 
-    def to_latex(self, delimiter='', operator="AGENTOPERATOR"):
+    def to_latex(self, delimiter='', operator="?"):
         """
         Return LaTeX representation
         :param: operator: operator

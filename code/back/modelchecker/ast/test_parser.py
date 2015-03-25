@@ -61,7 +61,7 @@ class TestParser(TestCase):
             nodes.Proposition("p")
         )
         self.assertEqual(computed_tree, expected_tree)
-        print computed_tree.to_latex('$') + '\\\\'
+        # print computed_tree.to_latex('$') + '\\\\'
 
     # def test_parse_common(self):
     #     computed_tree = Ast.from_string("C p", "KM").root
