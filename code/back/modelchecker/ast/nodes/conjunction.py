@@ -26,13 +26,19 @@ class Conjunction(Binary):
         :rtype: (bool, dict)
         """
         (lhs_truth_value, lhs_result) = self.lhs.is_true(state)
-        (rhs_truth_value, rhs_result) = self.rhs.is_true(state)
-        truth_value = lhs_truth_value and rhs_truth_value
+        if(lhs_truth_value):
+            (rhs_truth_value, rhs_result) = self.rhs.is_true(state)
+            truth_value = lhs_truth_value and rhs_truth_value
+            interlude = [lhs_result, rhs_result]
+        else:
+            rhs_truth_value = None
+            truth_value = False
+            interlude = [lhs_result]
         return (
             truth_value,
             {
                 'condition': self._condition(state),
-                'interlude': [lhs_result, rhs_result],
+                'interlude': interlude,
                 'conclusion': self._conclusion(state, lhs_truth_value, rhs_truth_value, truth_value),
             }
         )
@@ -68,15 +74,20 @@ class Conjunction(Binary):
         else:
             conclusion = Template('$models does not hold since $reason.')
 
-            if lhs_truth_value:
-                reason = '{condition} does not hold'.format(condition=models(state, self.rhs, '$'))
-            elif rhs_truth_value:
+            if not lhs_truth_value:
                 reason = '{condition} does not hold'.format(condition=models(state, self.lhs, '$'))
-            else:
-                reason = '{condition_lhs} and {condition_rhs} do not hold'.format(
-                    condition_lhs=models(state, self.lhs, '$'),
-                    condition_rhs=models(state, self.rhs, '$')
-                )
+            if not rhs_truth_value:
+                reason = '{condition} does not hold'.format(condition=models(state, self.rhs, '$'))
+
+            # if lhs_truth_value:
+            #     reason = '{condition} does not hold'.format(condition=models(state, self.rhs, '$'))
+            # elif rhs_truth_value:
+            #     reason = '{condition} does not hold'.format(condition=models(state, self.lhs, '$'))
+            # else:
+            #     reason = '{condition_lhs} and {condition_rhs} do not hold'.format(
+            #         condition_lhs=models(state, self.lhs, '$'),
+            #         condition_rhs=models(state, self.rhs, '$')
+            #     )
             return conclusion.substitute(reason=reason, models=models(state, self, '$'))
 
     def to_latex(self, delimiter='', operator='\land'):
