@@ -21,135 +21,18 @@
                 </h1>
             </div>
         </header>
-        <section id="app">
-            <div id="mode-select" class="btn-group">
-                <button class="btn btn-primary active" onclick="app.setAppMode(app.MODE.EDIT)">
-                    <i class="icon-pencil icon-white"></i> Edit Model
-                </button>
-                <button class="btn btn-primary" onclick="app.setAppMode(app.MODE.EVAL)">
-                    <i class="icon-eye-open icon-white"></i> Evaluate Formula
-                </button>
-            </div>
-            <div id="model-link">
-                <button class="btn btn-inverse" onclick="app.showLinkDialog()">Link to Current Model</button>
-            </div>
-            <div id="app-body">
-                <div class="panel tab-content">
-                    <div id="edit-pane" class="tab-pane active">
-                        <div class="var-count">
-                            Number of propositional variables:
-                            <div class="btn-group">
-                                <button class="btn" onclick="app.setVarCount(1)">1</button>
-                                <button class="btn active" onclick="app.setVarCount(2)">2</button>
-                                <button class="btn" onclick="app.setVarCount(3)">3</button>
-                                <button class="btn" onclick="app.setVarCount(4)">4</button>
-                                <button class="btn" onclick="app.setVarCount(5)">5</button>
-                            </div>
-                        </div>
-                        <div class="alert alert-info">
-                            <div class="selected-node-id">No state selected</div>
-                            <table class="propvars inactive">
-                                <tbody>
-                                    <tr class="">
-                                        <td class="var-name">p:</td>
-                                        <td class="var-value">
-                                            <div class="btn-group">
-                                                <button class="btn btn-small btn-success" onclick="app.setVarForSelectedNode(0,true)">True</button>
-                                                <button class="btn btn-small btn-danger" onclick="app.setVarForSelectedNode(0,false)">False</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="">
-                                        <td class="var-name">q:</td>
-                                        <td class="var-value">
-                                            <div class="btn-group">
-                                                <button class="btn btn-small btn-success" onclick="app.setVarForSelectedNode(1,true)">True</button>
-                                                <button class="btn btn-small btn-danger" onclick="app.setVarForSelectedNode(1,false)">False</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="inactive">
-                                        <td class="var-name">r:</td>
-                                        <td class="var-value">
-                                            <div class="btn-group">
-                                                <button class="btn btn-small btn-success" onclick="app.setVarForSelectedNode(2,true)">True</button>
-                                                <button class="btn btn-small btn-danger" onclick="app.setVarForSelectedNode(2,false)">False</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="inactive">
-                                        <td class="var-name">s:</td>
-                                        <td class="var-value">
-                                            <div class="btn-group">
-                                                <button class="btn btn-small btn-success" onclick="app.setVarForSelectedNode(3,true)">True</button>
-                                                <button class="btn btn-small btn-danger" onclick="app.setVarForSelectedNode(3,false)">False</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="inactive">
-                                        <td class="var-name">t:</td>
-                                        <td class="var-value">
-                                            <div class="btn-group">
-                                                <button class="btn btn-small btn-success" onclick="app.setVarForSelectedNode(4,true)">True</button>
-                                                <button class="btn btn-small btn-danger" onclick="app.setVarForSelectedNode(4,false)">False</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="instructions">
-                            <ul class="unstyled">
-                                <li>Click in the open space to <strong>add a state</strong></li>
-                                <li>Drag between states to <strong>add a transition</strong></li>
-                                <li>Ctrl-drag a state to <strong>move</strong> graph layout</li>
-                                <li>Click a state or a transition to <strong>select</strong> it</li>
-                                <li>
-                                    When a state is selected:
-                                    <ul>
-                                        <li><strong>R</strong> toggles reflexivity</li>
-                                        <li><strong>Delete</strong> removes the state</li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    When a transition is selected:
-                                    <ul>
-                                        <li><strong>L</strong>(eft), <strong>R</strong>(ight), <strong>B</strong>(oth) change direction</li>
-                                        <li><strong>Delete</strong> removes the transition</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div id="eval-pane" class="tab-pane">
-                        <div class="eval-input">
-                            Enter a formula:
-                            <input type="text" placeholder="e.g., (p -> []p)">
-                            <button class="btn btn-block" onclick="app.evaluateFormula()">Evaluate</button>
-                        </div>
-                        <div class="eval-output inactive">
-                        </div>
-                        <div class="instructions">
-                            <ul class="unstyled">
-                                <li>
-                                    When entering a formula:
-                                    <ul>
-                                        <li>use <code>~A</code> for $\lnot{}A$</li>
-                                        <li>use <code>[]A</code> for $\Box{}A$</li>
-                                        <li>use <code>&lt;&gt;A</code> for $\Diamond{}A$</li>
-                                        <li>use <code>(A &amp; B)</code> for $(A\land{}B)$</li>
-                                        <li>use <code>(A | B)</code> for $(A\lor{}B)$</li>
-                                        <li>use <code>(A -&gt; B)</code> for $(A\rightarrow{}B)$</li>
-                                        <li>use <code>(A &lt;-&gt; B)</code> for $(A\leftrightarrow{}B)$</li>
-                                    </ul>
-                                </li>
-                                <li><strong>NB:</strong> Input is parenthesis-sensitive!
-                            </ul>
-                        </div>
+        <section class="row" id="app">
+            <div class="col-md-3" id="app-info">
+                <div class="row" id="editor_container">
+                    <div class="col-md-12" id="json_editor"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="button">Submit</button>
                     </div>
                 </div>
-                <div class="graph"></div>
-                <div class="current-formula inactive"></div>
+            </div>
+            <div class="col-md-9" id="app-canvas">
             </div>
         </section>
         <section class="row" id="report">
@@ -360,23 +243,13 @@
             <h3>
                 Model
             </h3>
-
-            <figure>
-                <object data="./img/model.svg" type="image/svg+xml">
-                    <img src="./img/model.png" />
-                </object>
-                <figcaption>
-                    Some model $M$
-                </figcaption>
-            </figure>
-
             <div class="alert alert-info" role="alert">
                 Something on how the model is represented as an adjacency list. Possibly an example of how a specific model is represented as json.
             </div>
             <h3>
                 Checker
             </h3>
-            <p>Given the expression tree and the model we can evaluate the expression. We simply start from the root node and follow its truth definition. For each node we generate a condition that needs to be full filled for the node to hold and a conclusion. For all nodes other than the proposition we also generate an 'interlude' which shows why the condition is full filled, or not. For example the formula $K_1 M_2 p \leftrightarrow q$ would result in the following motivation in model $M$:
+            <p>Given the expression tree and the model we can evaluate the expression. We simply start from the root node and follow its truth definition. For each node we generate a condition that needs to be full filled for the node to hold and a conclusion. For all nodes other than the proposition we also generate an 'interlude' which shows why the condition is full filled, or not. For example the formula $K_1 M_2 p \leftrightarrow q$ would result in the following motivation in some model $M$:
                 <blockquote>
                     <p>$\left(M, \text{sc} \right) \models \text{K}_{ \text{1} } \left( \text{M}_{ \text{2} } \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)\right)$ iff $\left(M, \text{t} \right) \models \text{M}_{ \text{2} } \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)$ for all $t$ with $(sc, t) \in R_{1}$.</p>
                     <br>

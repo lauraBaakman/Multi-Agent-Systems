@@ -1,12 +1,32 @@
 define("epl_model", [], function() {
 
-	function Model() {
+    function EplModel() {
         // Array of states (worlds) in model.
         // Each state is an object with two properties:
         // - assignment: a truth assignment (in which only true values are actually stored)
         // - successors: an array of successor state indices (in lieu of a separate accessibility relation)
         // ex: [{assignment: {},          successors: [0,1]},
         //      {assignment: {'p': true}, successors: []   }]
+
+
+        // node = {
+        //     id: ++lastNodeId,
+        //     vals: [
+        //          0: true,
+        //          1: false,
+        //          2: false
+        //      ],
+        //     reflexive: false
+        // };
+
+        // link = {
+        //     source: source,
+        //     target: target,
+        //     left: false,
+        //     right: true
+        //     agent: 1
+        // };
+
         var _states = [];
 
         /**
@@ -173,8 +193,5 @@ define("epl_model", [], function() {
             });
         };
     }
-
-    return {
-    	Model: Model
-    };
+    return EplModel;
 });
