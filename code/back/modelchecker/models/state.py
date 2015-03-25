@@ -82,7 +82,7 @@ class State(object):
 
     def __eq__(self, other):
         """Compare self with other."""
-        return self.__dict__ == other.__dict__
+        return self.name == other.name
 
     def to_json_dump(self):
         return {
