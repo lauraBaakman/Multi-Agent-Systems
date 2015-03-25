@@ -57,4 +57,4 @@ class TestMotivation_to_latex(TestCase):
         formula = "K_2 q & (p | r)"
         tree = ast.Ast.from_string(formula, self.logic)
         (_, motivation) = tree.is_true(self.model.states.get("sc"))
-        print motivation_to_latex(motivation)
+        # print motivation_to_latex(motivation)
