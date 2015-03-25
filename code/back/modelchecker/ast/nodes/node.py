@@ -9,7 +9,7 @@ def models(state, formula, delimiter=''):
         state_name = state.name
     else:
         state_name = state
-    return "{delimiter}\left(M, \text{{{state}}} \right) \models {formula}{delimiter}".format(
+    return "{delimiter}\left(M, \\text{{{state}}} \\right) \models {formula}{delimiter}".format(
         state=state_name,
         formula=formula.to_latex(),
         delimiter=delimiter

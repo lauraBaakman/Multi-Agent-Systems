@@ -49,7 +49,7 @@ class Everybody(Unary):
         :rtype: String
         """
 
-    def to_latex(self, delimiter='', operator='\text{{E}}'):
+    def to_latex(self, delimiter='', operator='\\text{{E}}'):
         """
         Return LaTeX representation
         :param: operator: operator

@@ -53,6 +53,7 @@ class TestBinary(TestCase):
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sa'))
 
         self.assertTrue(truth_value)
+        # print dict['interlude']
         # print dict['condition'] + '\\\\'
         # print dict['conclusion']
 
@@ -61,6 +62,7 @@ class TestBinary(TestCase):
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sb'))
 
         self.assertTrue(truth_value)
+        # print dict['interlude']
         # print dict['condition'] + '\\\\'
         # print dict['conclusion']
 
@@ -69,6 +71,7 @@ class TestBinary(TestCase):
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sc'))
 
         self.assertFalse(truth_value)
+        # print dict['interlude']
         # print dict['condition'] + '\\\\'
         # print dict['conclusion']
 
@@ -77,6 +80,7 @@ class TestBinary(TestCase):
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sd'))
 
         self.assertTrue(truth_value)
+        # print dict['interlude']
         # print dict['condition'] + '\\\\'
         # print dict['conclusion']
 

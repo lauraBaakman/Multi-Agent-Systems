@@ -140,7 +140,7 @@ class Knowledge(Agent):
         """
         return (
             '{models} holds since $\left\{{ ({state}, t) | ({state}, t)'
-            ' \in R_{{{agent}}}\right\}} = \emptyset$.'.format(
+            ' \in R_{{{agent}}}\\right\}} = \emptyset$.'.format(
             models=models(state, self, '$'),
             state=state.name,
             agent = self.agent

@@ -48,7 +48,7 @@ class Proposition(Node):
         )
 
     def _truth_condition(self, state, value):
-        return '$\pi\left({state_name}\right)\left( {prop_name} \right) = {value}$'.format(
+        return '$\pi\left({state_name}\\right)\left( {prop_name} \\right) = {value}$'.format(
             state_name=state.name,
             prop_name=self.name,
             value=value
@@ -74,4 +74,4 @@ class Proposition(Node):
         :return: LaTeX representation
         :rtype: str
         """
-        return '{delimiter}\text{{{name}}}{delimiter}'.format(delimiter=delimiter, name=self.name)
+        return '{delimiter}\\text{{{name}}}{delimiter}'.format(delimiter=delimiter, name=self.name)
