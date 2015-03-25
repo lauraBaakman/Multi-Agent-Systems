@@ -117,13 +117,13 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                 4: '\u2084',
             }
 
-            var str = 'R\u208D ';
+            var str = 'R\u208D';
 
             link.agents.forEach(function(agent) {
                 str += agent_to_unicode[agent];
             });
 
-            return str + ' \u208E'
+            return str + '\u208E'
         }
 
         function draw_paths() {
@@ -243,18 +243,14 @@ define("gui_graph_canvas", ["d3"], function(d3) {
         }
 
         this.start = function() {
-            // General canvas and force layout
             init_canvas();
             init_layout();
 
-            // Init the variable drawable object (nodes, links)
             init_handles();
 
-            // Define helper objects
             init_arrow_markers();
             init_drag_line();
-
-            // First draw call
+            
             self.draw();
         }
     }

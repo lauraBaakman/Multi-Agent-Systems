@@ -6,6 +6,8 @@ import json
 
 import falcon
 
+import time
+
 import modelchecker.utils as utils
 import modelchecker.models as models
 import modelchecker.errors as errors
@@ -105,4 +107,5 @@ class Resource(object):
              encoding='utf-8'
         )
         resp.set_header('Access-Control-Allow-Origin', req.get_header('Origin'))
+        time.sleep(2);
         print 'Sent response: {resp}'.format(resp=resp)
