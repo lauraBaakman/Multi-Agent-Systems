@@ -176,7 +176,7 @@ class KMModel(object):
                     )
                 )
 
-    def is_true(self, formula, state):
+    def is_true(self, formula, state_name):
         """
         Determine the truth value for formula in this model and state
         :param formula: formula as an AST
@@ -184,11 +184,9 @@ class KMModel(object):
         evaluated in all states.
         :return: Truth value or a list of truth values
         """
-        state = self.get_state_by_name(state)
+        state = self.get_state_by_name(state_name)
         if state:
-            return formula.is_true(
-                self.get_state_by_name(state)
-            )
+            return formula.is_true(state)
         else:
             raise ValueError('The state {state} is not in the model'.format(state = state))
 
