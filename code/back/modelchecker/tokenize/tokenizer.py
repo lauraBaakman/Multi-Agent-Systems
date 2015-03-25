@@ -27,8 +27,13 @@ def _get_lexicon(logic):
 
     expressions_per_logic = {
         "KM":   km_s5_expressions,
-        "S5":   km_s5_expressions,
-        "S5EC": s5EC_expressions
+        "T": km_s5_expressions,
+        "S4": km_s5_expressions,
+        "S5": km_s5_expressions,
+        "KEC": s5EC_expressions,
+        "TEC": s5EC_expressions,
+        "S4EC": s5EC_expressions,
+        "S5EC": s5EC_expressions,
     }
 
     expressions = [

@@ -2,9 +2,9 @@
 
 __author__ = 'laura'
 
-from KMmodel import KMmodel
+from Tmodel import TModel
 
-class TModel(KMmodel):
+class S4Model(TModel):
     """
     Class representing reflexive Kripke models.
     Attributes:
@@ -13,9 +13,9 @@ class TModel(KMmodel):
     """
 
     def __init__(self):
-        super(TModel, self).__init__()
+        super(S4Model, self).__init__()
 
-    def reflexive_closure(self):
+    def transitive_closure(self):
         """
         Compute the reflexive closure of the relations in the model
         """
@@ -23,4 +23,4 @@ class TModel(KMmodel):
 
     def add_relations_from_json(self, json_data):
         super(TModel, self).add_relations_from_json(json_data)
-        self.reflexive_closure()
+        self.transitive_closure()

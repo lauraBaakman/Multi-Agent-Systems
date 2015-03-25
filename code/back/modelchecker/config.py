@@ -23,4 +23,7 @@ common = {
     #Add everybody
 }
 
+# The supported logics:
+logics = ['KM', 'T', 'S4', 'S5', 'KEC', 'TEC', 'S4EC', 'S5EC']
+
 

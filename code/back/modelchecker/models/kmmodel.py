@@ -94,17 +94,17 @@ class KMmodel(object):
                 )
         self.states[state.name] = state
 
-    def get_state_by_name(self, name):
+    def get_state_by_name(self, state_name):
         """
         Get a state in the  models by its name.
         :param name: the name of the state
         :return: the state with the name name
         :raises: modelError if name does not represent an existing state.
         """
-        state = self.states.get(name, None)
+        state = self.states.get(state_name, None)
         if state:
             return state
-        raise errors.ModelError()
+        raise errors.ModelError('Could not find the state {}'.format(state_name))
 
     def add_states_from_json(self, json_data):
         """
@@ -186,11 +186,12 @@ class KMmodel(object):
         evaluated in all states.
         :return: Truth value or a list of truth values
         """
-        state = self.get_state_by_name(state_name)
-        if state:
+        try:
+            state = self.get_state_by_name(state_name)
             return formula.is_true(state)
-        else:
-            raise ValueError('The state {state} is not in the model'.format(state = state))
+        except:
+            raise
+
 
     @classmethod
     def from_json(cls, json_data):

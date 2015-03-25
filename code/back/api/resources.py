@@ -7,9 +7,10 @@ import json
 import falcon
 
 import modelchecker.utils as utils
-import modelchecker.models as models
+import modelchecker.models.modelfactory as modelfactory
 import modelchecker.errors as errors
 import modelchecker.ast as ast
+import modelchecker.config as config
 #
 def get_from_data(data, key, message=None):
     result = data.get(key)
@@ -40,11 +41,11 @@ def read_json(request):
 
 def get_logic_from_data(data):
     logic = get_from_data(data, 'logic')
-    if not logic in ['KM', 'S5', 'S5EC']:
+    if not logic in config.logics:
         raise falcon.HTTPError(
             falcon.HTTP_400,
             'Error'
-            "Undefined logic in model, possible options: are 'KM', 'S5', 'S5EC'"
+            "Undefined logic in model, possible options: are {}".format(config.logics)
         )
     return logic
 
@@ -52,17 +53,10 @@ def get_model_from_data(data):
     json_model = get_from_data(data, 'model')
     logic = get_logic_from_data(json_model)
 
-    model = {}
     try:
-        if logic == "KM":
-            model = models.KMModel.from_json(json_model)
-        elif logic == "S5":
-            # TODO: model =  models.S5.S5Model.from_json(json_model)
-            raise falcon.HTTPError(falcon.HTTP_501, 'Error', 'The logic S5 is not yet implemented')
-        elif logic == "S5EC":
-            # TODO: model = models.S5EC.S5ECModel.from_json(json_model)
-            raise falcon.HTTPError(falcon.HTTP_501, 'Error', 'The logic S5EC is not yet implemented')
-    except errors.ModelError as e:
+        model_class = modelfactory.from_model_name(logic)
+        model = model_class.from_json(json_model)
+    except errors.ParserError as e:
         raise falcon.HTTPError(falcon.HTTP_400, 'Model Error', e.message)
     return (logic, model)
 
