@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from unittest import TestCase
 
-from modelchecker.ast.nodes import Proposition, Negation
+from modelchecker.ast.nodes import Proposition, Negation, Conjunction
 from modelchecker.models.kmmodel import KMModel
 from modelchecker import utils
 
@@ -28,5 +28,12 @@ class TestUnary(TestCase):
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sd'))
 
         self.assertTrue(truth_value)
-        # print dict['condition'] + '\\\\'
+        # print dict['condition']
         # print dict['conclusion']
+
+    def test_is_true_3(self):
+        node = Negation(Conjunction(self.lhs, self.lhs))
+        (truth_value, dict) = node.is_true(self.model.get_state_by_name('sd'))
+
+        self.assertTrue(truth_value)
+        # print dict['condition']

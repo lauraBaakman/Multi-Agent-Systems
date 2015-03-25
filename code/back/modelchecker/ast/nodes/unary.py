@@ -22,3 +22,6 @@ class Unary(Node):
             lhs=self.lhs.to_latex(),
             operator=operator
         )
+
+    def is_leaf(self):
+        return False

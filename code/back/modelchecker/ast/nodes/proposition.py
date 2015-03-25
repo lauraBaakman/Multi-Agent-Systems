@@ -66,6 +66,10 @@ class Proposition(Node):
                 condition=self._truth_condition(state, int(truth_value))
             )
 
+
+    def is_leaf(self):
+        return False
+
     def to_latex(self, delimiter = ''):
         """
         Return LaTeX representation

@@ -24,3 +24,6 @@ class Binary(Node):
             rhs=self.rhs.to_latex(),
             operator=operator
         )
+
+    def is_leaf(self):
+        return False

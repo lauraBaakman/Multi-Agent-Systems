@@ -78,4 +78,11 @@ class Negation(Unary):
         :return: LaTeX representation
         :rtype: str
         """
-        return super(Negation, self).to_latex(delimiter, operator)
+        if(self.lhs.is_leaf()):
+            return super(Negation, self).to_latex(delimiter, operator)
+        else:
+            return '{delimiter} {operator} {lhs}{delimiter}'.format(
+                delimiter=delimiter,
+                lhs=self.lhs.to_latex(),
+                operator=operator
+            )
