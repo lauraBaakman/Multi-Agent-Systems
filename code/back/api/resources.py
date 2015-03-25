@@ -88,6 +88,7 @@ def evaluate_model(model, formula, state):
 class Resource(object):
 
     def on_post(self, req, resp):
+        print 'Received request: {req}'.format(req=req)
         json_data = read_json(req)
         (logic, model) = get_model_from_data(json_data)
         ast = get_ast_from_data(logic, json_data)
@@ -103,3 +104,5 @@ class Resource(object):
             },
              encoding='utf-8'
         )
+        resp.set_header('Access-Control-Allow-Origin', req.get_header('Origin'))
+        print 'Sent response: {resp}'.format(resp=resp)
