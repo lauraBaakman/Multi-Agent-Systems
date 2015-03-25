@@ -14,7 +14,7 @@ class TestMotivation_to_latex(TestCase):
         self.logic = "KM"
         filename = './modelchecker/models/test_model_km.json'
         data = read_json(filename)
-        self.model = models.kmmodel.KMModel.from_json(data)
+        self.model = models.KMmodel.KMmodel.from_json(data)
 
 
     def test_motivation_to_latex_negation(self):

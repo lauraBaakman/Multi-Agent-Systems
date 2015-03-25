@@ -2,7 +2,7 @@
 from unittest import TestCase
 
 from modelchecker.ast.nodes import *
-from modelchecker.models.kmmodel import KMModel
+from modelchecker.models.KMmodel import KMmodel
 from modelchecker import utils
 
 
@@ -10,9 +10,9 @@ __author__ = 'laura'
 
 class TestAgent(TestCase):
     def setUp(self):
-        self.model = KMModel()
+        self.model = KMmodel()
         json_data = utils.read_json('modelchecker/models/test_model_km.json')
-        self.model = KMModel.from_json(json_data)
+        self.model = KMmodel.from_json(json_data)
 
     def test_is_true_knowledge_1(self):
         # Formula is true

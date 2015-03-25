@@ -2,6 +2,8 @@
 
 __author__ = 'laura'
 
-import kmmodel
+import KMmodel
+import Tmodel
 
-KMModel = kmmodel.KMModel
+KMModel = KMmodel.KMmodel
+TModel = Tmodel.TModel

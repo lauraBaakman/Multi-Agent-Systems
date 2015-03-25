@@ -9,8 +9,9 @@ from modelchecker import errors
 __author__ = 'laura'
 
 
-class KMModel(object):
+class KMmodel(object):
     """
+    Class representing epistemic kripke logics
     Attributes:
         - states: A dictionary of states, indexed by state name.
         - relations: A dictionary of agents, indexed by agent name.
@@ -18,7 +19,7 @@ class KMModel(object):
 
     def __init__(self):
         """
-        Constructor for KMModel
+        Constructor for KMmodel
         :return:
         """
         self.states = {}

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from unittest import TestCase
 
-from modelchecker.models.kmmodel import KMModel
+from modelchecker.models.KMmodel import KMmodel
 from modelchecker import utils
 from modelchecker.ast.nodes import Proposition
 
@@ -10,9 +10,9 @@ __author__ = 'laura'
 
 class TestProposition(TestCase):
     def setUp(self):
-        self.model = KMModel()
+        self.model = KMmodel()
         json_data = utils.read_json('./modelchecker/models/test_model_km.json')
-        self.model = KMModel.from_json(json_data)
+        self.model = KMmodel.from_json(json_data)
 
     def test_is_true_true(self):
         node = Proposition('p')

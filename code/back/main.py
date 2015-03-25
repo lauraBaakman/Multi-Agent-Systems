@@ -23,7 +23,7 @@ if __name__ == "__main__":
         print tree
 
         data = utils.read_json(filename)
-        model = models.kmmodel.KMModel.from_json(data)
+        model = models.KMmodel.KMmodel.from_json(data)
         print model
     except TokenizeError as e:
         print e.msg

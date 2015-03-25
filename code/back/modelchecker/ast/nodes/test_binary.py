@@ -3,15 +3,15 @@ from unittest import TestCase
 
 __author__ = 'laura'
 from modelchecker.ast.nodes import Proposition, Conjunction, Disjunction, Implication, BiImplication
-from modelchecker.models.kmmodel import KMModel
+from modelchecker.models.KMmodel import KMmodel
 from modelchecker import operators
 from modelchecker import utils
 
 class TestBinary(TestCase):
     def setUp(self):
-        self.model = KMModel()
+        self.model = KMmodel()
         json_data = utils.read_json('modelchecker/models/test_model_km.json')
-        self.model = KMModel.from_json(json_data)
+        self.model = KMmodel.from_json(json_data)
         self.lhs = Proposition('p')
         self.rhs = Proposition('q')
 
