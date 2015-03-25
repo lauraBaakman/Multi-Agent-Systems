@@ -176,7 +176,7 @@ class KMModel(object):
                     )
                 )
 
-    def is_true(self, formula, state=None):
+    def is_true(self, formula, state):
         """
         Determine the truth value for formula in this model and state
         :param formula: formula as an AST
@@ -184,20 +184,13 @@ class KMModel(object):
         evaluated in all states.
         :return: Truth value or a list of truth values
         """
-        if not state:
-            result = []
-            for state.name in self.states:
-                # TODO een boolean teruggeven, stoppen met checken zodra het in een state false is, of de resutlaten per state op slaan.
-                result.append(self.is_true(formula, state))
+        state = self.get_state_by_name(state)
+        if state:
+            return formula.is_true(
+                self.get_state_by_name(state)
+            )
         else:
-            # TODO check of de state in het model zit, anders error.
-            state = self.get_state_by_name(state)
-            if state:
-                return formula.is_true(
-                    self.get_state_by_name(state)
-                )
-            else:
-                raise ValueError('The state {state} is not in the model'.format(state = state))
+            raise ValueError('The state {state} is not in the model'.format(state = state))
 
     @classmethod
     def from_json(cls, json_data):
