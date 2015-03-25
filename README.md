@@ -19,27 +19,43 @@ Currently there is no interaction between the front and the back end. The most r
 #### Back End ####
 Go to the folder `back` run the following command:
 
-    pip install -r requirements
+```
+#!bash
+pip install -r requirements
+```
 
 To start the server run the following command:
-    
-    gunicorn app
 
+```
+#!bash
+gunicorn app
+```
 After running this command you get output that looks like this:
-	2015-03-20 20:57:03 +0100] [63203] [INFO] Starting gunicorn 19.3.0
-	[2015-03-20 20:57:03 +0100] [63203] [INFO] Listening at: http://127.0.0.1:8000 (63203)
-	[2015-03-20 20:57:03 +0100] [63203] [INFO] Using worker: sync
-	[2015-03-20 20:57:03 +0100] [63206] [INFO] Booting worker with pid: 63206	
+
+```
+#!bash
+2015-03-20 20:57:03 +0100] [63203] [INFO] Starting gunicorn 19.3.0
+[2015-03-20 20:57:03 +0100] [63203] [INFO] Listening at: http://127.0.0.1:8000 (63203)
+[2015-03-20 20:57:03 +0100] [63203] [INFO] Using worker: sync
+[2015-03-20 20:57:03 +0100] [63206] [INFO] Booting worker with pid: 63206	
+```
+
 
 The adress that the server is listening at should be used to communicate with the server in this command:
-    
-    http POST 127.0.0.1:8000/valuate < test_request.json 
+   
+```
+#!bash    
+http POST 127.0.0.1:8000/valuate < test_request.json 
+```
 
 The file `test_request.json` contains a json object representing an example request. One cane edit this file 
 
 #### Front End ####
 Go to the folder `front` and run the following command:
 
-    http-server .
+```
+#!bash    
+http-server .
+```
 
 Open the presented addres in a browser. Note that if the file `./front/index.html` is simply opened in a browser the LaTeX in the page will not be evaluated.
