@@ -25,13 +25,19 @@ class Disjunction(Binary):
         :rtype: (bool, dict)
         """
         (lhs_truth_value, lhs_result) = self.lhs.is_true(state)
-        (rhs_truth_value, rhs_result) = self.rhs.is_true(state)
-        truth_value = lhs_truth_value or rhs_truth_value
+        if lhs_truth_value:
+            interlude = [lhs_result]
+            truth_value = True
+            rhs_truth_value = None
+        else:
+            (rhs_truth_value, rhs_result) = self.rhs.is_true(state)
+            truth_value = lhs_truth_value or rhs_truth_value
+            interlude = [lhs_result, rhs_result]
         return (
             truth_value,
             {
                 'condition': self._condition(state),
-                'interlude': [lhs_result, rhs_result],
+                'interlude': interlude,
                 'conclusion': self._conclusion(state, lhs_truth_value, rhs_truth_value, truth_value),
             }
         )
