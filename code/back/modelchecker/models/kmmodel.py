@@ -145,7 +145,9 @@ class KMModel(object):
                 )
             except:
                 raise
-        # TODO raise an error if the list of states is empty after this function has been called.
+
+        if len(self.states.keys()) == 0:
+            raise errors.ModelError('A model should have at least one state.')
 
     def add_relations_from_json(self, json_data):
         """
