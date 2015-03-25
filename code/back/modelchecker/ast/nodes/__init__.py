@@ -10,9 +10,9 @@ from binary import Binary
 from proposition import Proposition
 from negation import Negation
 from everybody import  Everybody
-from common import Common
+from Common import Common
 from conjunction import Conjunction
-from disjunction import Disjunction
+from Disjunction import Disjunction
 from implication import Implication
 from biimplication import BiImplication
 from knowledge import Knowledge
