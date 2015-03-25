@@ -100,7 +100,7 @@ class Resource(object):
             {
                 'truth_value': truth_value,
                 'motivation' : utils.motivation_to_html(motivation),
-                'motivation_latex': utils.motivation_to_latex(motivation)
+                'model' : model
             },
              encoding='utf-8'
         )
