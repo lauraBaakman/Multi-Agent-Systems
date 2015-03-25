@@ -29,7 +29,8 @@ class State(object):
     def _add_relation(self, dictionary, relation):
         relations = dictionary.get(relation.agent)
         if relations:
-            relations.append(relation)
+            if not(relation in relations):
+                relations.append(relation)
         else:
             dictionary[relation.agent] = [relation]
 
