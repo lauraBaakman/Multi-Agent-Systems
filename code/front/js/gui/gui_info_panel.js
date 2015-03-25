@@ -42,17 +42,24 @@ define("gui_info_panel", ["d3", "json_editor"], function(d3, JSONEditor) {
 
         this.send = function() {
             // Ajax call to backend to send the formula
-            // d3.json(url, callback) :)
+            // d3.json(url, callback) :) hardwired to get json from resource.
 
-            // Maybe only preprocess and give a json/string 
-            // back and let the app.js send it
+            // d3.json("http://localhost:8000/valuation")
+            //     .header("Access-Control-Allow-Origin", "*")
+            //     // .header("application/json")
+            //     .post(json, function(error, data) {
+            //         console.log(data);
+            //     });
 
-            d3.json("http://localhost:8000/valuation")
-                .header("Access-Control-Allow-Origin", "*")
-                // .header("application/json")
-                .post(json, function(error, data) {
-                    console.log(data);
-                });
+            d3.xhr("http://localhost:8000/valuate")
+                // .header("Content-Type", "application/json")
+                .post(
+                    json,
+                    function(err, data) {
+                        var data = JSON.parse(data);
+                        console.log("got response", data);
+                    }
+                );
         };
 
         this.init = function() {
