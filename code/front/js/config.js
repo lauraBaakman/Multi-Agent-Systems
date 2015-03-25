@@ -7,7 +7,7 @@ require.config({
 		// Our own shit
 		'gui_graph_canvas': 'gui/gui_graph_canvas',
 		'gui_info_panel': 'gui/gui_info_panel',
-		'epl_model': 'epl/epl_model2'
+		'epl_model': 'epl/epl_model'
 	},
 
 	shim: {

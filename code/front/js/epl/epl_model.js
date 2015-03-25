@@ -1,196 +1,208 @@
 define("epl_model", [], function() {
 
     function EplModel() {
-        // Array of states (worlds) in model.
-        // Each state is an object with two properties:
-        // - assignment: a truth assignment (in which only true values are actually stored)
-        // - successors: an array of successor state indices (in lieu of a separate accessibility relation)
-        // ex: [{assignment: {},          successors: [0,1]},
-        //      {assignment: {'p': true}, successors: []   }]
+
+        var self = this;
+
+        var states = [],
+            links = [];
+
+        var state_counter = 0;
+        var link_counter = 0;
+
+        var default_propositions = ['p', 'q', 'r', 's', 't'];
+        var proposition_counter = 2;
+
+        var max_num_agents = 5;
+        var max_num_props = 5;
 
 
-        // node = {
-        //     id: ++lastNodeId,
-        //     vals: [
-        //          0: true,
-        //          1: false,
-        //          2: false
-        //      ],
-        //     reflexive: false
-        // };
-
-        // link = {
-        //     source: source,
-        //     target: target,
-        //     left: false,
-        //     right: true
-        //     agent: 1
-        // };
-
-        var _states = [];
-
-        /**
-         * Adds a transition to the model, given source and target state indices.
-         */
-        this.addTransition = function(source, target) {
-            if (!_states[source] || !_states[target]) return;
-
-            var successors = _states[source].successors,
-                index = successors.indexOf(target);
-            if (index === -1) successors.push(target);
+        this.get_prop_count = function() {
+        	return proposition_counter;
         };
 
-        /**
-         * Removes a transition from the model, given source and target state indices.
-         */
-        this.removeTransition = function(source, target) {
-            if (!_states[source]) return;
+        this.set_prop_count = function(count) {
+        	if(count < 0 || count > max_num_props) return;
 
-            var successors = _states[source].successors,
-                index = successors.indexOf(target);
-            if (index !== -1) successors.splice(index, 1);
+        	proposition_counter = count;
         };
 
-        /**
-         * Returns an array of successor states for a given state index.
-         */
-        this.getSuccessorsOf = function(source) {
-            if (!_states[source]) return undefined;
-
-            return _states[source].successors;
+        this.get_default_props = function() {
+        	return default_propositions;
         };
 
-        /**
-         * Adds a state with a given assignment to the model.
-         */
-        this.addState = function(assignment) {
-            var processedAssignment = {};
-            for (var propvar in assignment)
-                if (assignment[propvar] === true)
-                    processedAssignment[propvar] = assignment[propvar];
+        this.get_num_agents = function() {
+        	return max_num_agents;
+        };
 
-            _states.push({
-                assignment: processedAssignment,
-                successors: []
+        // Todo: Agent
+        this.add_link = function(source_id, target_id) {
+            // Add checks if source and target exist
+            var source = self.get_state(source_id);
+            if (!source) return;
+
+            var target = self.get_state(target_id);
+            if (!target) return;
+
+            var link = {
+                id: link_counter++,
+                source: source,
+                target: target,
+   				agents: [0]
+            };
+            links.push(link);
+        };
+
+        this.edit_link = function(link_id, agents) {
+            var link = self.get_link(link_id);
+            if (!link) return;
+
+            link.agents = agents;
+        };
+
+        // Todo: Agent
+        this.remove_link = function(link_id) {
+            var link_idx = self.get_link_idx(link_id);
+            if (link_idx < 0) return;
+        	// Remove 1 item at index
+            links.splice(link_idx, 1);
+        };
+
+        // Init a default state to add.... Bs to generate this every time
+        this.add_state = function() {
+            var state = {};
+
+            state.id = state_counter++;
+            state.vals = default_propositions.map(function() {
+                return false;
+            });
+            state.reflexive = false;
+
+            states.push(state);
+        };
+
+        this.edit_state = function(state_id, valuation) {
+            var state = self.get_state(state_id);
+            if (!state) return;
+
+            state.vals = default_propositions.map(function(prop, index) {
+                return !valuation[index] ? false : true;
             });
         };
 
-        /**
-         * Edits the assignment of a state in the model, given a state index and a new partial assignment.
-         */
-        this.editState = function(state, assignment) {
-            if (!_states[state]) return;
+        this.remove_state = function(state_id) {
+            var state_idx = self.get_state_idx(state_id);
+            if (state_idx < 0) return;
 
-            var stateAssignment = _states[state].assignment;
-            for (var propvar in assignment)
-                if (assignment[propvar] === true) stateAssignment[propvar] = true;
-                else if (assignment[propvar] === false) delete stateAssignment[propvar];
-        };
+            // Remove 1 item at index
+            states.splice(state_idx, 1);
 
-        /**
-         * Removes a state and all related transitions from the model, given a state index.
-         */
-        this.removeState = function(state) {
-            if (!_states[state]) return;
-            var self = this;
+            // Get all links that link to this state
+            var link_indices = [];
+            links.forEach(function(link, index) {
+            	if (link.source.id === state_id || link.target.id === state_id) {
+            		link_indices.push(index);
+            	}
+            });
 
-            _states[state] = null;
-            _states.forEach(function(source, index) {
-                if (source) self.removeTransition(index, state);
+            link_indices.forEach(function(link_idx) {
+            	self.remove_link(link_idx);
             });
         };
 
-        /**
-         * Returns an array containing the assignment (or null) of each state in the model.
-         * (Only true propositional variables are returned in each assignment.)
-         */
-        this.getStates = function() {
-            var stateList = [];
-            _states.forEach(function(state) {
-                if (state) stateList.push(state.assignment);
-                else stateList.push(null);
+        this.get_state_idx = function(state_id) {
+            var state_idx = -1;
+            states.forEach(function(state, index) {
+            	if(state.id === state_id) {
+            		state_idx = index;
+            	}
             });
-
-            return stateList;
+            return state_idx;	
         };
 
-        /**
-         * Returns the truth value of a given propositional variable at a given state index.
-         */
-        this.valuation = function(propvar, state) {
-            if (!_states[state]) throw new Error('State ' + state + ' not found!');
-
-            return !!_states[state].assignment[propvar];
+        this.get_state = function(state_id) {
+            return states.filter(function(state) {
+                return state.id === state_id;
+            })[0];
         };
 
-        /**
-         * Returns current model as a compact string suitable for use as a URL parameter.
-         * ex: [{assignment: {'q': true}, successors: [0,2]}, null, {assignment: {}, successors: []}]
-         *     compresses to 'AqS0,2;;AS;'
-         */
-        this.getModelString = function() {
-            var modelString = '';
+        this.is_target_state = function(source_id, target_id) {
+        	var is_target = false;
+        	links.forEach(function(link) {
+        		if(link.target.id === source_id && link.source.id === target_id) {
+        			is_target = true;
+        		}
+        	});
+        	return is_target;
+        }
 
-            _states.forEach(function(state) {
-                if (state) {
-                    modelString += 'A' + Object.keys(state.assignment).join();
-                    modelString += 'S' + state.successors.join();
+        this.get_states = function() {
+            return states;
+        };
+
+        this.get_link_idx = function(link_id) {
+            var link_idx = -1;
+            links.forEach(function(link, index) {
+                if (link.id === link_id) {
+                    link_idx = index;
                 }
-                modelString += ';';
             });
+            return link_idx;
+        }
 
-            return modelString;
+        this.get_link = function(link_id) {
+            return links.filter(function(link) {
+                return link.id === link_id;
+            })[0];
+        }
+
+        this.get_links = function() {
+            return links;
         };
 
-        /**
-         * Restores a model from a given model string.
-         */
-        this.loadFromModelString = function(modelString) {
-            var regex = /^(?:;|(?:A|A(?:\w+,)*\w+)(?:S|S(?:\d+,)*\d+);)+$/;
-            if (!regex.test(modelString)) return;
+        this.load_from_model_string = function(model_string) {
+        	return;
+        };
 
-            _states = [];
+        this.save_to_model_string = function() {
+        	return;
+        };
 
-            var self = this,
-                successorLists = [],
-                inputStates = modelString.split(';').slice(0, -1);
+        this.load_from_model_object = function(model_object) {
+          	
+        };
 
-            // restore states
-            inputStates.forEach(function(state) {
-                if (!state) {
-                    _states.push(null);
-                    successorLists.push(null);
-                    return;
-                }
+        this.save_to_model_object = function() {
+        	var sendable_states = states.map(function(state) {
+        		return {
+        			"id": state.id.toString(),
+        			"vals": state.vals.slice(0, proposition_counter)
+        		};
+        	});
 
-                var stateProperties = state.match(/A(.*)S(.*)/).slice(1, 3)
-                    .map(function(substr) {
-                        return (substr ? substr.split(',') : []);
-                    });
+        	var sendable_propositions = default_propositions.slice(0, proposition_counter);
 
-                var assignment = {};
-                stateProperties[0].forEach(function(propvar) {
-                    assignment[propvar] = true;
-                });
-                _states.push({
-                    assignment: assignment,
-                    successors: []
-                });
+        	var sendable_relations = [];
+        	
+        	links.forEach(function(link) {
+        		var relations = link.agents.map(function(agent) {
+        			return [
+        				link.source.id.toString(),
+        				agent,
+        				link.target.id.toString()
+        			];
+        		});
+        		relations.forEach(function(relation) {
+        			sendable_relations.push(relation);
+        		});
+        	});
 
-                var successors = stateProperties[1].map(function(succState) {
-                    return +succState;
-                });
-                successorLists.push(successors);
-            });
-
-            // restore transitions
-            successorLists.forEach(function(successors, source) {
-                if (!successors) return;
-
-                successors.forEach(function(target) {
-                    self.addTransition(source, target);
-                });
-            });
+        	return {
+        		"states": sendable_states,
+        		"propositions": sendable_propositions,
+        		"relations": sendable_relations,
+        		"logic": "K(m)"
+        	}
         };
     }
     return EplModel;
