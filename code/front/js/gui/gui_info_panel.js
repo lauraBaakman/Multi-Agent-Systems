@@ -1,4 +1,4 @@
-define("gui_info_panel", ["d3", "json_editor"], function(d3, JSONEditor) {
+define("gui_info_panel", ["d3", "json_editor", "mathjax"], function(d3, JSONEditor, MathJax) {
 
     function InfoPanel(container, model) {
 
@@ -40,30 +40,40 @@ define("gui_info_panel", ["d3", "json_editor"], function(d3, JSONEditor) {
             }
         };
 
+        var loading = null;
+
         this.send = function() {
-            // Ajax call to backend to send the formula
-            // d3.json(url, callback) :) hardwired to get json from resource.
-
-            // d3.json("http://localhost:8000/valuation")
-            //     .header("Access-Control-Allow-Origin", "*")
-            //     // .header("application/json")
-            //     .post(json, function(error, data) {
-            //         console.log(data);
-            //     });
-
             d3.json("http://localhost:8000/valuate")
-                .post(
-                    JSON.stringify(json),
-                    function(err, data) {
-                        console.log("got response", data);
-                        document.getElementById("response").innerHTML = data.motivation;
-                        // document.getElementById("response").innerHTML = "<p>$K_1$</p>";
-                        // var tmp = document.getElementById("response").firstChild;
-                        // document.getElementById("response").innerHTML = tmp;
-                        // console.log(tmp);   
+                .on("beforesend", function() {
+                    console.log("beforesend");
+                    loading = document.createElement('div')
+                    loading.className = 'loading';
+                    document.getElementById("playground").appendChild(loading);
+                })
+                .on("load", function(data) {
+                    console.log("load");
+                    var new_child = document.createElement('div');
+                    new_child.innerHTML = data.motivation;
+
+                    var response = document.getElementById("response");
+                    while (response.firstChild) {
+                        response.removeChild(response.firstChild);
                     }
-                );
+                    response.appendChild(new_child);
+
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, "response"]);
+
+                    document.getElementById("playground").removeChild(loading);
+                })
+                .on("error", function() {
+                    console.log("error");
+                    document.getElementById("playground").removeChild(loading);
+
+                })
+                .post(JSON.stringify(json));
         };
+
+
 
         this.init = function() {
             // var editor_container = container.select('#json_editor');
