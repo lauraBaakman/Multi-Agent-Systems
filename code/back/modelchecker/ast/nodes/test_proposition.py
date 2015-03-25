@@ -18,11 +18,11 @@ class TestProposition(TestCase):
         node = Proposition('p')
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sa'))
         self.assertTrue(truth_value)
-        print dict
+        # print dict
 
 
     def test_is_true_false(self):
         node = Proposition('p')
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sc'))
         self.assertFalse(truth_value)
-        print dict
+        # print dict
