@@ -24,7 +24,7 @@ class Common(Unary):
         :return: (truthvalue, dict) truthvalue is the truth value of the formula, dict contains the motivation.
         :rtype: (bool, dict)
         """
-        destination_states = list(state.model.find_connected_component_containing(state) | {state})
+        destination_states = list(state.model.all_states_reachable_from(state) | {state})
         if len(destination_states) == 1:
             return self._is_true_one_relation(
                 evaluation_state=state,
