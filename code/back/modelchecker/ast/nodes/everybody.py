@@ -57,33 +57,6 @@ class Everybody(Unary):
             )
         )
 
-    def _conclusion_one_relation(self, state, truth_value, reached_state):
-        if (truth_value):
-            return '{models} holds since {condition} holds.'.format(
-                models=models(state, self, '$'),
-                condition=models(reached_state, self.lhs, '$')
-            )
-        else:
-            return '{models} does not hold since {condition} does not hold.'.format(
-                models=models(state, self, '$'),
-                condition=models(reached_state, self.lhs, '$')
-            )
-
-    def _conclusion_multiple_relations(self, state, destination_states):
-        conclusion = '{models} holds since '.format(
-            models=models(state, self, '$'),
-        )
-        for state_idx in range(len(destination_states) - 1):
-            destination_state = destination_states[state_idx].name
-            conclusion = '{old_conclusion} {models}, '.format(
-                old_conclusion=conclusion,
-                models=models(destination_state, self.lhs, '$'),
-            )
-        return '{old_conclusion} and {models}.'.format(
-            old_conclusion=conclusion,
-            models=models(destination_states.pop().name, self.lhs, '$'),
-        )
-
     def _truth_condition(self, state):
         """
         Return the condition under which this formula is true as a string.

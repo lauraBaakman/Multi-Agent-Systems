@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from modelchecker.ast.nodes.node import Node
+from modelchecker.ast.nodes.node import Node, models
 
 __author__ = 'laura'
 
@@ -46,7 +46,6 @@ class Unary(Node):
             }
         )
 
-
     def _is_true_multiple_relations(self, evaluation_state, destination_states):
         interlude = []
         for destination in destination_states:
@@ -69,4 +68,40 @@ class Unary(Node):
                 'interlude': interlude,
                 'conclusion': conclusion,
             }
+        )
+
+    def _conclusion_one_relation(self, evaluation_state, truth_value, destination_state):
+        """
+        Return the conclusion motivation the truth value of this formula
+        :param state: the state in which the formula should be evaluated.
+        :type state: modelchecker.models.state
+        :param truth_value: the truth value of this formula
+        :type truth_value: bool
+        :return: String with the motivation
+        :rtype: String
+        """
+        if (truth_value):
+            return '{models} holds since {condition} holds.'.format(
+                models=models(evaluation_state, self, '$'),
+                condition=models(destination_state, self.lhs, '$')
+            )
+        else:
+            return '{models} does not hold since {condition} does not hold.'.format(
+                models=models(evaluation_state, self, '$'),
+                condition=models(destination_state, self.lhs, '$')
+            )
+
+    def _conclusion_multiple_relations(self, evaluation_state, destination_states):
+        conclusion = '{models} holds since '.format(
+            models=models(evaluation_state, self, '$'),
+        )
+        for state_idx in range(len(destination_states) - 1):
+            destination_state = destination_states[state_idx].name
+            conclusion = '{old_conclusion} {models}, '.format(
+                old_conclusion=conclusion,
+                models=models(destination_state, self.lhs, '$'),
+            )
+        return '{old_conclusion} and {models}.'.format(
+            old_conclusion=conclusion,
+            models=models(destination_states.pop().name, self.lhs, '$'),
         )

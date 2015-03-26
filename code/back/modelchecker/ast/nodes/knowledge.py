@@ -54,51 +54,6 @@ class Knowledge(Agent):
             state=state.name
         )
 
-    def _conclusion_multiple_relations(self, state, destination_states_names):
-        """
-        Return the conclusion motivation the truth value of this formula
-        :param state: the state in which the formula should be evaluated.
-        :type state: modelchecker.models.state
-        :param truth_value: the truth value of this formula
-        :type truth_value: bool
-        :return: String with the motivation
-        :rtype: String
-        """
-        conclusion = '{models} holds since '.format(
-            models=models(state, self, '$'),
-        )
-        for state_idx in range(len(destination_states_names) - 1):
-            destination_state = destination_states_names[state_idx]
-            conclusion = '{old_conclusion} {models}, '.format(
-                old_conclusion=conclusion,
-                models=models(destination_state, self.lhs, '$'),
-            )
-        return '{old_conclusion} and {models}.'.format(
-            old_conclusion=conclusion,
-            models=models(destination_states_names.pop(), self.lhs, '$'),
-        )
-
-    def _conclusion_one_relation(self, state, truth_value, destination_state):
-        """
-        Return the conclusion motivation the truth value of this formula
-        :param state: the state in which the formula should be evaluated.
-        :type state: modelchecker.models.state
-        :param truth_value: the truth value of this formula
-        :type truth_value: bool
-        :return: String with the motivation
-        :rtype: String
-        """
-        if(truth_value):
-            return '{models} holds since {condition} holds.'.format(
-                models=models(state, self, '$'),
-                condition=models(destination_state, self.lhs, '$')
-            )
-        else:
-            return '{models} does not hold since {condition} does not hold.'.format(
-                models=models(state, self, '$'),
-                condition=models(destination_state, self.lhs, '$')
-            )
-
     def _conclusion_no_relations(self, state):
         """
         Return the conclusion motivation the truth value of this formula
