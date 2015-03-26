@@ -15,6 +15,9 @@ def reflexive(original, states):
     reflexive_relations = [(state, state) for state in states]
     return original.union(reflexive_relations)
 
+def _convergence(set_a, set_b):
+    return set_a == set_b
+
 def transitive(original):
     """
     Compute the transitive closure of the original set.
@@ -24,10 +27,9 @@ def transitive(original):
     :rtype: set
     """
     closure = original
-    while True:
+    previous_set  = set()
+    while not _convergence(closure, previous_set):
+        previous_set = closure
         new_relations = set((x, w) for x, y in closure for q, w in closure if q == y)
-        closure_until_now = closure | new_relations
-        if closure_until_now == closure:
-            break
-        closure = closure_until_now
+        closure = previous_set.union(new_relations)
     return closure
