@@ -18,7 +18,7 @@ define("app", ["d3", "gui_graph_canvas", "gui_info_panel", "epl_model", "mathjax
         graph_canvas.start();
 
         this.redraw = function() {
-            graph_canvas.draw();
+            graph_canvas.reset();
         };
 
         container = d3.select(info_id);

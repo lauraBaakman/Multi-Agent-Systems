@@ -7,6 +7,7 @@ require.config({
 		// Our own shit
 		'gui_graph_canvas': 'gui/gui_graph_canvas',
 		'gui_info_panel': 'gui/gui_info_panel',
+		'gui_listener': 'gui/gui_listener',
 		'epl_model': 'epl/epl_model'
 	},
 

@@ -1,4 +1,4 @@
-define("gui_graph_canvas", ["d3"], function(d3) {
+define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
 
     function GraphCanvas(container, app) {
 
@@ -19,8 +19,27 @@ define("gui_graph_canvas", ["d3"], function(d3) {
             links = null,
             link_labels = null;
 
-        var selected_link = null;
-        var selected_node = null;
+        this.selected_link = null;
+        this.selected_node = null;
+
+        var listener = null
+
+        this.get_drag_line = function() {
+            return drag_line;
+        }
+
+        this.get_model = function() {
+            return model;
+        }
+
+        this.get_canvas = function() {
+            return canvas;
+        }
+
+        function init_listener() {
+            listener = new Listener(self);
+        }
+
 
         function init_canvas() {
             // Get meassurement of the container of the graph canvas
@@ -32,6 +51,10 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                 .append('svg')
                 .attr('width', width)
                 .attr('height', height);
+
+            canvas.on('mousedown', listener.mousedown);
+            canvas.on('mousemove', listener.mousemove);
+            canvas.on('mouseup', listener.mouseup);
         }
 
         function init_layout() {
@@ -39,7 +62,7 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                 .nodes(model.get_states())
                 .links(model.get_links())
                 .size([width, height])
-                .linkDistance(250)
+                .linkDistance(300)
                 .charge(-400)
                 .on('tick', tick);
         }
@@ -47,13 +70,15 @@ define("gui_graph_canvas", ["d3"], function(d3) {
         function tick() {
             links.attr('d', function(d) {
                 var dx = d.target.x - d.source.x,
-                    dy = d.target.y - d.source.y,
+                    dy = d.target.y - d.source.y;
 
-                    // Piet
-                    dist = Math.sqrt(dx * dx + dy * dy),
-                    norm_x = dx / dist,
+                // Piet
+                var dist = Math.sqrt(dx * dx + dy * dy);
+                if (!dist) return;
+
+                var norm_x = dx / dist,
                     norm_y = dy / dist,
-                    
+
                     source_padding = 0,
                     target_padding = 26,
 
@@ -71,7 +96,7 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                         source_x + ',' +
                         source_y + 'A' +
                         dist + ',' + dist + ' 0 0,1 ' +
-                        target_x + ',' + 
+                        target_x + ',' +
                         target_y;
                 } // Straight lines
                 return 'M' +
@@ -121,6 +146,8 @@ define("gui_graph_canvas", ["d3"], function(d3) {
 
             var str = 'R\u208D';
 
+            console.log(link.source.id, link.agents, link.target.id);
+
             link.agents.forEach(function(agent) {
                 str += agent_to_unicode[agent];
             });
@@ -134,7 +161,7 @@ define("gui_graph_canvas", ["d3"], function(d3) {
 
             // update existing links
             links.classed('selected', function(d) {
-                    return d === selected_link;
+                    return d === self.selected_link;
                 })
                 .style('marker-end', function(d) {
                     return 'url(#end-arrow)';
@@ -144,7 +171,7 @@ define("gui_graph_canvas", ["d3"], function(d3) {
             links.enter().append('svg:path')
                 .attr('class', 'link')
                 .classed('selected', function(d) {
-                    return d === selected_link;
+                    return d === self.selected_link;
                 })
                 .style('marker-end', function(d) {
                     return 'url(#end-arrow)';
@@ -176,7 +203,7 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                 output_props = [];
             for (var i = 0; i < model.get_prop_count(); i++) {
                 // attach 'not' symbol to false values
-                output_props.push((vals[i] ? '' : '\u00ac') + model.get_default_props()[i]);
+                output_props.push((vals[i] ? '' : '\u00ac') + model.get_props()[i]);
             }
             return output_props.join(', ');
         }
@@ -190,7 +217,7 @@ define("gui_graph_canvas", ["d3"], function(d3) {
             // update existing nodes (reflexive & selected visual states)
             nodes.selectAll('circle')
                 .style('fill', function(d) {
-                    return (d === selected_node) ? d3.rgb('#DDD').brighter().toString() : d3.rgb('#DDD');
+                    return (d === self.selected_node) ? d3.rgb('#DDD').brighter().toString() : d3.rgb('#DDD');
                 })
                 .classed('reflexive', function(d) {
                     return d.reflexive;
@@ -203,14 +230,18 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                 .attr('class', 'node')
                 .attr('r', 22)
                 .style('fill', function(d) {
-                    return (d === selected_node) ? d3.rgb('#DDD').brighter().toString() : d3.rgb('#DDD');
+                    return (d === self.selected_node) ? d3.rgb('#DDD').brighter().toString() : d3.rgb('#DDD');
                 })
                 .style('stroke', function(d) {
                     return d3.rgb('#DDD').darker().toString();
                 })
                 .classed('reflexive', function(d) {
                     return d.reflexive;
-                });
+                })
+                .on('mousedown', listener.mousedown_state)
+                .on('mouseup', listener.mouseup_state);
+
+                console.log(listener.mouseup_state);
 
             // show node IDs
             g.append('svg:text')
@@ -240,13 +271,22 @@ define("gui_graph_canvas", ["d3"], function(d3) {
 
         this.draw = function() {
             model = app.get_model();
-            init_layout()
             draw_paths();
             draw_nodes();
             layout.start();
         }
 
+        this.reset = function() {
+            canvas.remove();
+            self.start();
+        }
+
         this.start = function() {
+            init_listener();
+
+            d3.select(window)
+                .on('keydown', listener.keydown);
+
             init_canvas();
             init_layout();
 
@@ -254,7 +294,7 @@ define("gui_graph_canvas", ["d3"], function(d3) {
 
             init_arrow_markers();
             init_drag_line();
-            
+
             self.draw();
         }
     }

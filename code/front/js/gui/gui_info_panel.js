@@ -45,7 +45,6 @@ define("gui_info_panel", ["d3", "json_editor", "mathjax"], function(d3, JSONEdit
         this.send = function() {
             d3.json("http://localhost:8000/valuate")
                 .on("beforesend", function() {
-                    console.log("beforesend");
                     loading = document.createElement('div')
                     loading.className = 'loading';
                     document.getElementById("playground").appendChild(loading);
@@ -75,7 +74,7 @@ define("gui_info_panel", ["d3", "json_editor", "mathjax"], function(d3, JSONEdit
                     document.getElementById("playground").removeChild(loading);
 
                 })
-                .post(JSON.stringify(json));
+                .post(JSON.stringify(editor.get()));
         };
 
 

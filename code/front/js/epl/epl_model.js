@@ -11,6 +11,7 @@ define("epl_model", [], function() {
         var link_counter = 0;
 
         var default_propositions = ['p', 'q', 'r', 's', 't'];
+        var current_propositions = [];
         var proposition_counter = 3;
 
         var max_num_agents = 5;
@@ -27,8 +28,8 @@ define("epl_model", [], function() {
             proposition_counter = count;
         };
 
-        this.get_default_props = function() {
-            return default_propositions;
+        this.get_props = function() {
+            return current_propositions;
         };
 
         this.get_num_agents = function() {
@@ -48,7 +49,7 @@ define("epl_model", [], function() {
                 id: link_counter++,
                 source: source,
                 target: target,
-                agents: [0]
+                agents: []
             };
             links.push(link);
 
@@ -71,18 +72,20 @@ define("epl_model", [], function() {
         };
 
         // !!BROKEN!! 
-        // Init a default state to add.... Bs to generate this every time
-        // this.add_state = function() {
-        //     var state = {};
+        this.add_state = function() {
+            var state = {};
 
-        //     state.id = state_counter++;
-        //     state.vals = default_propositions.map(function() {
-        //         return false;
-        //     });
-        //     state.reflexive = false;
+            state.id = state_counter++;
 
-        //     states.push(state);
-        // };
+            current_propositions = default_propositions.slice(0, proposition_counter);
+
+            state.vals = default_propositions.map(function() {
+                return false;
+            });
+            state.reflexive = false;
+
+            states.push(state);
+        };
 
         this.edit_state = function(state_id, valuation) {
             var state = self.get_state(state_id);
@@ -184,13 +187,12 @@ define("epl_model", [], function() {
         function add_pre_state(state_id, state_vals) {
             var state = {};
 
-            // state_counter = max(parseInt(state_id), state_counter);
+            state_counter = Math.max(parseInt(state_id), state_counter);
             state.id = parseInt(state_id);
 
-            state.vals = default_propositions.forEach(function(prop, index) {
+            state.vals = current_propositions.map(function(prop, index) {
                 return !state_vals[index] ? false : true;
             });
-            console.log(state.vals);
 
             state.reflexive = false;
             state.agents = [];
@@ -199,8 +201,9 @@ define("epl_model", [], function() {
         }
 
         function add_pre_link(source_id, agent, target_id) {
+            var source = null;
             if (source_id === target_id) {
-                var source = self.get_state(source_id);
+                source = self.get_state(source_id);
                 source.reflexive = true;
                 source.agents.push(agent);
                 return;
@@ -219,13 +222,17 @@ define("epl_model", [], function() {
             links = [];
             link_counter = 0;
 
+            current_propositions = model_object.propositions;
+
             model_object.states.forEach(function(pre_state) {
                 add_pre_state(pre_state.id, pre_state.vals);
             });
 
-            // model_object.relations.forEach(function(pre_link) {
-            //     add_pre_link(parseInt(pre_link[0]), parseInt(pre_link[1]), parseInt(pre_link[2]));
-            // });
+            state_counter++;
+
+            model_object.relations.forEach(function(pre_link) {
+                add_pre_link(parseInt(pre_link[0]), parseInt(pre_link[1]), parseInt(pre_link[2]));
+            });
         };
 
         this.save_to_model_object = function() {
@@ -257,7 +264,7 @@ define("epl_model", [], function() {
                 "states": sendable_states,
                 "propositions": sendable_propositions,
                 "relations": sendable_relations,
-                "logic": "K(m)"
+                "logic": "KM"
             }
         };
     }
