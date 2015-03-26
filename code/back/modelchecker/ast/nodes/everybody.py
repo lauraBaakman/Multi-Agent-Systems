@@ -23,25 +23,32 @@ class Everybody(Unary):
         :return: (truthvalue, dict) truthvalue is the truth value of the formula, dict contains the motivation.
         :rtype: (bool, dict)
         """
-        states = list(set([state for _, states in state.outgoing.iteritems() for state in states]))
+        states = list(set([s.destination for _, states in state.outgoing.iteritems() for s in states]))
         if not states:
             return self._is_true_no_relations(state)
         elif len(states) == 1:
-            # There is one outgoing relation
-            raise NotImplementedError
+            return self._is_true_one_relation(state=state, reached_state=states[0])
         else:
             # There are multiple outgoing relations
             raise NotImplementedError
 
-
     def _is_true_no_relations(self, state):
-        truth_value = True
-        conclusion = self._conclusion_no_relations(state)
+        return (
+            True,
+            {
+                'condition': self._condition(state),
+                'conclusion': self._conclusion_no_relations(state)
+            }
+        )
+
+    def _is_true_one_relation(self, state, reached_state):
+        (truth_value, motivation) = self.lhs.is_true(reached_state)
         return (
             truth_value,
             {
                 'condition': self._condition(state),
-                'conclusion': conclusion,
+                'interlude': [motivation],
+                'conclusion': self._conclusion_one_relation(state, truth_value, reached_state)
             }
         )
 
@@ -61,6 +68,18 @@ class Everybody(Unary):
                 union=union_of_relations(state)
             )
         )
+
+    def _conclusion_one_relation(self, state, truth_value, reached_state):
+        if (truth_value):
+            return '{models} holds since {condition} holds.'.format(
+                models=models(state, self, '$'),
+                condition=models(reached_state, self.lhs, '$')
+            )
+        else:
+            return '{models} does not hold since {condition} does not hold.'.format(
+                models=models(state, self, '$'),
+                condition=models(reached_state, self.lhs, '$')
+            )
 
     def _truth_condition(self, state):
         """

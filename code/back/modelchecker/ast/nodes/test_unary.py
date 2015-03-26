@@ -49,5 +49,12 @@ class TestEverybody(TestCase):
         node = Everybody(self.lhs)
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sd'))
         self.assertTrue(truth_value)
+        # print dict['condition']
+        # print dict['conclusion']
+
+    def test_one_relation(self):
+        node = Everybody(self.lhs)
+        (truth_value, dict) = node.is_true(self.model.get_state_by_name('se'))
+        self.assertFalse(truth_value)
         print dict['condition']
         print dict['conclusion']
