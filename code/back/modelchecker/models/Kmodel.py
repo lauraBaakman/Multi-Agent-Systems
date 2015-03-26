@@ -5,6 +5,7 @@ import json
 import state
 import relation
 from modelchecker import errors
+from modelchecker.utils.closures import convergence
 
 __author__ = 'laura'
 
@@ -197,6 +198,28 @@ class KModel(object):
             return formula.is_true(state)
         except:
             raise
+
+    def find_connected_component_containing(self, state):
+        """
+        Find the connected component that contains the state state.
+        :param state: The state for which the connected component should be found.
+        :type state: modelchecker.models.state
+        :return: list of states
+        :rtype: list[modelchecker.models.state]
+        """
+        connected_component = {state}
+        previous_set = set()
+        while not convergence(connected_component, previous_set):
+            previous_set = connected_component
+            new_relations = set(
+                destination
+                for cc_state in connected_component
+                for (_, destination) in cc_state.get_all_outgoing_as_two_tuple()
+            )
+            connected_component = previous_set.union(new_relations)
+        return list(connected_component)
+
+
 
     @classmethod
     def from_json(cls, json_data):

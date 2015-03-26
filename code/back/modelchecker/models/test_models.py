@@ -36,7 +36,6 @@ class TestKMModel(TestCase):
         expected = {'1', '2', '3'}
         self.assertItemsEqual(computed, expected)
 
-    @skip("Skip test_find_connected_component_containing_1, not yet implemented.")
     def test_find_connected_component_containing_1(self):
         computed = [
             state.name
@@ -45,7 +44,6 @@ class TestKMModel(TestCase):
         expected = ['sb', 'sa', 'sc']
         self.assertItemsEqual(computed, expected)
 
-    @skip("Skip test_find_connected_component_containing_2, not yet implemented.")
     def test_find_connected_component_containing_2(self):
         computed = [
             state.name
@@ -54,7 +52,6 @@ class TestKMModel(TestCase):
         expected = ['sd']
         self.assertItemsEqual(computed, expected)
 
-    @skip("Skip test_find_connected_component_containing_3, not yet implemented.")
     def test_find_connected_component_containing_3(self):
         computed = [
             state.name
