@@ -28,3 +28,15 @@ class TestSymmetric(TestCase):
         expected_result = original_set.union([(2, 1), (3, 2), (4, 3)])
         computed_result = symmetric(original_set)
         self.assertEquals(expected_result, computed_result)
+
+class TestTransitiveSymmetric(TestCase):
+    def test_transitive_symmetric(self):
+        original_set = set([(1, 2), (2, 3), (3, 4)])
+        expected_result = original_set.union([
+            (1,3), (1,4), (2,4),
+            (2, 1), (3, 2), (4, 3),
+            (4,2), (4,1), (3,1),
+            (1, 1), (2, 2), (3, 3), (4,4)
+        ])
+        computed_result = transitive_symmetric(original_set)
+        self.assertEquals(expected_result, computed_result)

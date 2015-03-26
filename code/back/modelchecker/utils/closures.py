@@ -37,3 +37,19 @@ def transitive(original):
 def symmetric(original):
     new_relations = [(destination, source) for (source, destination) in original]
     return original.union(new_relations)
+
+def transitive_symmetric(original):
+    """
+    Compute the transitive symmetric closure
+    :param original: the set of which the transitive symmetric closure should be computed.
+    :type original: set
+    :return: the transitive symmetric closure of set
+    :rtype: set
+    """
+    closure = original
+    previous_set = set()
+    while not _convergence(closure, previous_set):
+        previous_set = closure
+        new_relations = transitive(closure) | (symmetric(closure))
+        closure = previous_set.union(new_relations)
+    return closure
