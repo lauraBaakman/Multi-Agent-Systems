@@ -35,202 +35,124 @@
             <div class="col-md-9" id="app-canvas">
             </div>
         </section>
-        
         <section id="response">
         </section>
-        
-       <!--  <section class="row" id="report">
-            <h2>
-                Introduction
-            </h2>
-            <div class="alert alert-info" role="alert">
-                Some introduction
-            </div>
-            <h3>
-                Logic systems
-            </h3>
-            <div class="alert alert-info" role="alert">
-                Some introduction
-            </div>
-            <h4>
-                The axiom system $K_{(m)}$
-            </h4>
-            <div class="alert alert-info" role="alert">
-                Introduction into $K_{(m)}$ possibly with truth definitions.
-            </div>
-            <h4>
-                The axiom system $S5_{(m)}$
-            </h4>
-            <div class="alert alert-info" role="alert">
-                Introduction into $S5_{(m)}$ possibly with truth definitions.
-            </div>
-            <h4>
-                The axiom system $S5EC_{(m)}$
-            </h4>
-            <div class="alert alert-info" role="alert">
-                Introduction into $S5EC_{(m)}$ possibly with truth definitions.
-            </div>
-            <h2>
-                Implementation
-            </h2> In this section we discuss how we represent the models and formulas within the model checker. Furthermore we also explain how the model checker verifies if a formula is true or not using these representations.
-            <h3>
-                Formula
-            </h3> Since the axiom system $S5EC_{(m)}$ is a superset of $S5_{(m)}$, and $S5_{(m)}$ is a super set of $K_{(m)}$ we only discuss the representation of formulas in the axiom system $S5EC_{(m)}$.
-            <br> Formulas are entered using the representation presented in the table below.
-            <table class="table table-striped table-hover table-condensed">
-                <tr>
-                    <th></th>
-                    <th>
-                        Conventional notation
-                    </th>
-                    <th>
-                        Input format
-                    </th>
-                    <th>
-                        Notes
-                    </th>
-                </tr>
-                <tr>
-                    <td>
-                        Proposition
-                    </td>
-                    <td>
-                        $A$
-                    </td>
-                    <td>
-                        <code>a</code>
-                    </td>
-                    <td>
-                        The name of a proposition must start with a small letter, and may contain only letters and numbers after that.
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Negation
-                    </td>
-                    <td>
-                        $\lnot A$
-                    </td>
-                    <td>
-                        <code>~a</code>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>
-                        Conjunction
-                    </td>
-                    <td>
-                        $A \land B$
-                    </td>
-                    <td>
-                        <code>a &amp; b</code>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>
-                        Conjunction
-                    </td>
-                    <td>
-                        $A \land B$
-                    </td>
-                    <td>
-                        <code>a &amp; b</code>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>
-                        Disjunction
-                    </td>
-                    <td>
-                        $A \lor B$
-                    </td>
-                    <td>
-                        <code>a | b</code>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>
-                        Implication
-                    </td>
-                    <td>
-                        $A \to B$
-                    </td>
-                    <td>
-                        <code>a -&gt; b</code>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>
-                        Implication
-                    </td>
-                    <td>
-                        $A \leftrightarrow B$
-                    </td>
-                    <td>
-                        <code>a &lt;-&gt; b</code>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>
-                        Knowledge
-                    </td>
-                    <td>
-                        $K_i$
-                    </td>
-                    <td>
-                        <code>K_i</code>
-                    </td>
-                    <td>
-                        The name of the agent must be a number.
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Possible
-                    </td>
-                    <td>
-                        $M_i$
-                    </td>
-                    <td>
-                        <code>M_i</code>
-                    </td>
-                    <td>
-                        The name of the agent must be a number.
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Common knowledge
-                    </td>
-                    <td>
-                        $C$
-                    </td>
-                    <td>
-                        <code>C</code>
-                    </td>
-                    <td></td>
-                </tr>
-            </table>
-            To represent that it is common knowledge that agent $1$ knows that it is not the case that both $a$ and $b$ hold, i.e. \begin{equation} C K_1 \lnot (a \land b) \label{eq:exampleFormula} \end{equation} one would use
-            <code>C K_1 ~(a &amp; b)</code> .
-            <h4>
-                Tokens
-            </h4> Formulas that enter the model checker are converted to a list of tokens. The tokenized version of \eqref{eq:exampleFormula} is shown in the figure.
-            <figure>
-                <object data="./img/tokenization.svg" type="image/svg+xml" align="middle">
-                    <img src="./img/tokenization.png" />
-                </object>
-                <figcaption>
-                    Tokenization of formula \eqref{eq:exampleFormula}
-                </figcaption>
-            </figure>
-            The advantage of tokenizing is that it is easier to change the definition of the non terminals of the grammar without having to change the parser it self. Another upside of representing the formula as a list of tokens before parsing it is that we can already detect some errors in the formulas. For example if a user has selected the axiom system $S5_{(m)}$ and inputs formula \eqref{eq:exampleFormula} the process that generates the list of tokens detects that the formula is not valid in that language. Since the operator $C$ is not defined in $S5_{(m)}$.
+        <section class="row" id="report">
+            <h2>Introduction</h2>
+            <p>
+                <div class="alert alert-info" role="alert">
+                    Some introduction
+                </div>
+            </p>
+            <h2>Implementation</h2>
+            <p>
+                In this section we discuss how we represent the models and formulas within the model checker. Furthermore we also explain how the model checker verifies if a formula is true or not using these representations.
+            </p>
+            <h3>Formula</h3>
+            <p>
+                Since the axiom system $S5EC_{(m)}$ is a superset of $S5_{(m)}$, and $S5_{(m)}$ is a super set of $K_{(m)}$ we only discuss the representation of formulas in the axiom system $S5EC_{(m)}$.
+            </p>
+            <p>
+                Formulas are entered using the representation presented in the table below.
+                <table class="table table-striped table-hover table-condensed">
+                    <tr>
+                        <th></th>
+                        <th>Conventional notation</th>
+                        <th>Input format</th>
+                        <th>Notes</th>
+                    </tr>
+                    <tr>
+                        <td>Proposition</td>
+                        <td>$A$</td>
+                        <td><code>a</code></td>
+                        <td>
+                            The name of a proposition must start with a small letter, and may contain only letters and numbers after that.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Negation</td>
+                        <td>$\lnot A$</td>
+                        <td><code>~a</code></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Conjunction</td>
+                        <td>$A \land B$</td>
+                        <td><code>a &amp; b</code></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Conjunction</td>
+                        <td>$A \land B$</td>
+                        <td><code>a &amp; b</code></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Disjunction</td>
+                        <td>$A \lor B$</td>
+                        <td><code>a | b</code></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Implication</td>
+                        <td>$A \to B$</td>
+                        <td><code>a -&gt; b</code></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Implication</td>
+                        <td>$A \leftrightarrow B$</td>
+                        <td><code>a &lt;-&gt; b</code></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Knowledge</td>
+                        <td>$K_i$</td>
+                        <td><code>K_i</code></td>
+                        <td>
+                            The name of the agent must be a number.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Possible</td>
+                        <td>$M_i$</td>
+                        <td><code>M_i</code></td>
+                        <td>The name of the agent must be a number.</td>
+                    </tr>
+                    <tr>
+                        <td>Common knowledge</td>
+                        <td>$C$</td>
+                        <td><code>C</code></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Everybody</td>
+                        <td>$E$</td>
+                        <td><code>E</code></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Intention</td>
+                        <td>$I$</td>
+                        <td><code>I</code></td>
+                        <td></td>
+                    </tr>
+                </table>
+                To represent that it is common knowledge that agent $1$ knows that it is not the case that both $a$ and $b$ hold, i.e. \begin{equation} C K_1 \lnot (a \land b) \label{eq:exampleFormula} \end{equation} one would use <code>C K_1 ~(a &amp; b)</code> .
+            </p>
+            <h4>Tokens</h4>
+            <p>
+                Formulas that enter the model checker are converted to a list of tokens. The tokenized version of \eqref{eq:exampleFormula} is shown in the figure.
+                <figure>
+                    <object data="./img/tokenization.svg" type="image/svg+xml" align="middle">
+                        <img src="./img/tokenization.png" />
+                    </object>
+                    <figcaption>
+                        Tokenization of formula \eqref{eq:exampleFormula}
+                    </figcaption>
+                </figure>
+                The advantage of tokenizing is that it is easier to change the definition of the non terminals of the grammar without having to change the parser it self. Another upside of representing the formula as a list of tokens before parsing it is that we can already detect some errors in the formulas. For example if a user has selected the axiom system $S5_{(m)}$ and inputs formula \eqref{eq:exampleFormula} the process that generates the list of tokens detects that the formula is not valid in that language. Since the operator $C$ is not defined in $S5_{(m)}$.
+            </p>
             <figure class="float-right">
                 <object data="./img/ast.svg" type="image/svg+xml">
                     <img src="./img/ast.png" />
@@ -239,105 +161,68 @@
                     Expression tree of formula \eqref{eq:exampleFormula}
                 </figcaption>
             </figure>
-            <h4>
-                Expression Tree
-            </h4> If we have the list op token we need to build the expression tree. We do that using this grammar: \begin{array}{cccl} E & := & ~ & \langle T \rangle \land \langle T \rangle \; | \; \langle T \rangle \lor \langle T \rangle \; | \; \langle T \rangle \to \langle T \rangle \; | \; \langle T \rangle \leftrightarrow \langle T \rangle\\ T & := & ~ & C \langle F \rangle \; | \; K_i \langle F \rangle \; | \; M_i \langle F \rangle\\ F & := & ~ & \left( \langle E \rangle \right) \; | \; ~ \lnot \langle E \rangle \; | \; \mathit{proposition}\\ \end{array} In this grammar, non-terminals are presented in pointy brackets, terminals are represented as their logic symbol or in recursive text. Based on this grammar we can parse the tokenized expression using a recursive descent parser. This results in an expression tree.
-            <br> The structure of the tree represents the order in which parts of the formula should be evaluated. For example, $a \land b$ should be evaluated first, and the result of that expression should be negated. If we had not placed brackets around the conjunction the negation node would have been a child of the conjunction node.
-            <br> All binary operators in the grammar are right-associative, i.e. the expression $a \land b \land c$ is parsed as $(a \land (b \land c))$.
-            <h3>
-                Model
-            </h3>
-            <div class="alert alert-info" role="alert">
-                Something on how the model is represented as an adjacency list. Possibly an example of how a specific model is represented as json.
-            </div>
-            <h3>
-                Checker
-            </h3>
-            <p>Given the expression tree and the model we can evaluate the expression. We simply start from the root node and follow its truth definition. For each node we generate a condition that needs to be full filled for the node to hold and a conclusion. For all nodes other than the proposition we also generate an 'interlude' which shows why the condition is full filled, or not. For example the formula $K_1 M_2 p \leftrightarrow q$ would result in the following motivation in some model $M$:
-                <blockquote>
-                    <p>$\left(M, \text{sc} \right) \models \text{K}_{ \text{1} } \left( \text{M}_{ \text{2} } \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)\right)$ iff $\left(M, \text{t} \right) \models \text{M}_{ \text{2} } \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)$ for all $t$ with $(sc, t) \in R_{1}$.</p>
-                    <br>
-                    <p>
-                        <br> $\left(M, \text{sa} \right) \models \text{M}_{ \text{2} } \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)$ iff $\left(M, \text{sa} \right) \models \lnot \left( \text{K}_{ \text{2} } \left( \lnot \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)\right)\right)$. $\left(M, \text{sa} \right) \models \lnot \left( \text{K}_{ \text{2} } \left( \lnot \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)\right)\right)$ iff not $\left(M, \text{sa} \right) \models \text{K}_{ \text{2} } \left( \lnot \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)\right)$.
-                        <br>
-                        <br> $\left(M, \text{sa} \right) \models \text{K}_{ \text{2} } \left( \lnot \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)\right)$ iff $\left(M, \text{t} \right) \models \lnot \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)$ for all $t$ with $(sa, t) \in R_{2}$.
-                        <br>
-                        <br> $\left(M, \text{sb} \right) \models \lnot \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)$ iff not $\left(M, \text{sb} \right) \models \left(\text{p}\leftrightarrow\text{q}\right)$.
-                        <br>
-                        <br> $\left(M, \text{sb} \right) \models \left(\text{p}\leftrightarrow\text{q}\right)$ iff $\left(M, \text{sb} \right) \models \left(\left(\text{p}\to\text{q}\right)\land\left(\text{q}\to\text{p}\right)\right)$. $\left(M, \text{sb} \right) \models \left(\left(\text{p}\to\text{q}\right)\land\left(\text{q}\to\text{p}\right)\right)$ iff $\left(M, \text{sb} \right) \models \left(\text{p}\to\text{q}\right)$ and $\left(M, \text{sb} \right) \models \left(\text{q}\to\text{p}\right)$.
-                        <br>
-                        <br> $\left(M, \text{sb} \right) \models \left(\text{p}\to\text{q}\right)$ iff $\left(M, \text{sb} \right) \models \left( \lnot \left(\text{p}\right)\lor\text{q}\right)$. $\left(M, \text{sb} \right) \models \left( \lnot \left(\text{p}\right)\lor\text{q}\right)$ iff $\left(M, \text{sb} \right) \models \lnot \left(\text{p}\right)$ or $\left(M, \text{sb} \right) \models \text{q}$.
-                        <br>
-                        <br> $\left(M, \text{sb} \right) \models \lnot \left(\text{p}\right)$ iff not $\left(M, \text{sb} \right) \models \text{p}$.
-                        <br>
-                        <br> $\left(M, \text{sb} \right) \models \text{p}$ iff $\pi\left(sb\right)\left( p \right) = 1$.
-                        <br> $\left(M, \text{sb} \right) \models \text{p}$ holds since $\pi\left(sb\right)\left( p \right) = 1$.
-                        <br> $\left(M, \text{sb} \right) \models \lnot \left(\text{p}\right)$ does not hold since $\left(M, \text{sb} \right) \models \text{p}$ holds.
-                        <br>
-                        <br> $\left(M, \text{sb} \right) \models \text{q}$ iff $\pi\left(sb\right)\left( q \right) = 1$.
-                        <br> $\left(M, \text{sb} \right) \models \text{q}$ does not hold since $\pi\left(sb\right)\left( q \right) = 0$.
-                        <br> $\left(M, \text{sb} \right) \models \left( \lnot \left(\text{p}\right)\lor\text{q}\right)$ does not hold since neither $\left(M, \text{sb} \right) \models \lnot \left(\text{p}\right)$ nor $\left(M, \text{sb} \right) \models \text{q}$ holds.
-                        <br>
-                        <br> $\left(M, \text{sb} \right) \models \left(\text{q}\to\text{p}\right)$ iff $\left(M, \text{sb} \right) \models \left( \lnot \left(\text{q}\right)\lor\text{p}\right)$. $\left(M, \text{sb} \right) \models \left( \lnot \left(\text{q}\right)\lor\text{p}\right)$ iff $\left(M, \text{sb} \right) \models \lnot \left(\text{q}\right)$ or $\left(M, \text{sb} \right) \models \text{p}$.
-                        <br>
-                        <br> $\left(M, \text{sb} \right) \models \lnot \left(\text{q}\right)$ iff not $\left(M, \text{sb} \right) \models \text{q}$.
-                        <br>
-                        <br> $\left(M, \text{sb} \right) \models \text{q}$ iff $\pi\left(sb\right)\left( q \right) = 1$.
-                        <br> $\left(M, \text{sb} \right) \models \text{q}$ does not hold since $\pi\left(sb\right)\left( q \right) = 0$.
-                        <br> $\left(M, \text{sb} \right) \models \lnot \left(\text{q}\right)$ holds since $\left(M, \text{sb} \right) \models \text{q}$ does not hold.
-                        <br>
-                        <br> $\left(M, \text{sb} \right) \models \text{p}$ iff $\pi\left(sb\right)\left( p \right) = 1$.
-                        <br> $\left(M, \text{sb} \right) \models \text{p}$ holds since $\pi\left(sb\right)\left( p \right) = 1$.
-                        <br> $\left(M, \text{sb} \right) \models \left( \lnot \left(\text{q}\right)\lor\text{p}\right)$ holds since $\left(M, \text{sb} \right) \models \lnot \left(\text{q}\right)$.
-                        <br> $\left(M, \text{sb} \right) \models \left(\left(\text{p}\to\text{q}\right)\land\left(\text{q}\to\text{p}\right)\right)$ does not hold since $\left(M, \text{sb} \right) \models \left(\text{p}\to\text{q}\right)$ does not hold.
-                        <br> $\left(M, \text{sb} \right) \models \lnot \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)$ holds since $\left(M, \text{sb} \right) \models \left(\text{p}\leftrightarrow\text{q}\right)$ does not hold.
-                        <br> $\left(M, \text{sa} \right) \models \text{K}_{ \text{2} } \left( \lnot \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)\right)$ holds since $\left(M, \text{sb} \right) \models \lnot \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)$ holds.
-                        <br> $\left(M, \text{sa} \right) \models \lnot \left( \text{K}_{ \text{2} } \left( \lnot \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)\right)\right)$ does not hold since $\left(M, \text{sa} \right) \models \text{K}_{ \text{2} } \left( \lnot \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)\right)$ holds.
-                        <br>
-                    </p>
-                    <br>
-                    <p>$\left(M, \text{sc} \right) \models \text{K}_{ \text{1} } \left( \text{M}_{ \text{2} } \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)\right)$ does not hold since $\left(M, \text{sa} \right) \models \text{M}_{ \text{2} } \left(\left(\text{p}\leftrightarrow\text{q}\right)\right)$ does not hold.</p>
-                    <br>
-                </blockquote>
-                Currently the evalution is not lazy, that is if the first conjunct of a conjunction is false, the second conjunct is still evaluated. Howeve that is something we intend to change. The conclusion is alrady lazy, that if the first disjunct of a disjunction is true the conclusion of the evaluation of that conjunct states that the disjunction holds since the first disjunct holds.
+            <h4>Expression Tree</h4>
+            <p>
+                If we have the list op token we need to build the expression tree. We do that using this grammar: \begin{array}{cccl} E & := & ~ & \langle T \rangle \land \langle T \rangle \; | \; \langle T \rangle \lor \langle T \rangle \; | \; \langle T \rangle \to \langle T \rangle \; | \; \langle T \rangle \leftrightarrow \langle T \rangle\\ T & := & ~ & C \langle F \rangle \; | \; K_i \langle F \rangle \; | \; M_i \langle F \rangle\\ F & := & ~ & \left( \langle E \rangle \right) \; | \; ~ \lnot \langle E \rangle \; | \; \mathit{proposition}\\ \end{array} In this grammar, non-terminals are presented in pointy brackets, terminals are represented as their logic symbol or in recursive text. Based on this grammar we can parse the tokenized expression using a recursive descent parser. This results in an expression tree.
+                <br> The structure of the tree represents the order in which parts of the formula should be evaluated. For example, $a \land b$ should be evaluated first, and the result of that expression should be negated. If we had not placed brackets around the conjunction the negation node would have been a child of the conjunction node.
+                <br> All binary operators in the grammar are right-associative, i.e. the expression $a \land b \land c$ is parsed as $(a \land (b \land c))$.
             </p>
-            <h2>
-            Visualisation
-        </h2> The visualisation depicts a Kripke model as a graph. The worlds have a label that shows the valuations of the atomic propositions at that world. Reflexive relations are not supported at this moment.
-            <h3>
-            How to use
-        </h3> At this stage the user interface is not quite finished yet and a (probably) temporal solution is in place. This temporal solution includes an json editor in which the model can be edited. Our goal is to include a more user friendly interface where states and links can be added by simply clicking in the in the graph canvas.
-            <h4>
-            JSON Format
-        </h4> An example is included in the editor for this. It contains an object called model. Within this model the states, relations, and logic system are defined.
-            <ul>
-                <li> <strong>States</strong> is an array of objects. Each object represents a state and needs to have an "id" field followed by an integer. This id is used later in the relations. The "vals" field is followed by an array of valuations. The order of these valuations needs to be the same as that of the propositions array
-                </li>
-                <li> <strong>Relations</strong> This object needs to be an array of arrays. The inner arrays describe a relation between two states and of which of the maximum 5 agents this relations belongs to.
-                </li>
-                <li>
-                    <strong>
+            <h3>Model</h3>
+            <p>
+                <div class="alert alert-info" role="alert">
+                    Something on how the model is represented as an adjacency list. Possibly an example of how a specific model is represented as json.
+                </div>
+            </p>
+            <h3>Checker</h3>
+            <p>
+                Given the expression tree and the model we can evaluate the expression. We simply start from the root node and follow its truth definition. For each node we generate a condition that needs to be full filled for the node to hold and a conclusion. For all nodes other than the proposition we also generate an 'interlude' which shows why the condition is full filled, or not. For example the formula $K_1 M_2 p \leftrightarrow q$ would result in the following motivation in some model $M$:
+                <blockquote>
+                    TODO some example!
+                </blockquote>
+            </p>
+            <p>
+                <div class="alert alert-info" role="alert">
+                    Something on how evaluation is lazy.
+                </div>
+            </p>
+            <h2>Visualisation</h2>
+            <p>
+                The visualisation depicts a Kripke model as a graph. The worlds have a label that shows the valuations of the atomic propositions at that world. Reflexive relations are not supported at this moment.
+            </p>
+            <h3>How To Use</h3>
+            <p>
+                At this stage the user interface is not quite finished yet and a (probably) temporal solution is in place. This temporal solution includes an json editor in which the model can be edited. Our goal is to include a more user friendly interface where states and links can be added by simply clicking in the in the graph canvas.
+            </p>
+            <h4>JSON Format</h4>
+            <p>
+                An example is included in the editor for this. It contains an object called model. Within this model the states, relations, and logic system are defined.
+                <ul>
+                    <li> <strong>States</strong> is an array of objects. Each object represents a state and needs to have an "id" field followed by an integer. This id is used later in the relations. The "vals" field is followed by an array of valuations. The order of these valuations needs to be the same as that of the propositions array
+                    </li>
+                    <li> <strong>Relations</strong> This object needs to be an array of arrays. The inner arrays describe a relation between two states and of which of the maximum 5 agents this relations belongs to.
+                    </li>
+                    <li>
+                        <strong>
                     Logic System
                 </strong> The logic system the Kripke belongs to. Will in final version compute the reflexive transitive etc. closures when that is necessary. Options for the logic system are "KM", "S5", and "S5CE"
-                </li>
-            </ul>
-            The model object is followed by the formula you want to check on the system. Syntax is described in the table at the top of the page. The state field tells the model checker in which state the formula should hold.
-        </section> -->
-        <footer>
-            Epistemic Logic Playground is an adaption of
-            <a href="https://github.com/rkirsling/modallogic">
-            Modal Logic Playground
-        </a> by
-            <a href="https://bitbucket.org/rick_van_veen">
-            Rick van Veen
-        </a> and
-            <a href="https://github.com/lauraBaakman">
-            Laura Baakman
-        </a> , released under the
-            <a href="http://opensource.org/licenses/mit-license.php">
-            MIT License
-        </a> .
-        </footer>
+                    </li>
+                </ul>
+                The model object is followed by the formula you want to check on the system. Syntax is described in the table at the top of the page. The state field tells the model checker in which state the formula should hold.
+            </p>
+        </section>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted">
+                Epistemic Logic Playground is an adaption of
+                <a href="https://github.com/rkirsling/modallogic">Modal Logic Playground</a> by
+                <a href="https://bitbucket.org/rick_van_veen">Rick van Veen</a> and
+                <a href="https://github.com/lauraBaakman">Laura Baakman</a>, released under the
+                <a href="http://opensource.org/licenses/mit-license.php"> 
+		    MIT License</a>.
+            </p>
+        </div>
+    </footer>
 </body>
 
 </html>
