@@ -33,3 +33,7 @@ def transitive(original):
         new_relations = set((x, w) for x, y in closure for q, w in closure if q == y)
         closure = previous_set.union(new_relations)
     return closure
+
+def symmetric(original):
+    new_relations = [(destination, source) for (source, destination) in original]
+    return original.union(new_relations)

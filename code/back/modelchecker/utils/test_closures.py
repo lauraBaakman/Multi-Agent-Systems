@@ -21,3 +21,10 @@ class TestTransitive(TestCase):
         expected_result = original_set.union([(1,3), (1,4), (2, 4)])
         computed_result = transitive(original_set)
         self.assertEquals(expected_result, computed_result)
+
+class TestSymmetric(TestCase):
+    def test_symmetric(self):
+        original_set = set([(1, 2), (2, 3), (3, 4)])
+        expected_result = original_set.union([(2, 1), (3, 2), (4, 3)])
+        computed_result = symmetric(original_set)
+        self.assertEquals(expected_result, computed_result)
