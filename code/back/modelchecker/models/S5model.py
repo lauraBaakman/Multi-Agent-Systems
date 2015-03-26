@@ -19,6 +19,7 @@ class S5Model(S4Model):
         """
         Compute the reflexive closure of the relations in the model
         """
+        # TODO impement and test!
         raise NotImplementedError
 
     def add_relations_from_json(self, json_data):
