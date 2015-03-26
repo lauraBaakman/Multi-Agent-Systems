@@ -6,11 +6,11 @@ __author__ = 'laura'
 
 # The regular expressions for the different operators.
 propositional = {
+    'negation': r"~",
     'disjunction': r"[|]",
     'conjunction': r"&",
-    'bi-implication': r"<->",
     'implication': r"->",
-    'negation': r"~"
+    'bi-implication': r"<->"
 }
 
 kms5 = {
