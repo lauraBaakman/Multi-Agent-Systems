@@ -25,16 +25,7 @@ class Everybody(Unary):
         """
         states = list(set([state for _, states in state.outgoing.iteritems() for state in states]))
         if not states:
-            #There are no outgoing relations
-            truth_value = True
-            conclusion = self._conclusion_no_relations(state)
-            return (
-                truth_value,
-                {
-                    'condition': self._condition(state),
-                    'conclusion': conclusion,
-                }
-            )
+            return self._is_true_no_relations(state)
         elif len(states) == 1:
             # There is one outgoing relation
             raise NotImplementedError
@@ -42,6 +33,17 @@ class Everybody(Unary):
             # There are multiple outgoing relations
             raise NotImplementedError
 
+
+    def _is_true_no_relations(self, state):
+        truth_value = True
+        conclusion = self._conclusion_no_relations(state)
+        return (
+            truth_value,
+            {
+                'condition': self._condition(state),
+                'conclusion': conclusion,
+            }
+        )
 
     def _conclusion_no_relations(self, state):
         def union_of_relations(state):
@@ -60,7 +62,6 @@ class Everybody(Unary):
             )
         )
 
-
     def _truth_condition(self, state):
         """
         Return the condition under which this formula is true as a string.
@@ -73,7 +74,6 @@ class Everybody(Unary):
             lhs_models=models('t', self.lhs, '$'),
             state=state.name
         )
-
 
     def _conclusion(self, state, truth_value):
         """
