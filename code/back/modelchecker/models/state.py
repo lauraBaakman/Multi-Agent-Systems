@@ -72,6 +72,21 @@ class State(object):
             raise result
         return result
 
+    def get_all_outgoing_as_two_tuple(self):
+        """
+        Get all outgoing relations as a tuple with two elements, namely the source and destination state.
+        :return: set of tuples with states
+        :rtype: set
+        """
+        return set([
+            (source, destination)
+            for (source, destination, _)
+            in [
+                relation.to_tuple()
+                for _, relations in self.outgoing.iteritems()
+                for relation in relations
+            ]
+        ])
 
     def __repr__(self):
         return (
