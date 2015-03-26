@@ -29,8 +29,7 @@ class Everybody(Unary):
         elif len(states) == 1:
             return self._is_true_one_relation(state=state, reached_state=states[0])
         else:
-            # There are multiple outgoing relations
-            raise NotImplementedError
+            return self._is_true_multiple_relations(state=state, destination_states=states)
 
     def _is_true_no_relations(self, state):
         return (
@@ -49,6 +48,30 @@ class Everybody(Unary):
                 'condition': self._condition(state),
                 'interlude': [motivation],
                 'conclusion': self._conclusion_one_relation(state, truth_value, reached_state)
+            }
+        )
+
+    def _is_true_multiple_relations(self, state, destination_states):
+        interlude = []
+        for destination in destination_states:
+            (destination_truth_value, destination_motivation) = self.lhs.is_true(destination)
+            if destination_truth_value:
+                interlude.append(destination_motivation)
+                truth_value = destination_truth_value
+            else:
+                truth_value = destination_truth_value
+                interlude = [destination_motivation]
+                conclusion = self._conclusion_one_relation(state, truth_value, destination)
+                break
+        if truth_value:
+            conclusion = self._conclusion_multiple_relations(state, destination_states)
+
+        return (
+            truth_value,
+            {
+                'condition': self._condition(state),
+                'interlude': interlude,
+                'conclusion': conclusion,
             }
         )
 
@@ -81,6 +104,21 @@ class Everybody(Unary):
                 condition=models(reached_state, self.lhs, '$')
             )
 
+    def _conclusion_multiple_relations(self, state, destination_states):
+        conclusion = '{models} holds since '.format(
+            models=models(state, self, '$'),
+        )
+        for state_idx in range(len(destination_states) - 1):
+            destination_state = destination_states[state_idx].name
+            conclusion = '{old_conclusion} {models}, '.format(
+                old_conclusion=conclusion,
+                models=models(destination_state, self.lhs, '$'),
+            )
+        return '{old_conclusion} and {models}.'.format(
+            old_conclusion=conclusion,
+            models=models(destination_states.pop().name, self.lhs, '$'),
+        )
+
     def _truth_condition(self, state):
         """
         Return the condition under which this formula is true as a string.
@@ -93,17 +131,6 @@ class Everybody(Unary):
             lhs_models=models('t', self.lhs, '$'),
             state=state.name
         )
-
-    def _conclusion(self, state, truth_value):
-        """
-        Return the conclusion motivation the truth value of this formula
-        :param state: the state in which the formula should be evaluated.
-        :type state: modelchecker.models.state
-        :param truth_value: the truth value of this formula
-        :type truth_value: bool
-        :return: String with the motivation
-        :rtype: String
-        """
 
     def to_latex(self, delimiter='', operator='\\text{E}'):
         """

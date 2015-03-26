@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from unittest import TestCase
 
-from modelchecker.ast.nodes import Proposition, Negation, Conjunction, Everybody
+from modelchecker.ast.nodes import Proposition, Negation, Conjunction, Everybody, Disjunction
 from modelchecker.models import KModel
 import modelchecker.utils.translators as utils
 
@@ -58,3 +58,19 @@ class TestEverybody(TestCase):
         self.assertFalse(truth_value)
         # print dict['condition']
         # print dict['conclusion']
+
+    def test_multiple_relations_true(self):
+        node = Everybody(Disjunction(self.lhs, Proposition('r')))
+        (truth_value, dict) = node.is_true(self.model.get_state_by_name('sa'))
+        self.assertTrue(truth_value)
+        # print dict['condition']
+        # print dict['conclusion']
+        # print dict['interlude']
+
+    def test_multiple_relations_false(self):
+        node = Everybody(self.lhs)
+        (truth_value, dict) = node.is_true(self.model.get_state_by_name('sc'))
+        self.assertFalse(truth_value)
+        # print dict['condition']
+        # print dict['conclusion']
+        # print dict['interlude']
