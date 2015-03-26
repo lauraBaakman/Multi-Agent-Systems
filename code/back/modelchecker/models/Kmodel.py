@@ -204,8 +204,8 @@ class KModel(object):
         Find the connected component that contains the state state.
         :param state: The state for which the connected component should be found.
         :type state: modelchecker.models.state
-        :return: list of states
-        :rtype: list[modelchecker.models.state]
+        :return: set of states
+        :rtype: set[modelchecker.models.state]
         """
         connected_component = {state}
         previous_set = set()
@@ -217,7 +217,7 @@ class KModel(object):
                 for (_, destination) in cc_state.get_all_outgoing_as_two_tuple()
             )
             connected_component = previous_set.union(new_relations)
-        return list(connected_component)
+        return connected_component
 
 
 

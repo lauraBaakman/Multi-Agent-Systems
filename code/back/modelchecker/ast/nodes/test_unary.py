@@ -75,7 +75,7 @@ class TestEverybody(TestCase):
         # print dict['conclusion']
         # print dict['interlude']
 
-class TestEverybody(TestCase):
+class TestCommon(TestCase):
     def setUp(self):
         self.model = KModel()
         json_data = utils.read_json('modelchecker/models/test_model_km.json')
@@ -109,6 +109,6 @@ class TestEverybody(TestCase):
         node = Common(self.lhs)
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sc'))
         self.assertFalse(truth_value)
-        # print dict['condition']
-        # print dict['conclusion']
+        print dict['condition']
+        print dict['conclusion']
         # print dict['interlude']
