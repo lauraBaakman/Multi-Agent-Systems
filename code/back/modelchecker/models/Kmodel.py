@@ -199,15 +199,15 @@ class KModel(object):
         except:
             raise
 
-    def all_states_reachable_from(self, state):
+    def all_states_eventually_reachable_from(self, state):
         """
-        Find the connected component that contains the state state.
-        :param state: The state for which the connected component should be found.
+        Return all states that can be reached by any agent from the current state by taking at least one step.
+        :param state: The state to start from.
         :type state: modelchecker.models.state
         :return: set of states
         :rtype: set[modelchecker.models.state]
         """
-        reachable_states = {state}
+        reachable_states = {destination for (_, destination) in state.get_all_outgoing_as_two_tuple()}
         previous_set = set()
         while not convergence(reachable_states, previous_set):
             previous_set = reachable_states

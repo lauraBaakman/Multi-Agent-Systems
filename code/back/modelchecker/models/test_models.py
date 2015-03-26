@@ -39,7 +39,7 @@ class TestKMModel(TestCase):
     def test_all_states_reachable_from_1(self):
         computed = [
             state.name
-            for state in self.model.all_states_reachable_from(self.model.get_state_by_name('sa'))
+            for state in self.model.all_states_eventually_reachable_from(self.model.get_state_by_name('sa'))
         ]
         expected = ['sb', 'sa', 'sc', 'sf']
         self.assertItemsEqual(computed, expected)
@@ -47,23 +47,23 @@ class TestKMModel(TestCase):
     def test_all_states_reachable_from_2(self):
         computed = [
             state.name
-            for state in self.model.all_states_reachable_from(self.model.get_state_by_name('sd'))
+            for state in self.model.all_states_eventually_reachable_from(self.model.get_state_by_name('sd'))
         ]
-        expected = ['sd']
+        expected = []
         self.assertItemsEqual(computed, expected)
 
     def test_all_states_reachable_from_3(self):
         computed = [
             state.name
-            for state in self.model.all_states_reachable_from(self.model.get_state_by_name('se'))
+            for state in self.model.all_states_eventually_reachable_from(self.model.get_state_by_name('se'))
         ]
-        expected = []
+        expected = ['se']
         self.assertItemsEqual(computed, expected)
 
     def test_all_states_reachable_from_4(self):
         computed = [
             state.name
-            for state in self.model.all_states_reachable_from(self.model.get_state_by_name('sf'))
+            for state in self.model.all_states_eventually_reachable_from(self.model.get_state_by_name('sf'))
         ]
         expected = []
         self.assertItemsEqual(computed, expected)

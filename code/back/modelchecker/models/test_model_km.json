@@ -22,7 +22,7 @@
       },
       {
         "id": "sf",
-        "vals": [false, true, false]
+        "vals": [false, true, true]
       }
     ],
 	"propositions": ["p", "q", "r"],

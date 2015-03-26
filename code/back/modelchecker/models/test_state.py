@@ -27,5 +27,5 @@ class TestState(TestCase):
     def test_get_all_outgoing_as_two_tuple_3(self):
         state = self.model.get_state_by_name('sa')
         computed = [(source.name, destination.name) for (source, destination) in state.get_all_outgoing_as_two_tuple()]
-        expected = {('sa', 'sa'), ('sa','sb')}
+        expected = {('sa', 'sa'), ('sa','sb'), ('sa', 'sf')}
         self.assertItemsEqual(computed, expected)
