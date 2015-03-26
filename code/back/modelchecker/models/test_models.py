@@ -36,6 +36,33 @@ class TestKMModel(TestCase):
         expected = {'1', '2', '3'}
         self.assertItemsEqual(computed, expected)
 
+    @skip("Skip test_find_connected_component_containing_1, not yet implemented.")
+    def test_find_connected_component_containing_1(self):
+        computed = [
+            state.name
+            for state in self.model.find_connected_component_containing(self.model.get_state_by_name('sa'))
+        ]
+        expected = ['sb', 'sa', 'sc']
+        self.assertItemsEqual(computed, expected)
+
+    @skip("Skip test_find_connected_component_containing_2, not yet implemented.")
+    def test_find_connected_component_containing_2(self):
+        computed = [
+            state.name
+            for state in self.model.find_connected_component_containing(self.model.get_state_by_name('sd'))
+        ]
+        expected = ['sd']
+        self.assertItemsEqual(computed, expected)
+
+    @skip("Skip test_find_connected_component_containing_3, not yet implemented.")
+    def test_find_connected_component_containing_3(self):
+        computed = [
+            state.name
+            for state in self.model.find_connected_component_containing(self.model.get_state_by_name('se'))
+        ]
+        expected = ['se']
+        self.assertItemsEqual(computed, expected)
+
 class TestTModel(TestCase):
     def setUp(self):
         filename = './modelchecker/models/test_model_t.json'
@@ -70,7 +97,6 @@ class TestTModel(TestCase):
         sa_relations_as_tuple = relations_to_list_of_string_tuples(sa.incoming['2'])
         sa_expected_relations = [('sa', 'sa', '2')]
         self.assertItemsEqual(sa_relations_as_tuple, sa_expected_relations)
-
 
 class TestS4Model(TestCase):
     def setUp(self):
