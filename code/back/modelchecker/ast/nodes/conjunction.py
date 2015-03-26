@@ -78,16 +78,6 @@ class Conjunction(Binary):
                 reason = '{condition} does not hold'.format(condition=models(state, self.lhs, '$'))
             if not rhs_truth_value:
                 reason = '{condition} does not hold'.format(condition=models(state, self.rhs, '$'))
-
-            # if lhs_truth_value:
-            #     reason = '{condition} does not hold'.format(condition=models(state, self.rhs, '$'))
-            # elif rhs_truth_value:
-            #     reason = '{condition} does not hold'.format(condition=models(state, self.lhs, '$'))
-            # else:
-            #     reason = '{condition_lhs} and {condition_rhs} do not hold'.format(
-            #         condition_lhs=models(state, self.lhs, '$'),
-            #         condition_rhs=models(state, self.rhs, '$')
-            #     )
             return conclusion.substitute(reason=reason, models=models(state, self, '$'))
 
     def to_latex(self, delimiter='', operator='\land'):

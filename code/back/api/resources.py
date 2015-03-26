@@ -92,7 +92,7 @@ class Resource(object):
         resp.body = json.dumps(
             {
                 'truth_value': truth_value,
-                'motivation' : utils.motivation_to_html(motivation),
+                'motivation' : utils._sub_motivation_to_html(motivation),
                 'motivation_latex': utils.motivation_to_latex(motivation)
             },
              encoding='utf-8'

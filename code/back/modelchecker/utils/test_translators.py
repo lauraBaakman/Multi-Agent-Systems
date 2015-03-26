@@ -3,7 +3,7 @@ from unittest import TestCase
 
 from modelchecker import ast
 import modelchecker.models as models
-from modelchecker.utils import *
+from modelchecker.utils.translators import *
 import os
 
 __author__ = 'laura'
@@ -17,44 +17,50 @@ class TestMotivation_to_latex(TestCase):
         self.model = models.KMmodel.KMmodel.from_json(data)
 
 
+    def test_proposition_to_latex_negation(self):
+        formula = "p"
+        tree = ast.Ast.from_string(formula, self.logic)
+        (_, motivation) = tree.is_true(self.model.states.get("sa"))
+        # print motivation_to_html(motivation)
+
     def test_motivation_to_latex_negation(self):
         formula = "~ p"
         tree = ast.Ast.from_string(formula, self.logic)
         (_, motivation) = tree.is_true(self.model.states.get("sa"))
-        # print motivation_to_latex(motivation)
+        # print motivation_to_html(motivation)
 
     def test_motivation_to_latex_conjunction(self):
-        formula = "p & q & r"
+        formula = "p & q"
         tree = ast.Ast.from_string(formula, self.logic)
         (_, motivation) = tree.is_true(self.model.states.get("sa"))
-        # print motivation_to_latex(motivation)
+        # print motivation_to_html(motivation)
 
     def test_motivation_to_latex_disjunction(self):
         formula = "p | q & r"
         tree = ast.Ast.from_string(formula, self.logic)
         (_, motivation) = tree.is_true(self.model.states.get("sa"))
-        # print motivation_to_latex(motivation)
+        # print motivation_to_html(motivation)
 
     def test_motivation_to_latex_implication(self):
         formula = "p -> q"
         tree = ast.Ast.from_string(formula, self.logic)
         (_, motivation) = tree.is_true(self.model.states.get("sa"))
-        # print motivation_to_latex(motivation)
+        # print motivation_to_html(motivation)
 
     def test_motivation_to_latex_biimplication(self):
         formula = "p <-> q"
         tree = ast.Ast.from_string(formula, self.logic)
         (_, motivation) = tree.is_true(self.model.states.get("sa"))
-        # print motivation_to_latex(motivation)
+        # print motivation_to_html(motivation)
 
     def test_motivation_to_latex_knowledge(self):
         formula = "K_1 p"
         tree = ast.Ast.from_string(formula, self.logic)
         (_, motivation) = tree.is_true(self.model.states.get("sa"))
-        # print motivation_to_latex(motivation)
+        # print motivation_to_html(motivation)
 
     def test_motivation_to_latex_possible(self):
-        formula = "K_2 q & (p | r)"
+        formula = "M_2 q & (p | r)"
         tree = ast.Ast.from_string(formula, self.logic)
         (_, motivation) = tree.is_true(self.model.states.get("sc"))
-        # print motivation_to_latex(motivation)
+        # print motivation_to_html(motivation)

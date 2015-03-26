@@ -38,27 +38,55 @@ def read_json(filename):
     json_data.close()
     return data
 
+def _add_html_tags(text):
+    return "<div class='left-align'>{}</div>".format(text)
+
 def _interlude_to_html(interlude):
-    result = ''
+    result = ""
     for element in interlude:
         if isinstance(element, basestring):
-            result = '<p>{}</p> <br> <p>{}</p>'.format(result, element)
+            result =_add_html_tags(
+                '{} <br> {}'.format(
+                    result, element
+                )
+            )
         if isinstance(element, dict):
-            result = '<p>{}</p> <br> <p>{}</p>'.format(result, motivation_to_latex(element))
+            if result == '':
+                result = '{}'.format(_sub_motivation_to_html(element))
+            else:
+                result = '{} <br> {}'.format(result, _sub_motivation_to_html(element))
     return result
+
+def _sub_motivation_to_html(motivation):
+    if motivation.has_key('interlude'):
+        return _add_html_tags(
+            "{condition} {interlude} {conclusion}".format(
+                condition=motivation['condition'],
+                interlude=_interlude_to_html(motivation['interlude']),
+                conclusion=motivation['conclusion']
+            )
+        )
+    else:
+        return _add_html_tags(
+            "{condition} <br> {conclusion}".format(
+                condition=motivation['condition'],
+                conclusion=motivation['conclusion']
+            )
+        )
 
 def motivation_to_html(motivation):
     if motivation.has_key('interlude'):
-        return '<p>{condition}</p> <br> <p>{interlude}</p> <br> <p>{conclusion}</p> <br>'.format(
-            condition=motivation['condition'],
-            interlude=_interlude_to_latex(motivation['interlude']),
-            conclusion=motivation['conclusion']
-        )
+        return "<div> {condition} {interlude} {conclusion} </div>".format(
+                condition=motivation['condition'],
+                interlude=_interlude_to_html(motivation['interlude']),
+                conclusion=motivation['conclusion']
+            )
     else:
-        return '<p>{condition}</p> <br>  <p>{conclusion}</p> <br>'.format(
-            condition=motivation['condition'],
-            conclusion=motivation['conclusion']
-        )
+        return "<div> {condition} <br> {conclusion} </div>".format(
+                condition=motivation['condition'],
+                conclusion=motivation['conclusion']
+            )
+
 
 def _interlude_to_latex(interlude):
     result = ''
