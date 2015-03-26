@@ -39,7 +39,6 @@ class Everybody(Unary):
                 destination_states=states
             )
 
-
     def _conclusion_no_relations(self, state):
         def union_of_relations(state):
             agents = list(state.model.agents)
