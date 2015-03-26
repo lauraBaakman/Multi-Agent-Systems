@@ -70,12 +70,12 @@ class TestParser(TestCase):
     #     )
     #     self.assertEqual(computed_tree, expected_tree)
 
-    # def test_parse_everybody(self):
-    # computed_tree = Ast.from_string("E p", "KM").root
-    #     expected_tree = nodes.Everybody(
-    #         nodes.Proposition("p")
-    #     )
-    #     self.assertEqual(computed_tree, expected_tree)
+    def test_parse_everybody(self):
+        computed_tree = Ast.from_string("E p", "KEC").root
+        expected_tree = nodes.Everybody(
+            nodes.Proposition("p")
+        )
+        self.assertEqual(computed_tree, expected_tree)
 
     def test_parse_knowledge(self):
         computed_tree = Ast.from_string("K_1 p", "KM").root
