@@ -28,7 +28,10 @@ class Knowledge(Agent):
         if not destination_states:
             return self._is_true_no_relation(state)
         elif len(destination_states) == 1:
-            return self._is_true_one_relation(state, destination_states[0])
+            return self._is_true_one_relation(
+                evaluation_state=state,
+                destination_state=destination_states[0]
+            )
         else:
             return self._is_true_multiple_relations(state=state, destination_states=destination_states)
 
@@ -53,17 +56,6 @@ class Knowledge(Agent):
                 'condition': self._condition(state),
                 'interlude': interlude,
                 'conclusion': conclusion,
-            }
-        )
-
-    def _is_true_one_relation(self, state, destination):
-        (truth_value, motivation) = self.lhs.is_true(destination)
-        return (
-            truth_value,
-            {
-                'condition': self._condition(state),
-                'interlude': [motivation],
-                'conclusion': self._conclusion_one_relation(state, truth_value, destination)
             }
         )
 

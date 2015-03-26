@@ -27,7 +27,10 @@ class Everybody(Unary):
         if not states:
             return self._is_true_no_relations(state)
         elif len(states) == 1:
-            return self._is_true_one_relation(state=state, reached_state=states[0])
+            return self._is_true_one_relation(
+                evaluation_state=state,
+                destination_state=states[0]
+            )
         else:
             return self._is_true_multiple_relations(state=state, destination_states=states)
 
@@ -37,17 +40,6 @@ class Everybody(Unary):
             {
                 'condition': self._condition(state),
                 'conclusion': self._conclusion_no_relations(state)
-            }
-        )
-
-    def _is_true_one_relation(self, state, reached_state):
-        (truth_value, motivation) = self.lhs.is_true(reached_state)
-        return (
-            truth_value,
-            {
-                'condition': self._condition(state),
-                'interlude': [motivation],
-                'conclusion': self._conclusion_one_relation(state, truth_value, reached_state)
             }
         )
 

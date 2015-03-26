@@ -25,3 +25,14 @@ class Unary(Node):
 
     def is_leaf(self):
         return False
+
+    def _is_true_one_relation(self, evaluation_state, destination_state):
+        (truth_value, motivation) = self.lhs.is_true(destination_state)
+        return (
+            truth_value,
+            {
+                'condition': self._condition(evaluation_state),
+                'interlude': [motivation],
+                'conclusion': self._conclusion_one_relation(evaluation_state, truth_value, destination_state)
+            }
+        )
