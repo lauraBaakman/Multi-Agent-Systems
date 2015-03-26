@@ -2,7 +2,7 @@
 from unittest import TestCase
 
 __author__ = 'laura'
-from modelchecker.ast.nodes import Proposition, Conjunction, Disjunction, Implication, BiImplication
+from modelchecker.ast.nodes import Proposition, Conjunction, disjunction, Implication, BiImplication
 from modelchecker.models import KModel
 import modelchecker.utils.translators as utils
 
@@ -48,7 +48,7 @@ class TestBinary(TestCase):
 
 
     def test_is_true_disjunction_1(self):
-        node = Disjunction(self.lhs, self.rhs)
+        node = disjunction(self.lhs, self.rhs)
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sa'))
 
         self.assertTrue(truth_value)
@@ -57,7 +57,7 @@ class TestBinary(TestCase):
         # print dict['conclusion']
 
     def test_is_true_disjunction_2(self):
-        node = Disjunction(self.lhs, self.rhs)
+        node = disjunction(self.lhs, self.rhs)
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sb'))
 
         self.assertTrue(truth_value)
@@ -66,7 +66,7 @@ class TestBinary(TestCase):
         # print dict['conclusion']
 
     def test_is_true_disjunction_3(self):
-        node = Disjunction(self.lhs, self.rhs)
+        node = disjunction(self.lhs, self.rhs)
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sc'))
 
         self.assertFalse(truth_value)
@@ -75,7 +75,7 @@ class TestBinary(TestCase):
         # print dict['conclusion']
 
     def test_is_true_disjunction_4(self):
-        node = Disjunction(self.lhs, self.rhs)
+        node = disjunction(self.lhs, self.rhs)
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sd'))
 
         self.assertTrue(truth_value)
