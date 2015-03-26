@@ -97,6 +97,12 @@ def _interlude_to_latex(interlude):
             result = '{} \\ {}'.format(result, motivation_to_latex(element))
     return result
 
+def set_to_latex(l):
+    result = ''
+    for element in l:
+        result = "{}, {}".format(result, element)
+    return "\\{{ {} \\}}".format(result)
+
 def motivation_to_latex(motivation):
     if motivation.has_key('interlude'):
         return '{condition}\\ {interlude}\\ {conclusion}\\'.format(
