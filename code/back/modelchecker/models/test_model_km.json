@@ -19,6 +19,10 @@
       {
         "id": "se",
         "vals": [false, true, true]
+      },
+      {
+        "id": "sf",
+        "vals": [false, true, false]
       }
     ],
 	"propositions": ["p", "q", "r"],
@@ -33,7 +37,10 @@
         ["sb", 3, "sb"],
         ["sb", 3, "sa"],
         ["sa", 3, "sb"],
-        ["se", 3, "se"]
+        ["se", 3, "se"],
+        ["sa", 1, "sf"],
+        ["sb", 2, "sf"],
+        ["sc", 3, "sf"]
     ],
 	"logic": "KM"
 }
