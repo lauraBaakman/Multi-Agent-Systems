@@ -34,31 +34,11 @@ class Everybody(Unary):
                 destination_state=states[0]
             )
         else:
-            return self._is_true_multiple_relations(state=state, destination_states=states)
+            return self._is_true_multiple_relations(
+                evaluation_state=state,
+                destination_states=states
+            )
 
-    def _is_true_multiple_relations(self, state, destination_states):
-        interlude = []
-        for destination in destination_states:
-            (destination_truth_value, destination_motivation) = self.lhs.is_true(destination)
-            if destination_truth_value:
-                interlude.append(destination_motivation)
-                truth_value = destination_truth_value
-            else:
-                truth_value = destination_truth_value
-                interlude = [destination_motivation]
-                conclusion = self._conclusion_one_relation(state, truth_value, destination)
-                break
-        if truth_value:
-            conclusion = self._conclusion_multiple_relations(state, destination_states)
-
-        return (
-            truth_value,
-            {
-                'condition': self._condition(state),
-                'interlude': interlude,
-                'conclusion': conclusion,
-            }
-        )
 
     def _conclusion_no_relations(self, state):
         def union_of_relations(state):
