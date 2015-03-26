@@ -8,7 +8,7 @@ import modelchecker.utils.translators as utils
 __author__ = 'laura'
 
 
-# class TestUnary(TestCase):
+class TestUnary(TestCase):
     def setUp(self):
         self.model = KModel()
         json_data = utils.read_json('modelchecker/models/test_model_km.json')
