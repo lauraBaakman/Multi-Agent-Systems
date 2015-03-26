@@ -4,6 +4,7 @@ __author__ = 'laura'
 
 import modelchecker.models as models
 import modelchecker.errors as errors
+import modelchecker.config as config
 
 def from_model_name(logic_name):
     logic_name_to_class = {

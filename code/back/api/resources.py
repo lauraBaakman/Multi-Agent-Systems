@@ -6,7 +6,7 @@ import json
 
 import falcon
 
-import modelchecker.utils as utils
+import modelchecker.utils.translators as utils
 import modelchecker.models.modelfactory as modelfactory
 import modelchecker.errors as errors
 import modelchecker.ast as ast
