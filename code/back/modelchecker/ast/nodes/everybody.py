@@ -2,7 +2,7 @@
 
 __author__ = 'laura'
 
-
+from node import models
 from unary import Unary
 
 class Everybody(Unary):
@@ -23,8 +23,43 @@ class Everybody(Unary):
         :return: (truthvalue, dict) truthvalue is the truth value of the formula, dict contains the motivation.
         :rtype: (bool, dict)
         """
-        # TODO implement
-        raise NotImplementedError
+        states = list(set([state for _, states in state.outgoing.iteritems() for state in states]))
+        if not states:
+            #There are no outgoing relations
+            truth_value = True
+            conclusion = self._conclusion_no_relations(state)
+            return (
+                truth_value,
+                {
+                    'condition': self._condition(state),
+                    'conclusion': conclusion,
+                }
+            )
+        elif len(states) == 1:
+            # There is one outgoing relation
+            raise NotImplementedError
+        else:
+            # There are multiple outgoing relations
+            raise NotImplementedError
+
+
+    def _conclusion_no_relations(self, state):
+        def union_of_relations(state):
+            agents = list(state.model.agents)
+            result = 'R_{}'.format(agents[0])
+            for i in range(1, len(agents)):
+                result = format('{} \cup R_{}'.format(result, agents[i]))
+            return result
+
+        return (
+            '{models} holds since $\left\{{ ({state}, t) | ({state}, t)'
+            ' \in {union}\\right\}} = \emptyset$.'.format(
+                models=models(state, self, '$'),
+                state=state.name,
+                union=union_of_relations(state)
+            )
+        )
+
 
     def _truth_condition(self):
         """
@@ -34,8 +69,10 @@ class Everybody(Unary):
         :return: String with the truth condition
         :rtype: String
         """
-        # TODO implement
-        raise NotImplementedError
+        return '{lhs_models} for all $t$ with ${state} \\rightlongarrow t$'.format(
+            lhs_models=models('t', self.lhs, '$'),
+            state=state.name
+        )
 
 
     def _conclusion(self, state, truth_value):
