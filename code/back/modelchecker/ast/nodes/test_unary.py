@@ -8,7 +8,7 @@ import modelchecker.utils.translators as utils
 __author__ = 'laura'
 
 
-class TestUnary(TestCase):
+# class TestUnary(TestCase):
     def setUp(self):
         self.model = KModel()
         json_data = utils.read_json('modelchecker/models/test_model_km.json')
@@ -86,29 +86,29 @@ class TestCommon(TestCase):
         node = Common(self.lhs)
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sd'))
         self.assertFalse(truth_value)
-        print dict['condition']
-        print dict['conclusion']
+        # print dict['condition']
+        # print dict['conclusion']
 
 
     def test_one_relation_one_relations(self):
         node = Common(self.lhs)
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('se'))
         self.assertFalse(truth_value)
-        print dict['condition']
-        print dict['conclusion']
+        # print dict['condition']
+        # print dict['conclusion']
 
     def test_multiple_relations_true(self):
         node = Common(Disjunction(self.lhs, Proposition('r')))
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sa'))
         self.assertTrue(truth_value)
-        print dict['condition']
-        print dict['conclusion']
+        # print dict['condition']
+        # print dict['conclusion']
         # print dict['interlude']
 
     def test_multiple_relations_false(self):
         node = Common(self.lhs)
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sc'))
         self.assertFalse(truth_value)
-        print dict['condition']
-        print dict['conclusion']
+        # print dict['condition']
+        # print dict['conclusion']
         # print dict['interlude']
