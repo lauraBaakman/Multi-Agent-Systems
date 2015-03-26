@@ -61,7 +61,7 @@ class Everybody(Unary):
         )
 
 
-    def _truth_condition(self):
+    def _truth_condition(self, state):
         """
         Return the condition under which this formula is true as a string.
         :param state: the state in which the formula should be evaluated.
@@ -69,7 +69,7 @@ class Everybody(Unary):
         :return: String with the truth condition
         :rtype: String
         """
-        return '{lhs_models} for all $t$ with ${state} \\rightlongarrow t$'.format(
+        return '{lhs_models} for all $t$ with ${state} \longrightarrow t$'.format(
             lhs_models=models('t', self.lhs, '$'),
             state=state.name
         )
@@ -86,7 +86,7 @@ class Everybody(Unary):
         :rtype: String
         """
 
-    def to_latex(self, delimiter='', operator='\\text{{E}}'):
+    def to_latex(self, delimiter='', operator='\\text{E}'):
         """
         Return LaTeX representation
         :param: operator: operator
@@ -96,4 +96,4 @@ class Everybody(Unary):
         :return: LaTeX representation
         :rtype: str
         """
-        return super(Everybody, self).to_latex(operator, delimiter)
+        return super(Everybody, self).to_latex(operator=operator, delimiter=delimiter)

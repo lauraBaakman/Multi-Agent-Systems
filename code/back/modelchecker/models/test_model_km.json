@@ -30,5 +30,5 @@
         ["sb", 3, "sa"],
         ["sa", 3, "sb"]
     ],
-	"logic": "K(m)"
+	"logic": "KM"
 }
