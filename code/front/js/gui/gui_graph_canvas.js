@@ -1,8 +1,10 @@
 define("gui_graph_canvas", ["d3"], function(d3) {
 
-    function GraphCanvas(container, model) {
+    function GraphCanvas(container, app) {
 
         var self = this;
+
+        var model = app.get_model();
 
         // General visualisation variables
         var canvas,
@@ -38,7 +40,7 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                 .links(model.get_links())
                 .size([width, height])
                 .linkDistance(250)
-                .charge(-50)
+                .charge(-400)
                 .on('tick', tick);
         }
 
@@ -237,6 +239,8 @@ define("gui_graph_canvas", ["d3"], function(d3) {
         }
 
         this.draw = function() {
+            model = app.get_model();
+            init_layout()
             draw_paths();
             draw_nodes();
             layout.start();

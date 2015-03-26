@@ -1,6 +1,6 @@
 define("gui_info_panel", ["d3", "json_editor", "mathjax"], function(d3, JSONEditor, MathJax) {
 
-    function InfoPanel(container, model) {
+    function InfoPanel(container, app) {
 
         var self = this;
 
@@ -51,7 +51,6 @@ define("gui_info_panel", ["d3", "json_editor", "mathjax"], function(d3, JSONEdit
                     document.getElementById("playground").appendChild(loading);
                 })
                 .on("load", function(data) {
-                    console.log("load");
                     var new_child = document.createElement('div');
                     new_child.innerHTML = data.motivation;
 
@@ -62,6 +61,12 @@ define("gui_info_panel", ["d3", "json_editor", "mathjax"], function(d3, JSONEdit
                     response.appendChild(new_child);
 
                     MathJax.Hub.Queue(["Typeset", MathJax.Hub, "response"]);
+
+                    var new_model = JSON.parse(data.model);
+                    console.log(new_model);
+
+                    app.get_model().load_from_model_object(new_model);
+                    app.redraw();
 
                     document.getElementById("playground").removeChild(loading);
                 })

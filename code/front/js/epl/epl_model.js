@@ -11,28 +11,28 @@ define("epl_model", [], function() {
         var link_counter = 0;
 
         var default_propositions = ['p', 'q', 'r', 's', 't'];
-        var proposition_counter = 2;
+        var proposition_counter = 3;
 
         var max_num_agents = 5;
         var max_num_props = 5;
 
 
         this.get_prop_count = function() {
-        	return proposition_counter;
+            return proposition_counter;
         };
 
         this.set_prop_count = function(count) {
-        	if(count < 0 || count > max_num_props) return;
+            if (count < 0 || count > max_num_props) return;
 
-        	proposition_counter = count;
+            proposition_counter = count;
         };
 
         this.get_default_props = function() {
-        	return default_propositions;
+            return default_propositions;
         };
 
         this.get_num_agents = function() {
-        	return max_num_agents;
+            return max_num_agents;
         };
 
         // Todo: Agent
@@ -48,38 +48,41 @@ define("epl_model", [], function() {
                 id: link_counter++,
                 source: source,
                 target: target,
-   				agents: [0]
+                agents: [0]
             };
             links.push(link);
+
+            return link.id;
         };
 
-        this.edit_link = function(link_id, agents) {
+        this.add_agent_to_link = function(link_id, agent) {
             var link = self.get_link(link_id);
             if (!link) return;
 
-            link.agents = agents;
+            link.agents.push(agent);
         };
 
         // Todo: Agent
         this.remove_link = function(link_id) {
             var link_idx = self.get_link_idx(link_id);
             if (link_idx < 0) return;
-        	// Remove 1 item at index
+            // Remove 1 item at index
             links.splice(link_idx, 1);
         };
 
+        // !!BROKEN!! 
         // Init a default state to add.... Bs to generate this every time
-        this.add_state = function() {
-            var state = {};
+        // this.add_state = function() {
+        //     var state = {};
 
-            state.id = state_counter++;
-            state.vals = default_propositions.map(function() {
-                return false;
-            });
-            state.reflexive = false;
+        //     state.id = state_counter++;
+        //     state.vals = default_propositions.map(function() {
+        //         return false;
+        //     });
+        //     state.reflexive = false;
 
-            states.push(state);
-        };
+        //     states.push(state);
+        // };
 
         this.edit_state = function(state_id, valuation) {
             var state = self.get_state(state_id);
@@ -100,24 +103,24 @@ define("epl_model", [], function() {
             // Get all links that link to this state
             var link_indices = [];
             links.forEach(function(link, index) {
-            	if (link.source.id === state_id || link.target.id === state_id) {
-            		link_indices.push(index);
-            	}
+                if (link.source.id === state_id || link.target.id === state_id) {
+                    link_indices.push(index);
+                }
             });
 
             link_indices.forEach(function(link_idx) {
-            	self.remove_link(link_idx);
+                self.remove_link(link_idx);
             });
         };
 
         this.get_state_idx = function(state_id) {
             var state_idx = -1;
             states.forEach(function(state, index) {
-            	if(state.id === state_id) {
-            		state_idx = index;
-            	}
+                if (state.id === state_id) {
+                    state_idx = index;
+                }
             });
-            return state_idx;	
+            return state_idx;
         };
 
         this.get_state = function(state_id) {
@@ -127,13 +130,13 @@ define("epl_model", [], function() {
         };
 
         this.is_target_state = function(source_id, target_id) {
-        	var is_target = false;
-        	links.forEach(function(link) {
-        		if(link.target.id === source_id && link.source.id === target_id) {
-        			is_target = true;
-        		}
-        	});
-        	return is_target;
+            var is_target = false;
+            links.forEach(function(link) {
+                if (link.target.id === source_id && link.source.id === target_id) {
+                    is_target = true;
+                }
+            });
+            return is_target;
         }
 
         this.get_states = function() {
@@ -156,53 +159,106 @@ define("epl_model", [], function() {
             })[0];
         }
 
+        this.link_exists = function(source_id, target_id) {
+            var link_id = null;
+            links.forEach(function(link) {
+                if (link.source.id === source_id && link.target.id === target_id) {
+                    link_id = link.id;
+                }
+            });
+            return link_id;
+        }
+
         this.get_links = function() {
             return links;
         };
 
         this.load_from_model_string = function(model_string) {
-        	return;
+            return;
         };
 
         this.save_to_model_string = function() {
-        	return;
+            return;
         };
 
+        function add_pre_state(state_id, state_vals) {
+            var state = {};
+
+            // state_counter = max(parseInt(state_id), state_counter);
+            state.id = parseInt(state_id);
+
+            state.vals = default_propositions.forEach(function(prop, index) {
+                return !state_vals[index] ? false : true;
+            });
+            console.log(state.vals);
+
+            state.reflexive = false;
+            state.agents = [];
+
+            states.push(state);
+        }
+
+        function add_pre_link(source_id, agent, target_id) {
+            if (source_id === target_id) {
+                var source = self.get_state(source_id);
+                source.reflexive = true;
+                source.agents.push(agent);
+                return;
+            }
+            var link_id = self.link_exists(source_id, target_id);
+            if (link_id === null) {
+                link_id = self.add_link(source_id, target_id);
+            }
+            self.add_agent_to_link(link_id, agent);
+        }
+
         this.load_from_model_object = function(model_object) {
-          	
+            states = [];
+            state_counter = 0;
+
+            links = [];
+            link_counter = 0;
+
+            model_object.states.forEach(function(pre_state) {
+                add_pre_state(pre_state.id, pre_state.vals);
+            });
+
+            // model_object.relations.forEach(function(pre_link) {
+            //     add_pre_link(parseInt(pre_link[0]), parseInt(pre_link[1]), parseInt(pre_link[2]));
+            // });
         };
 
         this.save_to_model_object = function() {
-        	var sendable_states = states.map(function(state) {
-        		return {
-        			"id": state.id.toString(),
-        			"vals": state.vals.slice(0, proposition_counter)
-        		};
-        	});
+            var sendable_states = states.map(function(state) {
+                return {
+                    "id": state.id.toString(),
+                    "vals": state.vals.slice(0, proposition_counter)
+                };
+            });
 
-        	var sendable_propositions = default_propositions.slice(0, proposition_counter);
+            var sendable_propositions = default_propositions.slice(0, proposition_counter);
 
-        	var sendable_relations = [];
-        	
-        	links.forEach(function(link) {
-        		var relations = link.agents.map(function(agent) {
-        			return [
-        				link.source.id.toString(),
-        				agent,
-        				link.target.id.toString()
-        			];
-        		});
-        		relations.forEach(function(relation) {
-        			sendable_relations.push(relation);
-        		});
-        	});
+            var sendable_relations = [];
 
-        	return {
-        		"states": sendable_states,
-        		"propositions": sendable_propositions,
-        		"relations": sendable_relations,
-        		"logic": "K(m)"
-        	}
+            links.forEach(function(link) {
+                var relations = link.agents.map(function(agent) {
+                    return [
+                        link.source.id.toString(),
+                        agent,
+                        link.target.id.toString()
+                    ];
+                });
+                relations.forEach(function(relation) {
+                    sendable_relations.push(relation);
+                });
+            });
+
+            return {
+                "states": sendable_states,
+                "propositions": sendable_propositions,
+                "relations": sendable_relations,
+                "logic": "K(m)"
+            }
         };
     }
     return EplModel;

@@ -107,5 +107,4 @@ class Resource(object):
              encoding='utf-8'
         )
         resp.set_header('Access-Control-Allow-Origin', req.get_header('Origin'))
-        time.sleep(2);
         print 'Sent response: {resp}'.format(resp=resp)
