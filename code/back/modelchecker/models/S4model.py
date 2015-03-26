@@ -3,6 +3,7 @@
 __author__ = 'laura'
 
 from Tmodel import TModel
+import modelchecker.utils.closures as closures
 from relation import Relation
 
 class S4Model(TModel):
@@ -17,7 +18,17 @@ class S4Model(TModel):
         super(S4Model, self).__init__()
 
     def transitive_closure(self):
-        raise NotImplementedError
+        for agent, relations in self.relations.iteritems():
+            relations_as_set = set([relation.to_tuple() for relation in relations])
+            relations_as_set = set([(source, destination) for (source, destination, _) in relations_as_set])
+            closure = closures.transitive(relations_as_set)
+            closure.difference_update(relations_as_set)
+            [
+                self.add_relation(
+                    Relation.from_tuple((source, destination, agent))
+                )
+                for (source, destination) in closure
+            ]
 
     def add_relations_from_json(self, json_data):
         super(S4Model, self).add_relations_from_json(json_data)

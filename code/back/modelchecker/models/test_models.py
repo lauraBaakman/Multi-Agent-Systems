@@ -66,4 +66,24 @@ class TestTModel(TestCase):
         sa_expected_relations = [('sa', 'sa', '2')]
         self.assertItemsEqual(sa_relations_as_tuple, sa_expected_relations)
 
+class TestS4Model(TestCase):
+    def setUp(self):
+        filename = './modelchecker/models/test_model_s4.json'
+        data = translators.read_json(filename)
+        self.model = models.S4Model.from_json(data)
 
+    def test_reflexive_closure(self):
+        relations_as_tuples = [
+            relations_to_list_of_string_tuples(relations)
+            for (_, relations) in self.model.relations.iteritems()
+        ]
+        relations_as_tuples = flatten(relations_as_tuples)
+        expected_relations = [('sa', 'sa', '1'), ('sb', 'sb', '1'), ('sc', 'sc', '1'), ('sd', 'sd', '1'),
+                              ('sa', 'sb', '1'), ('sb', 'sc', '1'), ('sa', 'sc', '1'),
+                              ('sa', 'sa', '2'), ('sb', 'sb', '2'), ('sc', 'sc', '2'), ('sd', 'sd', '2'),
+                              ('sa', 'sb', '2'), ('sb', 'sc', '2'), ('sc', 'sd', '2'), ('sa', 'sc', '2'),
+                              ('sa', 'sd', '2'), ('sb', 'sd', '2')
+        ]
+
+
+        self.assertItemsEqual(relations_as_tuples, expected_relations)
