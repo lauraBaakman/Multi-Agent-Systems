@@ -21,7 +21,8 @@ def _get_lexicon(logic):
     ]
 
     s5EC_expressions = [
-        (config.common['common'], lambda scanner, _: tokens.UnaryOperator(Unary.common))
+        (config.common['common'],       lambda scanner, _: tokens.UnaryOperator(Unary.common)),
+        (config.common['everybody'],    lambda scanner, _: tokens.UnaryOperator(Unary.everybody))
     ]
     s5EC_expressions.extend(km_s5_expressions)
 
