@@ -64,13 +64,9 @@ class Knowledge(Agent):
         :return: String with the motivation
         :rtype: String
         """
-        return (
-            '{models} holds since $\left\{{ ({state}, t) | ({state}, t)'
-            ' \in R_{{{agent}}}\\right\}} = \emptyset$.'.format(
-            models=models(state, self, '$'),
-            state=state.name,
-            agent = self.agent
-            )
+        return super(Knowledge, self)._conclusion_no_relations(
+            evaluation_state=state,
+            empty_set='\\text{{R}}_{{{agent}}}'.format(agent=self.agent)
         )
 
     def to_latex(self, delimiter='', operator='\\text{K}'):

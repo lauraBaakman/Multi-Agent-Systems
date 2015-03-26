@@ -48,13 +48,9 @@ class Everybody(Unary):
                 result = format('{} \cup R_{}'.format(result, agents[i]))
             return result
 
-        return (
-            '{models} holds since $\left\{{ ({state}, t) | ({state}, t)'
-            ' \in {union}\\right\}} = \emptyset$.'.format(
-                models=models(state, self, '$'),
-                state=state.name,
-                union=union_of_relations(state)
-            )
+        return super(Everybody, self)._conclusion_no_relations(
+            evaluation_state=state,
+            empty_set=union_of_relations(state)
         )
 
     def _truth_condition(self, state):
