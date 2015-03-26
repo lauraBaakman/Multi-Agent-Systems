@@ -18,6 +18,11 @@ class S4Model(TModel):
         super(S4Model, self).__init__()
 
     def compute_closure(self, closure_function):
+        """
+        Compute the closure defined by closure_function.
+        :param closure_function: Function that computes a closure, it should accept a set of tuples as input and
+        output a set of tuples.
+        """
         for agent, relations in self.relations.iteritems():
             relations_as_set = set([relation.to_tuple() for relation in relations])
             relations_as_set = set([(source, destination) for (source, destination, _) in relations_as_set])
@@ -31,6 +36,9 @@ class S4Model(TModel):
             ]
 
     def transitive_closure(self):
+        """
+        Compute the transitive closure of the relations in the mdoel.
+        """
         self.compute_closure(closures.transitive)
 
     def add_relations_from_json(self, json_data):
