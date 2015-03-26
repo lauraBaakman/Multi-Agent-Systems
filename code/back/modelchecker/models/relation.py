@@ -35,6 +35,20 @@ class Relation(object):
     def to_tuple(self):
         return (self.source, self.destination, self.agent)
 
+    def to_json_dump(self):
+        """
+        Return the object as the format required by to_json.
+        :return:
+        """
+        return [self.source.name, self.agent, self.destination.name]
+
+    def symmetric_relation(self):
+        return Relation(
+            self.agent,
+            self.destination,
+            self.source
+        )
+
     @staticmethod
     def from_tuple((source, destination, agent)):
         return Relation(
@@ -42,10 +56,3 @@ class Relation(object):
             source,
             destination
         )
-
-    def to_json_dump(self):
-        """
-        Return the object as the format required by to_json.
-        :return:
-        """
-        return [self.source.name, self.agent, self.destination.name]

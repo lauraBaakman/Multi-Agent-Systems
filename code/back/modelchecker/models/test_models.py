@@ -16,11 +16,17 @@ class TestModel(TestCase):
     #     self.assertIs(len(model.relations.get('1')), 3)
     #     self.assertIs(len(model.relations.get('2')), 2)
 
-    def test_transitive_closure(self):
-        filename = './modelchecker/models/test_model_s4.json'
-        data = utils.read_json(filename)
-        model = models.S4Model.from_json(data)
-        print model
+    # def test_transitive_closure(self):
+    #     filename = './modelchecker/models/test_model_s4.json'
+    #     data = utils.read_json(filename)
+    #     model = models.S4Model.from_json(data)
+    #     print model
 
+
+    def test_symmetric_closure(self):
+        filename = './modelchecker/models/test_model_s5.json'
+        data = utils.read_json(filename)
+        model = models.S5Model.from_json(data)
+        print model
 
 
