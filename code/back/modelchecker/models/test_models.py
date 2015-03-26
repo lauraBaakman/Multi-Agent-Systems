@@ -22,7 +22,7 @@ class TestKMModel(TestCase):
     def setUp(self):
         filename = './modelchecker/models/test_model_km.json'
         data = translators.read_json(filename)
-        self.model = models.KMModel.from_json(data)
+        self.model = models.KModel.from_json(data)
 
     def test_states(self):
         self.assertItemsEqual(

@@ -2,17 +2,17 @@
 from unittest import TestCase
 
 from modelchecker.ast.nodes import Proposition, Negation, Conjunction
-from modelchecker.models.KMmodel import KMmodel
-from modelchecker import utils
+from modelchecker.models import KModel
+import modelchecker.utils.translators as utils
 
 __author__ = 'laura'
 
 
 class TestUnary(TestCase):
     def setUp(self):
-        self.model = KMmodel()
+        self.model = KModel()
         json_data = utils.read_json('modelchecker/models/test_model_km.json')
-        self.model = KMmodel.from_json(json_data)
+        self.model = KModel.from_json(json_data)
         self.lhs = Proposition('p')
 
     def test_is_true_1(self):

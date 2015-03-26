@@ -2,11 +2,11 @@
 
 __author__ = 'laura'
 
-from KMmodel import KMmodel
+from Kmodel import KModel
 from relation import  Relation
 import modelchecker.utils.closures as closures
 
-class TModel(KMmodel):
+class TModel(KModel):
     """
     Class representing reflexive Kripke models.
     Attributes:
