@@ -27,7 +27,7 @@ class TestKMModel(TestCase):
     def test_states(self):
         self.assertItemsEqual(
             self.model.states.keys(),
-            ['sa', 'sb', 'sc', 'sd', 'se'],
+            ['sa', 'sb', 'sc', 'sd', 'se', 'sf'],
             'Test if all states from the model are in the list of states.'
         )
 

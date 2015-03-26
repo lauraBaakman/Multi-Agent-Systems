@@ -199,7 +199,7 @@ class KModel(object):
         except:
             raise
 
-    def find_connected_component_containing(self, state):
+    def all_states_reachable_from(self, state):
         """
         Find the connected component that contains the state state.
         :param state: The state for which the connected component should be found.
@@ -207,17 +207,17 @@ class KModel(object):
         :return: set of states
         :rtype: set[modelchecker.models.state]
         """
-        connected_component = {state}
+        reachable_states = {state}
         previous_set = set()
-        while not convergence(connected_component, previous_set):
-            previous_set = connected_component
+        while not convergence(reachable_states, previous_set):
+            previous_set = reachable_states
             new_relations = set(
                 destination
-                for cc_state in connected_component
+                for cc_state in reachable_states
                 for (_, destination) in cc_state.get_all_outgoing_as_two_tuple()
             )
-            connected_component = previous_set.union(new_relations)
-        return connected_component
+            reachable_states = previous_set.union(new_relations)
+        return reachable_states
 
 
 
