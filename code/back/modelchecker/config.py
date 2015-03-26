@@ -19,8 +19,8 @@ kms5 = {
 }
 
 common = {
-    'common': r"C"
-    #Add everybody
+    'common': r"C",
+    'everybody': r"E"
 }
 
 # The supported logics:
