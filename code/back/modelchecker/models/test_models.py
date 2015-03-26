@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from unittest import TestCase
+from unittest import TestCase, skip
 
 import modelchecker.utils.translators as translators
 import modelchecker.models as models
@@ -30,6 +30,12 @@ class TestKMModel(TestCase):
             ['sa', 'sb', 'sc', 'sd'],
             'Test if all states from the model are in the list of states.'
         )
+
+    @skip("Skipping the test 'test_agent_set' since things are behaving strangely.")
+    def test_agent_set(self):
+        computed = self.model.agents
+        expected = {'1', '2', ''}
+        self.assertItemsEqual(computed, expected)
 
 class TestTModel(TestCase):
     def setUp(self):
@@ -65,6 +71,7 @@ class TestTModel(TestCase):
         sa_relations_as_tuple = relations_to_list_of_string_tuples(sa.incoming['2'])
         sa_expected_relations = [('sa', 'sa', '2')]
         self.assertItemsEqual(sa_relations_as_tuple, sa_expected_relations)
+
 
 class TestS4Model(TestCase):
     def setUp(self):

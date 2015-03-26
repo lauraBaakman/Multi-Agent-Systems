@@ -24,6 +24,7 @@ class KMmodel(object):
         """
         self.states = {}
         self.relations = {}
+        self.agents = set([])
 
     def __repr__(self):
         """Print friendly representation"""
@@ -66,6 +67,9 @@ class KMmodel(object):
             }
         )
 
+    def add_agent(self, agent):
+        self.agents.add(agent)
+
     def add_relation(self, relation):
         """
         Add the relation to the list of relations of the models and add the relation to respectively
@@ -73,6 +77,7 @@ class KMmodel(object):
         :param relation: Relation
         :return: void
         """
+        self.add_agent(relation.agent)
         if relation.agent in self.relations:
             if not(relation in self.relations[relation.agent]):
                 self.relations[relation.agent].append(relation)
@@ -192,7 +197,6 @@ class KMmodel(object):
         except:
             raise
 
-
     @classmethod
     def from_json(cls, json_data):
         """
@@ -201,7 +205,6 @@ class KMmodel(object):
         :return: a models
         """
         model = cls()
-
         try:
             model.add_states_from_json(json_data)
             model.add_relations_from_json(json_data)
