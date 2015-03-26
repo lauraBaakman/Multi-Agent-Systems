@@ -15,7 +15,7 @@ def reflexive(original, states):
     reflexive_relations = [(state, state) for state in states]
     return original.union(reflexive_relations)
 
-def _convergence(set_a, set_b):
+def convergence(set_a, set_b):
     return set_a == set_b
 
 def transitive(original):
@@ -28,7 +28,7 @@ def transitive(original):
     """
     closure = original
     previous_set  = set()
-    while not _convergence(closure, previous_set):
+    while not convergence(closure, previous_set):
         previous_set = closure
         new_relations = set((x, w) for x, y in closure for q, w in closure if q == y)
         closure = previous_set.union(new_relations)
@@ -48,7 +48,7 @@ def transitive_symmetric(original):
     """
     closure = original
     previous_set = set()
-    while not _convergence(closure, previous_set):
+    while not convergence(closure, previous_set):
         previous_set = closure
         new_relations = transitive(closure) | (symmetric(closure))
         closure = previous_set.union(new_relations)
