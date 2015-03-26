@@ -3,6 +3,7 @@
 __author__ = 'laura'
 
 from S4model import S4Model
+import modelchecker.utils.closures as closures
 
 class S5Model(S4Model):
     """
@@ -19,8 +20,7 @@ class S5Model(S4Model):
         """
         Compute the reflexive closure of the relations in the model
         """
-        # TODO impement and test!
-        raise NotImplementedError
+        self.compute_closure(closures.transitive_symmetric)
 
     def add_relations_from_json(self, json_data):
         super(S4Model, self).add_relations_from_json(json_data)
