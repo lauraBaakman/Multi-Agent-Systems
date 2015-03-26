@@ -36,3 +36,12 @@ class Unary(Node):
                 'conclusion': self._conclusion_one_relation(evaluation_state, truth_value, destination_state)
             }
         )
+
+    def _is_true_no_relation(self, evaluation_state):
+        return (
+            True,
+            {
+                'condition': self._condition(evaluation_state),
+                'conclusion': self._conclusion_no_relations(evaluation_state),
+            }
+        )

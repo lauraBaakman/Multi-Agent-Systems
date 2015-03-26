@@ -25,7 +25,9 @@ class Everybody(Unary):
         """
         states = list(set([s.destination for _, states in state.outgoing.iteritems() for s in states]))
         if not states:
-            return self._is_true_no_relations(state)
+            return self._is_true_no_relation(
+                evaluation_state=state
+            )
         elif len(states) == 1:
             return self._is_true_one_relation(
                 evaluation_state=state,
@@ -33,15 +35,6 @@ class Everybody(Unary):
             )
         else:
             return self._is_true_multiple_relations(state=state, destination_states=states)
-
-    def _is_true_no_relations(self, state):
-        return (
-            True,
-            {
-                'condition': self._condition(state),
-                'conclusion': self._conclusion_no_relations(state)
-            }
-        )
 
     def _is_true_multiple_relations(self, state, destination_states):
         interlude = []
