@@ -56,5 +56,5 @@ class TestEverybody(TestCase):
         node = Everybody(self.lhs)
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('se'))
         self.assertFalse(truth_value)
-        print dict['condition']
-        print dict['conclusion']
+        # print dict['condition']
+        # print dict['conclusion']
