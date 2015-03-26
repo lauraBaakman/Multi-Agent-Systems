@@ -24,41 +24,28 @@ class Knowledge(Agent):
         :return: (truthvalue, dict) truthvalue is the truth value of the formula, dict contains the motivation.
         :rtype: (bool, dict)
         """
-        relations = state.outgoing.get(self.agent)
-        if not relations:
-            # There is no outgoing relation.
-            truth_value = True
-            conclusion = self._conclusion_no_relations(state)
-            return (
-                truth_value,
-                {
-                    'condition': self._condition(state),
-                    'conclusion': conclusion,
-                }
-            )
-        elif len(relations) == 1:
-            # There is only one outgoing relation.
-            destination = relations[0].destination
-            (truth_value, motivation) = self.lhs.is_true(destination)
-            interlude = [motivation]
-            conclusion =self. _conclusion_one_relation(state, truth_value, destination)
+        destination_states = [relation.destination for relation in state.outgoing.get(self.agent, [])]
+        if not destination_states:
+            return self._is_true_no_relation(state)
+        elif len(destination_states) == 1:
+            return self._is_true_one_relation(state, destination_states[0])
         else:
-            # There are multiple outgoing relations.
-            destination_states = []
-            interlude = []
-            for relation in relations:
-                (destination_truth_value, destination_motivation) = self.lhs.is_true(relation.destination)
-                if destination_truth_value:
-                    destination_states.append(relation.destination.name)
-                    interlude.append(destination_motivation)
-                    truth_value = destination_truth_value
-                else:
-                    truth_value = destination_truth_value
-                    interlude = [destination_motivation]
-                    conclusion = self._conclusion_one_relation(state, truth_value, relation.destination)
-                    break
-            if truth_value:
-                conclusion = self._conclusion_multiple_relations(state, destination_states)
+            return self._is_true_multiple_relations(state=state, destination_states=destination_states)
+
+    def _is_true_multiple_relations(self, state, destination_states):
+        interlude = []
+        for destination in destination_states:
+            (destination_truth_value, destination_motivation) = self.lhs.is_true(destination)
+            if destination_truth_value:
+                interlude.append(destination_motivation)
+                truth_value = destination_truth_value
+            else:
+                truth_value = destination_truth_value
+                interlude = [destination_motivation]
+                conclusion = self._conclusion_one_relation(state, truth_value, destination)
+                break
+        if truth_value:
+            conclusion = self._conclusion_multiple_relations(state, destination_states)
 
         return (
             truth_value,
@@ -66,6 +53,26 @@ class Knowledge(Agent):
                 'condition': self._condition(state),
                 'interlude': interlude,
                 'conclusion': conclusion,
+            }
+        )
+
+    def _is_true_one_relation(self, state, destination):
+        (truth_value, motivation) = self.lhs.is_true(destination)
+        return (
+            truth_value,
+            {
+                'condition': self._condition(state),
+                'interlude': [motivation],
+                'conclusion': self._conclusion_one_relation(state, truth_value, destination)
+            }
+        )
+
+    def _is_true_no_relation(self, state):
+        return (
+            True,
+            {
+                'condition': self._condition(state),
+                'conclusion': self._conclusion_no_relations(state),
             }
         )
 
