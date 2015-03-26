@@ -147,7 +147,8 @@ class KModel(object):
                 self.add_state(
                     state.State(
                         str(json_state['id']),
-                        _create_valuation(propositions, json_state['vals'])
+                        _create_valuation(propositions, json_state['vals']),
+                        self
                     )
                 )
             except:

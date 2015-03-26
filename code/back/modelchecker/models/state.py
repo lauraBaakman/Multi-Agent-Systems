@@ -15,7 +15,7 @@ class State(object):
         - valuations: dictionary of valuations, indexed by proposition.
     """
 
-    def __init__(self, name, valuations):
+    def __init__(self, name, valuations, model):
         """
         Constructor for State object
         :param valuations: dictionary with the propositions and their valuations.
@@ -25,6 +25,7 @@ class State(object):
         self.incoming = {}
         self.outgoing = {}
         self.valuations = valuations
+        self.model = model
 
     def _add_relation(self, dictionary, relation):
         relations = dictionary.get(relation.agent)
