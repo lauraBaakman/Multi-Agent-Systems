@@ -33,7 +33,7 @@ class TestMotivation_to_latex(TestCase):
         formula = "p & q"
         tree = ast.Ast.from_string(formula, self.logic)
         (_, motivation) = tree.is_true(self.model.states.get("sa"))
-        print motivation_to_html(motivation)
+        # print motivation_to_html(motivation)
 
     def test_motivation_to_latex_disjunction(self):
         formula = "p | q & r"

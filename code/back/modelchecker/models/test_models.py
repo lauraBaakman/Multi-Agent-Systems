@@ -31,10 +31,9 @@ class TestKMModel(TestCase):
             'Test if all states from the model are in the list of states.'
         )
 
-    @skip("Skipping the test 'test_agent_set' since things are behaving strangely.")
     def test_agent_set(self):
         computed = self.model.agents
-        expected = {'1', '2', ''}
+        expected = {'1', '2', '3'}
         self.assertItemsEqual(computed, expected)
 
 class TestTModel(TestCase):
