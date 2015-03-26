@@ -15,7 +15,7 @@ class S5Model(S4Model):
     def __init__(self):
         super(S5Model, self).__init__()
 
-    def symmetric_closure(self):
+    def symmetric_transitive_closure(self):
         """
         Compute the reflexive closure of the relations in the model
         """
@@ -23,4 +23,4 @@ class S5Model(S4Model):
 
     def add_relations_from_json(self, json_data):
         super(S4Model, self).add_relations_from_json(json_data)
-        self.symmetric_closure()
+        self.symmetric_transitive_closure()

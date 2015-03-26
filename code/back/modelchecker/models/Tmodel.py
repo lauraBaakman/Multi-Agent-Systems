@@ -4,6 +4,7 @@ __author__ = 'laura'
 
 from KMmodel import KMmodel
 from relation import  Relation
+import modelchecker.utils.closures as closures
 
 class TModel(KMmodel):
     """
@@ -20,15 +21,17 @@ class TModel(KMmodel):
         """
         Compute the reflexive closure of the relations in the model
         """
-        for agent in self.relations.keys():
-            for _, state in self.states.iteritems():
+        states_in_model = self.states.values()
+        for agent, relations in self.relations.iteritems():
+            relations_as_set = set([relation.to_tuple() for relation in relations])
+            closure = closures.reflexive(relations_as_set, states_in_model)
+            closure.difference_update(relations_as_set)
+            [
                 self.add_relation(
-                    Relation(
-                        agent,
-                        state,
-                        state
-                    )
+                    Relation.from_tuple((source, destination, agent))
                 )
+                for (source, destination) in closure
+            ]
 
     def add_relations_from_json(self, json_data):
         super(TModel, self).add_relations_from_json(json_data)
