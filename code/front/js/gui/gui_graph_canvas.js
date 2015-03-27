@@ -241,8 +241,6 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
                 .on('mousedown', listener.mousedown_state)
                 .on('mouseup', listener.mouseup_state);
 
-                console.log(listener.mouseup_state);
-
             // show node IDs
             g.append('svg:text')
                 .attr('x', 0)
