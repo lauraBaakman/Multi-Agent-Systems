@@ -1,0 +1,30 @@
+{
+    "states":[
+      {
+        "id": "sa",
+        "vals": [true, true]
+      },
+      {
+        "id": "sb",
+        "vals": [false, true]
+      },
+      {
+        "id": "sc",
+        "vals": [true, false]
+      },
+      {
+        "id": "sd",
+        "vals": [false, true]
+      }      
+    ],
+	"propositions": ["p", "q"],
+	"relations": [
+        ["sa", 1, "sc"],
+        ["sa", 2, "sc"],
+        ["sd", 1, "sa"],
+        ["sd", 2, "sa"],
+        ["sd", 1, "sc"],
+        ["sd", 2, "sc"]
+    ],
+	"logic": "KM"
+}
