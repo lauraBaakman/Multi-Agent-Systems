@@ -14,6 +14,10 @@ path.label {
     font-weight: bold;
 }
 
+path.link.dragline {
+  pointer-events: none;
+}
+
 text.id {
     text-anchor: middle;
     font-weight: bold;

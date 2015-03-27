@@ -11,6 +11,7 @@ define("gui_listener", ["d3"], function(d3) {
         var mouseup_node = null;
 
         this.mousedown = function() {
+            console.log("Mouse down");
             if (d3.event.altKey || mousedown_node) return;
 
             gui.get_model().add_state();
@@ -31,7 +32,8 @@ define("gui_listener", ["d3"], function(d3) {
             mouseup_node = null;
         };
 
-        this.mouseup = function() {
+        this.mouseup = function(d) {
+            console.log("Mouse up");
             if (mousedown_node) {
                 // hide drag line
                 gui.get_drag_line()
@@ -39,13 +41,15 @@ define("gui_listener", ["d3"], function(d3) {
                     .style('marker-end', '');
             }
             // because :active only works in WebKit?
-            // svg.classed('active', false);
+            gui.get_canvas().classed('active', false);
 
             // clear mouse event vars
             self.reset_mouse_vars();
         };
 
         this.mousedown_state = function(d) {
+            console.log("Mouse down on state: " + d.id);
+
             if (d3.event.altKey) return;
             // select node
             mousedown_node = d;
@@ -63,11 +67,9 @@ define("gui_listener", ["d3"], function(d3) {
         };
 
         this.mouseup_state = function(d) {
-        	console.log("bleh");
+            console.log("Mouse up on state: " + d.id);
+
             if (!mousedown_node) return;
-
-            console.log(d);
-
             // needed by FF
             gui.get_drag_line()
                 .classed('hidden', true)
@@ -80,7 +82,7 @@ define("gui_listener", ["d3"], function(d3) {
                 return;
             }
 
-            gui.get_model.add_link(mousedown_node.id, mouseup_node.id);
+            gui.get_model().add_link(mousedown_node.id, mouseup_node.id);
 
             // selected_link = link;
             gui.selected_node = null;

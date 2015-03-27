@@ -51,10 +51,6 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
                 .append('svg')
                 .attr('width', width)
                 .attr('height', height);
-
-            canvas.on('mousedown', listener.mousedown);
-            canvas.on('mousemove', listener.mousemove);
-            canvas.on('mouseup', listener.mouseup);
         }
 
         function init_layout() {
@@ -240,7 +236,7 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
                 })
                 .on('mousedown', listener.mousedown_state)
                 .on('mouseup', listener.mouseup_state);
-
+                
             // show node IDs
             g.append('svg:text')
                 .attr('x', 0)
@@ -251,11 +247,11 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
                 });
 
             // text shadow
-            g.append('svg:text')
-                .attr('x', 24)
-                .attr('y', 4)
-                .attr('class', 'shadow')
-                .text(valuation_to_string);
+            // g.append('svg:text')
+            //     .attr('x', 24)
+            //     .attr('y', 4)
+            //     .attr('class', 'shadow')
+            //     .text(valuation_to_string);
 
             // text foreground
             g.append('svg:text')
@@ -271,6 +267,11 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
             model = app.get_model();
             draw_paths();
             draw_nodes();
+
+            canvas.on('mousedown', listener.mousedown);
+            canvas.on('mousemove', listener.mousemove);
+            canvas.on('mouseup', listener.mouseup);
+
             layout.start();
         }
 
