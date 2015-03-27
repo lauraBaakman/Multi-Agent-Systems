@@ -72,14 +72,14 @@ def get_ast_from_data(logic, data):
 
 def get_state_from_data(data):
     return data.get('state')
-#
+
 def evaluate_model(model, formula, state):
     try:
         return model.is_true(formula, state)
     except errors.ValuationError as e:
         raise falcon.HTTPError(falcon.HTTP_400, 'Evaluation Error', e.message)
 
-class Resource(object):
+class Valuate(object):
 
     def on_post(self, req, resp):
         print 'Received request: {req}'.format(req=req)
@@ -101,3 +101,14 @@ class Resource(object):
         )
         resp.set_header('Access-Control-Allow-Origin', req.get_header('Origin'))
         print 'Sent response: {resp}'.format(resp=resp)
+
+class Logics(object):
+    def on_get(self, req, resp):
+        resp.body = json.dumps(
+            {
+                'logics': config.logics
+            },
+             encoding='utf-8'
+        )
+        resp.status = falcon.HTTP_200
+        resp.set_header('Access-Control-Allow-Origin', req.get_header('Origin'))
