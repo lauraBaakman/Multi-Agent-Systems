@@ -37,7 +37,11 @@ class Unary(Node):
         :return: (truthvalue, dict) truthvalue is the truth value of the formula, dict contains the motivation.
         :rtype: (bool, dict)
         """
-        if len(destination_states) == 1:
+        if not destination_states:
+            return self._is_true_no_relation(
+                evaluation_state=state
+            )
+        elif len(destination_states) == 1:
             return self._is_true_one_relation(
                 evaluation_state=state,
                 destination_state=destination_states[0]
