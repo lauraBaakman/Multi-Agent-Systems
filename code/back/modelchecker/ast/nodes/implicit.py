@@ -31,21 +31,11 @@ class Implicit(Unary):
         for agent in agent_iterator:
             relations = relations.intersection(state.get_all_outgoing_as_two_tuple(agent))
         destination_states = [destination for (_, destination) in relations]
+        return super(Implicit, self).is_true(
+            state=state,
+            destination_states=destination_states
+        )
 
-        if not destination_states:
-            return self._is_true_no_relation(
-                evaluation_state=state
-            )
-        elif len(destination_states) == 1:
-            return self._is_true_one_relation(
-                evaluation_state=state,
-                destination_state=destination_states[0]
-            )
-        else:
-            return self._is_true_multiple_relations(
-                evaluation_state=state,
-                destination_states=destination_states
-            )
 
     def _conclusion_no_relations(self, state):
         return super(Implicit, self)._conclusion_no_relations(
