@@ -156,6 +156,6 @@ class TestImplicit(TestCase):
         node = Implicit(Proposition('q'))
         (truth_value, dict) = node.is_true(self.model.get_state_by_name('sd'))
         self.assertFalse(truth_value)
-        print dict['condition']
-        print dict['conclusion']
+        # print dict['condition']
+        # print dict['conclusion']
         # print dict['interlude']
