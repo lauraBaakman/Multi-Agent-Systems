@@ -95,7 +95,7 @@ class Resource(object):
             {
                 'truth_value': truth_value,
                 'motivation' : utils._sub_motivation_to_html(motivation),
-                'motivation_latex': utils.motivation_to_latex(motivation)
+                'model': model.to_json()
             },
              encoding='utf-8'
         )
