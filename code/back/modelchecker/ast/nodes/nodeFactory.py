@@ -37,6 +37,7 @@ def _from_unary_token(token):
     token_to_node = {
         operators.Unary.negation: nodes.Negation,
         operators.Unary.common: nodes.Common,
-        operators.Unary.everybody: nodes.Everybody
+        operators.Unary.everybody: nodes.Everybody,
+        operators.Unary.intention: nodes.Intention
     }
     return token_to_node.get(token.type)()
