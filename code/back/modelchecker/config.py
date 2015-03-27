@@ -25,6 +25,6 @@ group = {
 }
 
 # The supported logics:
-logics = ['KM', 'T', 'S4', 'S5', 'KEC', 'TEC', 'S4EC', 'S5EC', 'KI', 'TI', 'S4I', 'S5I']
+logics = ['K', 'T', 'S4', 'S5', 'KEC', 'TEC', 'S4EC', 'S5EC', 'KI', 'TI', 'S4I', 'S5I']
 
 

@@ -79,7 +79,7 @@ class TestTokenizeProposition(TestCase):
 
 class TestTokenizeK(TestCase):
     def setUp(self):
-        self.logics = ['KM', 'T', 'S4', 'S5']
+        self.logics = ['K', 'T', 'S4', 'S5']
 
     def test_tokenize_K(self):
         expression = 'K_1 p'

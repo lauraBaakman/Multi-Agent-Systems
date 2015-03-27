@@ -32,7 +32,7 @@ def _get_lexicon(logic):
     I_expressions.extend(agent_expressions)
 
     expressions_per_logic = {
-        "KM":   agent_expressions,
+        "K":   agent_expressions,
         "T": agent_expressions,
         "S4": agent_expressions,
         "S5": agent_expressions,

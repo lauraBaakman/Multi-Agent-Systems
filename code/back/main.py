@@ -15,7 +15,7 @@ import modelchecker.utils as utils
 
 if __name__ == "__main__":
     formula = "K_1 ~ a & (b -> d)"
-    logic = "KM"
+    logic = "K"
     filename = '../model.json'
 
     try:

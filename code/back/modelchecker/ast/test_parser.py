@@ -14,12 +14,12 @@ class TestParser(TestCase):
         self.q = tokens.Proposition("q")
 
     def test_parse_proposition(self):
-        computed_tree = Ast.from_string("p", "KM").root
+        computed_tree = Ast.from_string("p", "K").root
         expected_tree = nodes.Proposition("p")
         self.assertEqual(computed_tree, expected_tree)
 
     def test_parse_conjunction(self):
-        computed_tree = Ast.from_string("p & q", "KM").root
+        computed_tree = Ast.from_string("p & q", "K").root
         expected_tree = nodes.Conjunction(
             nodes.Proposition("p"),
             nodes.Proposition("q")
@@ -27,7 +27,7 @@ class TestParser(TestCase):
         self.assertEqual(computed_tree, expected_tree)
 
     def test_parse_disjunction(self):
-        computed_tree = Ast.from_string("p | q", "KM").root
+        computed_tree = Ast.from_string("p | q", "K").root
         expected_tree = nodes.Disjunction(
             nodes.Proposition("p"),
             nodes.Proposition("q")
@@ -35,7 +35,7 @@ class TestParser(TestCase):
         self.assertEqual(computed_tree, expected_tree)
 
     def test_parse_implication(self):
-        computed_tree = Ast.from_string("p -> q", "KM").root
+        computed_tree = Ast.from_string("p -> q", "K").root
         expected_tree = nodes.Implication(
             nodes.Proposition("p"),
             nodes.Proposition("q")
@@ -43,7 +43,7 @@ class TestParser(TestCase):
         self.assertEqual(computed_tree, expected_tree)
 
     def test_parse_biimplication(self):
-        computed_tree = Ast.from_string("p <-> q", "KM").root
+        computed_tree = Ast.from_string("p <-> q", "K").root
         expected_tree = nodes.BiImplication(
             nodes.Proposition("p"),
             nodes.Proposition("q")
@@ -51,7 +51,7 @@ class TestParser(TestCase):
         self.assertEqual(computed_tree, expected_tree)
 
     def test_parse_negation(self):
-        computed_tree = Ast.from_string("~ p", "KM").root
+        computed_tree = Ast.from_string("~ p", "K").root
         expected_tree = nodes.Negation(
             nodes.Proposition("p")
         )
@@ -72,7 +72,7 @@ class TestParser(TestCase):
         self.assertEqual(computed_tree, expected_tree)
 
     def test_parse_knowledge(self):
-        computed_tree = Ast.from_string("K_1 p", "KM").root
+        computed_tree = Ast.from_string("K_1 p", "K").root
         expected_tree = nodes.Knowledge(
             "1",
             nodes.Proposition("p")
@@ -80,7 +80,7 @@ class TestParser(TestCase):
         self.assertEqual(computed_tree, expected_tree)
 
     def test_parse_possible(self):
-        computed_tree = Ast.from_string("M_1 p", "KM").root
+        computed_tree = Ast.from_string("M_1 p", "K").root
         expected_tree = nodes.Possible(
             "1",
             nodes.Proposition("p")

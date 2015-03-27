@@ -8,7 +8,7 @@ import modelchecker.config as config
 
 def from_model_name(logic_name):
     logic_name_to_class = {
-        'KM' : models.KModel,
+        'K' : models.KModel,
         'T'  : models.TModel,
         'S4' : models.S4Model,
         'S5' : models.S5Model,
