@@ -17,4 +17,4 @@ from implication import Implication
 from biimplication import BiImplication
 from knowledge import Knowledge
 from possible import Possible
-from intention import Intention
+from implicit import Implicit

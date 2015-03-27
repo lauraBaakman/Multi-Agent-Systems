@@ -20,11 +20,8 @@ agent = {
 
 group = {
     'common': r"C",
-    'everybody': r"E"
-}
-
-bdi = {
-    'intention': r"I"
+    'everybody': r"E",
+    'implicit': r"I"
 }
 
 # The supported logics:

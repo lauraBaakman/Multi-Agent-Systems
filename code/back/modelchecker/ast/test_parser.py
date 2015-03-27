@@ -89,7 +89,7 @@ class TestParser(TestCase):
 
     def test_parse_intention(self):
         computed_tree = Ast.from_string("I p", "KI").root
-        expected_tree = nodes.Intention(
+        expected_tree = nodes.Implicit(
             nodes.Proposition("p")
         )
         self.assertEqual(computed_tree, expected_tree)

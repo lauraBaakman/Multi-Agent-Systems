@@ -27,7 +27,7 @@ def _get_lexicon(logic):
     EC_expressions.extend(agent_expressions)
 
     I_expressions = [
-        (config.bdi['intention'], lambda scanner, _: tokens.UnaryOperator(Unary.intention)),
+        (config.group['implicit'], lambda scanner, _: tokens.UnaryOperator(Unary.implicit)),
     ]
     I_expressions.extend(agent_expressions)
 

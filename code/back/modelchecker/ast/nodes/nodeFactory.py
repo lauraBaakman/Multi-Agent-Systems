@@ -38,6 +38,6 @@ def _from_unary_token(token):
         operators.Unary.negation: nodes.Negation,
         operators.Unary.common: nodes.Common,
         operators.Unary.everybody: nodes.Everybody,
-        operators.Unary.intention: nodes.Intention
+        operators.Unary.implicit: nodes.Implicit
     }
     return token_to_node.get(token.type)()

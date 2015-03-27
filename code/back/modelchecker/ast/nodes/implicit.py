@@ -5,9 +5,9 @@ __author__ = 'laura'
 from unary import Unary
 from node import models
 
-class Intention(Unary):
+class Implicit(Unary):
     def __init__(self, lhs=None):
-        super(Intention, self).__init__(lhs)
+        super(Implicit, self).__init__(lhs)
 
     def __repr__(self):
         """Print-friendly infix representation."""
@@ -23,8 +23,11 @@ class Intention(Unary):
         :return: (truthvalue, dict) truthvalue is the truth value of the formula, dict contains the motivation.
         :rtype: (bool, dict)
         """
-        # TODO intersectie van de agents berekenen, gebruikt get_all_outgoing as tuple met een of andere agent parameter.
-        # states =
+        states = set([])
+        for agent in state.model.agents:
+            states = states.intersection(
+                state.get_all_outgoing_as_two_tuple(agent)
+            )
         if not states:
             return self._is_true_no_relation(
                 evaluation_state=state
@@ -82,4 +85,4 @@ class Intention(Unary):
         :return: LaTeX representation
         :rtype: str
         """
-        return super(Intention, self).to_latex(operator=operator, delimiter=delimiter)
+        return super(Implicit, self).to_latex(operator=operator, delimiter=delimiter)

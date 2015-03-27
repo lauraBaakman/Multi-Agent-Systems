@@ -204,7 +204,7 @@ class TestTokenizeI(TestCase):
         for logic in self.logics:
             computed = tokenize(logic, expression)
             expected = [
-                tokens.UnaryOperator(operators.Unary.intention),
+                tokens.UnaryOperator(operators.Unary.implicit),
                 tokens.Proposition('p'),
             ]
             self.assertEqual(computed, expected)
