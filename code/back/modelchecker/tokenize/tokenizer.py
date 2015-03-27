@@ -15,26 +15,37 @@ def _get_lexicon(logic):
     :param logic: the logic to be used, options: KM, S5, S5EC
     :return: list[(regular_expression, lambda function)]
     """
-    km_s5_expressions = [
-        (config.kms5['knowledge'], lambda scanner, token: tokens.AgentOperator(token, Agent.knowledge)),
-        (config.kms5['possible'],  lambda scanner, token: tokens.AgentOperator(token, Agent.possible))
+    agent_expressions = [
+        (config.agent['knowledge'], lambda scanner, token: tokens.AgentOperator(token, Agent.knowledge)),
+        (config.agent['possible'],  lambda scanner, token: tokens.AgentOperator(token, Agent.possible))
     ]
 
-    s5EC_expressions = [
-        (config.common['common'],       lambda scanner, _: tokens.UnaryOperator(Unary.common)),
-        (config.common['everybody'],    lambda scanner, _: tokens.UnaryOperator(Unary.everybody))
+    EC_expressions = [
+        (config.group['common'],       lambda scanner, _: tokens.UnaryOperator(Unary.common)),
+        (config.group['everybody'],    lambda scanner, _: tokens.UnaryOperator(Unary.everybody))
     ]
-    s5EC_expressions.extend(km_s5_expressions)
+    EC_expressions.extend(agent_expressions)
+
+    I_expressions = [
+        (config.bdi['intention'], lambda scanner, _: tokens.UnaryOperator(Unary.intention)),
+    ]
+    I_expressions.extend(agent_expressions)
 
     expressions_per_logic = {
-        "KM":   km_s5_expressions,
-        "T": km_s5_expressions,
-        "S4": km_s5_expressions,
-        "S5": km_s5_expressions,
-        "KEC": s5EC_expressions,
-        "TEC": s5EC_expressions,
-        "S4EC": s5EC_expressions,
-        "S5EC": s5EC_expressions,
+        "KM":   agent_expressions,
+        "T": agent_expressions,
+        "S4": agent_expressions,
+        "S5": agent_expressions,
+
+        "KEC": EC_expressions,
+        "TEC": EC_expressions,
+        "S4EC": EC_expressions,
+        "S5EC": EC_expressions,
+
+        "KI": I_expressions,
+        "TI": I_expressions,
+        "S4I": I_expressions,
+        "S5I": I_expressions,
     }
 
     expressions = [
@@ -43,7 +54,7 @@ def _get_lexicon(logic):
         (config.propositional['implication'],      lambda scanner,      _: tokens.BinaryOperator(Binary.implication)),
         (config.propositional['bi-implication'],   lambda scanner,      _: tokens.BinaryOperator(Binary.biimplication)),
         (config.propositional['negation'],         lambda scanner,      _: tokens.UnaryOperator(Unary.negation)),
-        (r"[a-z][a-zA-Z1-9]*",                              lambda scanner,  token: tokens.Proposition(token)),
+        (r"[a-z][a-zA-Z1-9]*",                     lambda scanner,  token: tokens.Proposition(token)),
         (r"[[{(<]",                                lambda scanner,      _: tokens.BracketOpen()),
         (r"[]})>]",                                lambda scanner,      _: tokens.BracketClose()),
         (r"\s+",                                   None), # None == skip token.
