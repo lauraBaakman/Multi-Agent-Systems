@@ -23,7 +23,22 @@ class Intention(Unary):
         :return: (truthvalue, dict) truthvalue is the truth value of the formula, dict contains the motivation.
         :rtype: (bool, dict)
         """
-        raise NotImplementedError
+        # TODO intersectie van de agents berekenen, gebruikt get_all_outgoing as tuple met een of andere agent parameter.
+        # states =
+        if not states:
+            return self._is_true_no_relation(
+                evaluation_state=state
+            )
+        elif len(states) == 1:
+            return self._is_true_one_relation(
+                evaluation_state=state,
+                destination_state=states[0]
+            )
+        else:
+            return self._is_true_multiple_relations(
+                evaluation_state=state,
+                destination_states=states
+            )
 
 
     def _truth_condition(self, state):
@@ -34,8 +49,14 @@ class Intention(Unary):
         :return: String with the truth condition
         :rtype: String
         """
-        # In Everybody._conclusion_no_relations.union_of_realtions a string representing the untion of all relations in computed. Reuse for the truth condition here.
-        raise NotImplementedError
+        return '{lhs_models} for all $t$ such that $({state}, t) {set}$'.format(
+            lhs_models=models('t', self.lhs, '$'),
+            state=state.name,
+            set=self._agents_as_string(
+                agents = list(state.model.agents),
+                operator = '\cap'
+            )
+        )
 
 
     def _conclusion(self, state, truth_value):

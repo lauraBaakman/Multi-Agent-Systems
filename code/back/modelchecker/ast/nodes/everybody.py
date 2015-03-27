@@ -41,6 +41,7 @@ class Everybody(Unary):
 
 
     def _conclusion_no_relations(self, state):
+        # TODO use _agents_as_string
         def union_of_relations(state):
             agents = list(state.model.agents)
             result = 'R_{}'.format(agents[0])

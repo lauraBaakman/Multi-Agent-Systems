@@ -154,3 +154,20 @@ class Unary(Node):
                 empty_set=empty_set
             )
         )
+
+    def _agents_as_string(self, agents, operator):
+        """
+        Return the list of agents as a string seperated by a set operator.
+        :param operator: The set operator as a string e.g. '\cap'
+        :type operator: str
+        :return: str
+        :rtype: str
+        """
+        result = 'R_{}'.format(agents[0])
+        for i in range(1, len(agents)):
+            result = format('{result} {operator} R_{agent}'.format(
+                result=result,
+                operator=operator,
+                agent=agents[i])
+            )
+        return result
