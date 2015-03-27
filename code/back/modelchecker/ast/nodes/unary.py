@@ -26,6 +26,28 @@ class Unary(Node):
     def is_leaf(self):
         return False
 
+
+    def is_true(self, state, destination_states):
+        """
+        Determine the truth value of this formula.
+        :param state: the state in which the formula should be evaluated.
+        :type state: modelchecker.models.state
+        :param destination_states: the list of states in which lhs should be evaluated.
+        :type state: list(modelchecker.models.state)
+        :return: (truthvalue, dict) truthvalue is the truth value of the formula, dict contains the motivation.
+        :rtype: (bool, dict)
+        """
+        if len(destination_states) == 1:
+            return self._is_true_one_relation(
+                evaluation_state=state,
+                destination_state=destination_states[0]
+            )
+        else:
+            return self._is_true_multiple_relations(
+                evaluation_state=state,
+                destination_states=destination_states
+            )
+
     def _is_true_one_relation(self, evaluation_state, destination_state):
         """
         Determine the truth value if one state can be reached.
