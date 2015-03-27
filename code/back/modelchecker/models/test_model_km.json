@@ -1,0 +1,46 @@
+{
+    "states":[
+      {
+        "id": "sa",
+        "vals": [true, true, false]
+      },
+      {
+        "id": "sb",
+        "vals": [true, false,true]
+      },
+      {
+        "id": "sc",
+        "vals": [false, false, true]
+      },
+      {
+        "id": "sd",
+        "vals": [false, true, false]
+      },
+      {
+        "id": "se",
+        "vals": [false, true, true]
+      },
+      {
+        "id": "sf",
+        "vals": [false, true, true]
+      }
+    ],
+	"propositions": ["p", "q", "r"],
+	"relations": [
+        ["sc", 1, "sa"],
+        ["sa", 1, "sa"],
+        ["sa", 2, "sb"],
+        ["sb", 2, "sa"],
+        ["sb", 2, "sc"],
+        ["sc", 2, "sb"],
+        ["sc", 2, "sc"],
+        ["sb", 3, "sb"],
+        ["sb", 3, "sa"],
+        ["sa", 3, "sb"],
+        ["se", 3, "se"],
+        ["sa", 1, "sf"],
+        ["sb", 2, "sf"],
+        ["sc", 3, "sf"]
+    ],
+	"logic": "KM"
+}

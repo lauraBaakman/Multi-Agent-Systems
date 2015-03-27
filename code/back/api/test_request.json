@@ -1,0 +1,98 @@
+{
+  "state": "sc",
+  "formula": "K_1 M_2 p <-> q",
+  "model": {
+    "states": [
+      {
+        "id": "sa",
+        "vals": [
+          true,
+          true,
+          false
+        ]
+      },
+      {
+        "id": "sb",
+        "vals": [
+          true,
+          false,
+          true
+        ]
+      },
+      {
+        "id": "sc",
+        "vals": [
+          false,
+          false,
+          true
+        ]
+      },
+      {
+        "id": "sd",
+        "vals": [
+          false,
+          true,
+          false
+        ]
+      }
+    ],
+    "propositions": [
+      "p",
+      "q",
+      "r"
+    ],
+    "relations": [
+      [
+        "sc",
+        "1",
+        "sa"
+      ],
+      [
+        "sa",
+        "1",
+        "sa"
+      ],
+      [
+        "sa",
+        "2",
+        "sb"
+      ],
+      [
+        "sb",
+        "2",
+        "sa"
+      ],
+      [
+        "sb",
+        "2",
+        "sc"
+      ],
+      [
+        "sc",
+        "2",
+        "sb"
+      ],
+      [
+        "sc",
+        "2",
+        "sc"
+      ],
+      [
+        "sb",
+        "3",
+        "sb"
+      ],
+      [
+        "sb",
+        "3",
+        "sa"
+      ],
+      [
+        "sa",
+        "3",
+        "sb"
+      ]
+    ],
+    "logic": "T"
+  }
+}
