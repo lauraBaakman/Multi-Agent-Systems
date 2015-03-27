@@ -23,26 +23,38 @@ class Implicit(Unary):
         :return: (truthvalue, dict) truthvalue is the truth value of the formula, dict contains the motivation.
         :rtype: (bool, dict)
         """
-        states = set([])
-        for agent in state.model.agents:
-            states = states.intersection(
-                state.get_all_outgoing_as_two_tuple(agent)
-            )
-        if not states:
+
+        agent_iterator = iter(state.model.agents)
+        relations = set(
+            state.get_all_outgoing_as_two_tuple(agent_iterator.next())
+        )
+        for agent in agent_iterator:
+            relations = relations.intersection(state.get_all_outgoing_as_two_tuple(agent))
+        destination_states = [destination for (_, destination) in relations]
+
+        if not destination_states:
             return self._is_true_no_relation(
                 evaluation_state=state
             )
-        elif len(states) == 1:
+        elif len(destination_states) == 1:
             return self._is_true_one_relation(
                 evaluation_state=state,
-                destination_state=states[0]
+                destination_state=destination_states[0]
             )
         else:
             return self._is_true_multiple_relations(
                 evaluation_state=state,
-                destination_states=states
+                destination_states=destination_states
             )
 
+    def _conclusion_no_relations(self, state):
+        return super(Implicit, self)._conclusion_no_relations(
+            evaluation_state=state,
+            empty_set=self._agents_as_string(
+                agents=list(state.model.agents),
+                operator='\cap'
+            )
+        )
 
     def _truth_condition(self, state):
         """
@@ -52,7 +64,7 @@ class Implicit(Unary):
         :return: String with the truth condition
         :rtype: String
         """
-        return '{lhs_models} for all $t$ such that $({state}, t) {set}$'.format(
+        return '{lhs_models} for all $t$ such that $({state}, t) \in {set}$'.format(
             lhs_models=models('t', self.lhs, '$'),
             state=state.name,
             set=self._agents_as_string(

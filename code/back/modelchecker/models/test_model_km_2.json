@@ -20,6 +20,7 @@
 	"propositions": ["p", "q"],
 	"relations": [
         ["sa", 1, "sc"],
+        ["sa", 1, "sd"],
         ["sa", 2, "sc"],
         ["sd", 1, "sa"],
         ["sd", 2, "sa"],
