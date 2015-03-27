@@ -41,17 +41,13 @@ class Everybody(Unary):
 
 
     def _conclusion_no_relations(self, state):
-        # TODO use _agents_as_string
-        def union_of_relations(state):
-            agents = list(state.model.agents)
-            result = 'R_{}'.format(agents[0])
-            for i in range(1, len(agents)):
-                result = format('{} \cup R_{}'.format(result, agents[i]))
-            return result
-
         return super(Everybody, self)._conclusion_no_relations(
             evaluation_state=state,
-            empty_set=union_of_relations(state)
+            empty_set=self._agents_as_string(
+                agents=list(state.model.agents),
+                operator='\cup'
+            )
+
         )
 
     def _truth_condition(self, state):
