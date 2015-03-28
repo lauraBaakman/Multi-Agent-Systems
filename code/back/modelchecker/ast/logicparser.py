@@ -67,7 +67,7 @@ class Parser(object):
             self.consume()
         else:
             raise ParserError(
-                "Expected {expected} but found {found}.".format(
+                "expected {expected} but found {found}.".format(
                     expected=expected_token,
                     found=self.next()
                 )
@@ -88,7 +88,7 @@ class Parser(object):
             node.lhs = self.e()
         else:
             raise ParserError(
-                "Could not parse the expression, expected a proposition, opening bracket or negation, "
+                "expected a proposition, opening bracket or negation, "
                 "found {token} instead.".format(
                     token=self.next()
                 )
@@ -104,7 +104,7 @@ class Parser(object):
             return node
         else:
             raise ParserError(
-                "Could not parse the expression, expected a opening bracket, proposition or a unary operator, "
+                "expected a opening bracket, proposition or a unary operator, "
                 "found {token} instead".format(
                     token=self.next()
                 )

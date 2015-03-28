@@ -28,4 +28,4 @@ class ParserError(IOError):
         Constructor for TokenizeError
         :param msg: explanation of the error
         """
-        self.msg = msg
+        super(ParserError, self).__init__('Could not parse the expression, {}'.format(msg))
