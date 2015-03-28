@@ -2,8 +2,11 @@
 
 __author__ = 'laura'
 from unittest import TestCase
-import modelchecker.config as config
 import requests
+
+import modelchecker.config as config
+import modelchecker.utils.translators as utils
+
 
 url = 'http://127.0.0.1:8000'
 
@@ -22,11 +25,11 @@ class TestLogics(TestCase):
 class TestValuate(TestCase):
     def setUp(self):
         self.url = '{url}/valuate'.format(url=url)
+        self.request_data = utils.read_json('./api/test_request.json')
 
     def test_post_ok(self):
-         # TODO: Check of de response de verwachte elementen bevat.
-        raise NotImplementedError
-
-    def test_post_error(selfs):
-        # TODO: Test of er bij een fout model  een error gegenereerd wordt.Niet alle gevallent testen.
-        raise NotImplementedError
+        response = requests.post(
+             url=self.url,
+             json=self.request_data
+         )
+        self.assertEqual(response.status_code, 202)
