@@ -2,11 +2,6 @@ figure.float-right {
 	float: right;
 	margin: 10px 10px 10px 0;
 }
-
-.alert-info{
-	width: 60%;
-}
-
 .motivation{
 	position: relative;
 }
@@ -14,4 +9,35 @@ figure.float-right {
 .left-align{
 	position: relative;
 	margin-left: 5ex;
+}
+
+h1 > a, h2 > a, h3 > a, h4 > a, h5 > a {
+	text - decoration: none;
+	color: #000;
+}
+
+h1 > a, h2 > a, h3 > a, h4 > a, h5 > a {
+	text - decoration: none;
+	color: #000;
+}
+
+h1 > a:hover, h2 > a:hover, h3 > a:hover, h4 > a:hover, h5 > a:hover {
+	text-decoration:none;
+	color: #000;
+	cursor: default;
+}
+
+ul.quad {
+	width:760px;
+	overflow:hidden;
+}
+
+.quad>li{
+	float:left;	
+	width:25%; 
+}
+
+/*Temporary*/
+.alert-info{
+	width: 60%;
 }
