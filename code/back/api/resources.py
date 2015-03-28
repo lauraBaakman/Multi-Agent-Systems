@@ -36,8 +36,8 @@ def read_json(request):
     except ValueError:
         raise falcon.HTTPError(falcon.HTTP_400,
             'Malformed JSON',
-            'Could not decode the request body. The '
-            'JSON was incorrect.')
+            'Could not decode the request body. The JSON was incorrect.'
+        )
 
 def get_logic_from_data(data):
     logic = get_from_data(data, 'logic')
@@ -45,7 +45,7 @@ def get_logic_from_data(data):
         raise falcon.HTTPError(
             falcon.HTTP_400,
             'Error'
-            "Undefined logic in model, possible options: are {}".format(config.logics)
+            "Undefined logic in model, possible options: are {}.".format(config.logics)
         )
     return logic
 
@@ -56,6 +56,8 @@ def get_model_from_data(data):
     try:
         model_class = modelfactory.from_model_name(logic)
         model = model_class.from_json(json_model)
+    except errors.ModelError as e:
+        raise falcon.HTTPError(falcon.HTTP_400, 'Model Error', e.message)
     except errors.ParserError as e:
         raise falcon.HTTPError(falcon.HTTP_400, 'Model Error', e.message)
     return (logic, model)
