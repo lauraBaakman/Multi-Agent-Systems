@@ -81,111 +81,114 @@
                             \end{equation}
                         is input as <code>C K_1 ~(a &amp; b)</code>. The table below presents the representation users should use to represent a formula. Furthermore for each operator the logics in which it is supported is presented in the table. 
                     </p>
+
                     <p>
                         Readers familiar with <a href="https://github.com/gertvv/oops">OOPS</a> might recognise some of the notation we use. However since we do not use the exact same notation as OOPS the OOPS operators are also provided in the table below to avoid confusion.
                     <p/>
-                        <table class="table table-striped table-hover table-condensed">
-                            <tr>
-                                <th width="160"></th>
-                                <th>Conventional notation</th>
-                                <th width="80em">Input format</th>
-                                <th width="250">Logics</th>
-                                <th>OOPS notation</th>                                
-                                <th>Notes</th>
-                            </tr>
-                            <tr>
-                                <td>Proposition</td>
-                                <td>$A$</td>
-                                <td><code>a</code></td>
-                                <td>all supported logics</td>
-                                <td><code>a</code></td>
-                                <td>
-                                    The name of a proposition must start with a small letter.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Negation</td>
-                                <td>$\lnot A$</td>
-                                <td><code>~a</code></td>
-                                <td>all supported logics</td>     
-                                <td><code>~a</code></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Conjunction</td>
-                                <td>$A \land B$</td>
-                                <td><code>a &amp; b</code></td>
-                                <td>all supported logics</td> 
-                                <td><code>a &amp; b</code></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Disjunction</td>
-                                <td>$A \lor B$</td>
-                                <td><code>a | b</code></td>
-                                <td>all supported logics</td> 
-                                <td><code>a | b</code></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Implication</td>
-                                <td>$A \to B$</td>
-                                <td><code>a -&gt; b</code></td>
-                                <td>all supported logics</td> 
-                                <td><code>a &gt; b</code></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Equivalence</td>
-                                <td>$A \leftrightarrow B$</td>
-                                <td><code>a &lt;-&gt; b</code></td>
-                                <td>all supported logics</td> 
-                                <td><code>a = b</code></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Knowledge</td>
-                                <td>$K_i$</td>
-                                <td><code>K_i</code></td>
-                                <td>all logics</td> 
-                                <td><code>#_i</code></td>                                
-                                <td>
-                                    The name of the agent must be a number.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Possible</td>
-                                <td>$M_i$</td>
-                                <td><code>M_i</code></td>
-                                <td>all logics</td> 
-                                <td><code>%_i</code></td>                                                      
-                                <td>The name of the agent must be a number.</td>
-                            </tr>
-                            <tr>
-                                <td>Common knowledge</td>
-                                <td>$C$</td>
-                                <td><code>C</code></td>
-                                <td>$\KEC{\m}$, $\TEC{\m}$, $\SVEC{\m}$, $\SFEC{\m}$</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Everybody</td>
-                                <td>$E$</td>
-                                <td><code>E</code></td>
-                                <td>$\KEC{\m}$, $\TEC{\m}$, $\SVEC{\m}$, $\SFEC{\m}$</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Intention</td>
-                                <td>$I$</td>
-                                <td><code>I</code></td>
-                                <td>$\KI{\m}$, $\TI{\m}$, $\SVI{\m}$, $\SFI{\m}$</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </table>
+
+                    <table class="table table-striped table-hover table-condensed">
+                        <tr>
+                            <th width="160"></th>
+                            <th>Conventional notation</th>
+                            <th width="80em">Input format</th>
+                            <th width="250">Logics</th>
+                            <th>OOPS notation</th>                                
+                            <th>Notes</th>
+                        </tr>
+                        <tr>
+                            <td>Proposition</td>
+                            <td>$A$</td>
+                            <td><code>a</code></td>
+                            <td>all supported logics</td>
+                            <td><code>a</code></td>
+                            <td>
+                                The name of a proposition must start with a small letter.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Negation</td>
+                            <td>$\lnot A$</td>
+                            <td><code>~a</code></td>
+                            <td>all supported logics</td>     
+                            <td><code>~a</code></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Conjunction</td>
+                            <td>$A \land B$</td>
+                            <td><code>a &amp; b</code></td>
+                            <td>all supported logics</td> 
+                            <td><code>a &amp; b</code></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Disjunction</td>
+                            <td>$A \lor B$</td>
+                            <td><code>a | b</code></td>
+                            <td>all supported logics</td> 
+                            <td><code>a | b</code></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Implication</td>
+                            <td>$A \to B$</td>
+                            <td><code>a -&gt; b</code></td>
+                            <td>all supported logics</td> 
+                            <td><code>a &gt; b</code></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Equivalence</td>
+                            <td>$A \leftrightarrow B$</td>
+                            <td><code>a &lt;-&gt; b</code></td>
+                            <td>all supported logics</td> 
+                            <td><code>a = b</code></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Knowledge</td>
+                            <td>$K_i$</td>
+                            <td><code>K_i</code></td>
+                            <td>all logics</td> 
+                            <td><code>#_i</code></td>                                
+                            <td>
+                                The name of the agent must be a number.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Possible</td>
+                            <td>$M_i$</td>
+                            <td><code>M_i</code></td>
+                            <td>all logics</td> 
+                            <td><code>%_i</code></td>                                                      
+                            <td>The name of the agent must be a number.</td>
+                        </tr>
+                        <tr>
+                            <td>Common knowledge</td>
+                            <td>$C$</td>
+                            <td><code>C</code></td>
+                            <td>$\KEC{\m}$, $\TEC{\m}$, $\SVEC{\m}$, $\SFEC{\m}$</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Everybody</td>
+                            <td>$E$</td>
+                            <td><code>E</code></td>
+                            <td>$\KEC{\m}$, $\TEC{\m}$, $\SVEC{\m}$, $\SFEC{\m}$</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Intention</td>
+                            <td>$I$</td>
+                            <td><code>I</code></td>
+                            <td>$\KI{\m}$, $\TI{\m}$, $\SVI{\m}$, $\SFI{\m}$</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+
                     <p>
                         Given some formula we need a suitable representation to determine if it holds in some model in some state. We represent formulas as an <a href="#expressiontree">expression tree</a>. Before parsing the formula, to generate the expression tree we first convert it to list of <a href="#tokens">tokens</a>.
                     </p>
@@ -212,18 +215,49 @@
                             <img src="./img/ast.png" />
                         </object>
                         <figcaption>
-                            Expression tree of formula \eqref{eq:exampleFormula}
+                            Expression tree of formula \eqref{eq:exampleFormula}.
                         </figcaption>
                     </figure>
 
-
-
                     <h4><a name="expressiontree">Expression Tree</a></h4>
                     <p>
-                        If we have the list op token we need to build the expression tree. We do that using this grammar: \begin{array}{cccl} E & := & ~ & \langle T \rangle \land \langle T \rangle \; | \; \langle T \rangle \lor \langle T \rangle \; | \; \langle T \rangle \to \langle T \rangle \; | \; \langle T \rangle \leftrightarrow \langle T \rangle\\ T & := & ~ & C \langle F \rangle \; | \; K_i \langle F \rangle \; | \; M_i \langle F \rangle\\ F & := & ~ & \left( \langle E \rangle \right) \; | \; ~ \lnot \langle E \rangle \; | \; \mathit{proposition}\\ \end{array} In this grammar, non-terminals are presented in pointy brackets, terminals are represented as their logic symbol or in recursive text. Based on this grammar we can parse the tokenized expression using a recursive descent parser. This results in an expression tree.
-                        <br> The structure of the tree represents the order in which parts of the formula should be evaluated. For example, $a \land b$ should be evaluated first, and the result of that expression should be negated. If we had not placed brackets around the conjunction the negation node would have been a child of the conjunction node.
-                        <br> All binary operators in the grammar are right-associative, i.e. the expression $a \land b \land c$ is parsed as $(a \land (b \land c))$.
+                        Given a list of tokens we need to build an expression tree. We do this according to the following grammar: 
+
+                        \begin{array}{cccl}
+                        \mathbf{X} & := & ~ & 
+                            \mathbf{T} \land \mathbf{T}               \; | \; 
+                            \mathbf{T} \lor \mathbf{T}                \; | \; 
+                            \mathbf{T} \to \mathbf{T}                 \; | \; 
+                            \mathbf{T} \leftrightarrow \mathbf{T}     \\ 
+                        \mathbf{T} & := & ~ & 
+                            \text{I}\: \mathbf{F}     \; | \; 
+                            \text{E}\: \mathbf{F}     \; | \;                             
+                            \text{C}\: \mathbf{F}     \; | \; 
+                            \text{K}_i\: \mathbf{F}   \; | \; 
+                            \text{M}_i\: \mathbf{F}   \\ 
+                        \mathbf{F} & := & ~ & 
+                            \left( \mathbf{X} \right)    \; | \; 
+                            ~ \lnot \mathbf{X}           \; | \; 
+                            \mathit{proposition}                \\ 
+                        \end{array} 
+
+                        Terminals, parts of the expression that cannot be expanded according to some rule in the grammar, are presented as their symbol ($\lnot$, $\land$, $\lor$, $\to$, $($, $)$, $\leftrightarrow$) or as <em>italic text</em>. Non-terminals, parts of the grammar that can be expanded according to some rule, are shown in <b>bold</b>. 
                     </p>
+        
+                    <p>
+                        The presented grammar is LL(1), which means that it can be parsed using a predictive recursive descent parser. A consequence of using such a parser is that the binary operators in the grammar are interpreted as right-associative, i.e. the expression $a \land b \land c$ is parsed as $(a \land (b \land c))$.                        
+                    </p>
+
+<!--                         Based on this grammar we can parse the tokenized expression using a predictive recursive descent parser. This results in an expression tree.
+
+                        Note that the grammar of e.g. $\KEC{\m}$ is the grammar presented above with the operator $I$ left out. 
+
+                        
+                    
+
+                    <p>
+                        The structure of the tree represents the order in which parts of the formula should be evaluated. For example, $a \land b$ should be evaluated first, and the result of that expression should be negated. If we had not placed brackets around the conjunction the negation node would have been a child of the conjunction node.                        
+                    </p> -->
                 <h3><a name="model">Model</a></h3>
                     <p>
                         <div class="alert alert-info" role="alert">
