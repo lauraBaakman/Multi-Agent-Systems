@@ -76,7 +76,11 @@ def tokenize(logic, string):
     results, remainder=scan.scan(string)
 
     if remainder:
-        msg = "Could not parse some part of the expression \"...{expression}\", you probably " \
-              "used an operator that is not defined (for this logic).".format(expression = remainder)
-        raise TokenizeError(remainder, msg)
+        raise TokenizeError(
+            "Could not parse some part of the expression '...{expression}', you probably " \
+            "used an operator that is not defined for {logic}.".format(
+                expression=remainder,
+                logic = logic
+            )
+        )
     return results
