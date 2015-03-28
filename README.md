@@ -40,7 +40,7 @@ This README documents presentes the current state of our project and explains ho
 * GET
 * Request
 * Returns
-    - 202:
+    - 200:
         {
             "logics":
         }
