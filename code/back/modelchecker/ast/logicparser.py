@@ -92,14 +92,18 @@ class Parser(object):
     def t(self):
         if isinstance(self.next(), (tokens.BracketOpen, tokens.Proposition)):
             return self.f()
-        elif isinstance(self.next(), tokens.AgentOperator):
+        elif isinstance(self.next(), (tokens.AgentOperator, tokens.UnaryOperator)):
             node = nodeFactory.from_token(self.next())
+            self.consume()
+            node.lhs = self.e()
+            return node
         else:
-            node = nodeFactory.from_token(self.next())
-        # Execute this for both agent and unary tokens
-        self.consume()
-        node.lhs = self.e()
-        return node
+            raise ParserError(
+                "Expected a opening bracket, proposition or a unary operator, found {token} instead".format(
+                    token=self.next()
+                )
+            )
+
 
     def e(self):
         t = self.t()

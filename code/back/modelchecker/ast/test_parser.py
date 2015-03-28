@@ -89,7 +89,6 @@ class TestParser(TestCase):
         )
         self.assertEqual(computed_tree, expected_tree)
 
-
     def test_parse_double_knowledge(self):
         computed_tree = Ast.from_string("K_1 K_1 p", "K").root
         expected_tree = nodes.Knowledge(
