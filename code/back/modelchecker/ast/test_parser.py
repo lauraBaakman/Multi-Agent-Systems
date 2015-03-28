@@ -4,6 +4,7 @@ from unittest import TestCase
 from modelchecker.tokenize import tokens
 from modelchecker.ast.ast import Ast
 from modelchecker.ast import nodes
+import modelchecker.errors as errors
 
 __author__ = 'laura'
 
@@ -93,3 +94,28 @@ class TestParser(TestCase):
             nodes.Proposition("p")
         )
         self.assertEqual(computed_tree, expected_tree)
+
+    def test_parse_error_1(self):
+        formula = "a &"
+        with self.assertRaises(errors.ParserError):
+            Ast.from_string(formula, "K")
+
+    def test_parse_error_2(self):
+        formula = "~"
+        with self.assertRaises(errors.ParserError):
+            Ast.from_string(formula, "K")
+
+    def test_parse_error_3(self):
+        formula = "K_1"
+        with self.assertRaises(errors.ParserError):
+            Ast.from_string(formula, "K")
+
+    def test_parse_error_3(self):
+        formula = "( K_1"
+        with self.assertRaises(errors.ParserError):
+            Ast.from_string(formula, "K")
+
+    def test_parse_error_4(self):
+        formula = "K_1 )"
+        with self.assertRaises(errors.ParserError):
+            Ast.from_string(formula, "K")
