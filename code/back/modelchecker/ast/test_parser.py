@@ -119,3 +119,18 @@ class TestParser(TestCase):
         formula = "K_1 )"
         with self.assertRaises(errors.ParserError):
             Ast.from_string(formula, "K")
+
+    def test_parse_error_5(self):
+        formula = "& a"
+        with self.assertRaises(errors.ParserError):
+            Ast.from_string(formula, "K")
+
+    def test_parse_error_6(self):
+        formula = "a ~ b"
+        with self.assertRaises(errors.ParserError):
+            Ast.from_string(formula, "K")
+
+    def test_parse_error_7(self):
+        formula = "a K_1 b"
+        with self.assertRaises(errors.ParserError):
+            Ast.from_string(formula, "K")
