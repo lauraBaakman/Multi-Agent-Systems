@@ -22,7 +22,10 @@ class Ast(object):
         :rtype : Ast
         """
         parser = Parser()
-        self.root = parser.parse(tokens)
+        try:
+            self.root = parser.parse(tokens)
+        except errors.ParserError:
+            raise
 
     def __repr__(self):
         """
