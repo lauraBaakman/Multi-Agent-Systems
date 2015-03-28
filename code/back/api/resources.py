@@ -11,7 +11,7 @@ import modelchecker.models.modelfactory as modelfactory
 import modelchecker.errors as errors
 import modelchecker.ast as ast
 import modelchecker.config as config
-#
+
 def get_from_data(data, key, message=None):
     result = data.get(key)
     if not message:
