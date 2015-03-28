@@ -229,6 +229,6 @@ class KModel(object):
         try:
             model.add_states_from_json(json_data)
             model.add_relations_from_json(json_data)
-        except:
-            raise
+        except errors.ModelError as e:
+            raise e
         return model
