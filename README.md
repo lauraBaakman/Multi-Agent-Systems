@@ -34,7 +34,8 @@ This README documents presentes the current state of our project and explains ho
         * truth_value is a boolean
         * motivation is the motivation as html.
         * model is the (updated) model in the same format as in the request.
-    - 400: With a error title and message.
+    - 400: With a error title and message, if there is an error when evaluation or parsing.
+    - 500: With a error title and message, if something else goes wrong.
 
 ### /logics ###
 * GET

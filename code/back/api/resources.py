@@ -84,25 +84,32 @@ def evaluate_model(model, formula, state):
 class Valuate(object):
 
     def on_post(self, req, resp):
-        print 'Received request: {req}'.format(req=req)
-        json_data = read_json(req)
-        (logic, model) = get_model_from_data(json_data)
-        ast = get_ast_from_data(logic, json_data)
-        state = get_state_from_data(json_data)
-        (truth_value, motivation) = evaluate_model(model, ast, state)
+        try:
+            print 'Received request: {req}'.format(req=req)
+            json_data = read_json(req)
+            (logic, model) = get_model_from_data(json_data)
+            ast = get_ast_from_data(logic, json_data)
+            state = get_state_from_data(json_data)
+            (truth_value, motivation) = evaluate_model(model, ast, state)
 
-        resp.status = falcon.HTTP_202
-        resp.set_header('Access-Control-Allow-Headers', req.get_header('Origin'))
-        resp.body = json.dumps(
-            {
-                'truth_value': truth_value,
-                'motivation' : utils._sub_motivation_to_html(motivation),
-                'model': model.to_json()
-            },
-             encoding='utf-8'
-        )
-        resp.set_header('Access-Control-Allow-Origin', req.get_header('Origin'))
-        print 'Sent response: {resp}'.format(resp=resp)
+            resp.status = falcon.HTTP_202
+            resp.set_header('Access-Control-Allow-Headers', req.get_header('Origin'))
+            resp.body = json.dumps(
+                {
+                    'truth_value': truth_value,
+                    'motivation' : utils._sub_motivation_to_html(motivation),
+                    'model': model.to_json()
+                },
+                 encoding='utf-8'
+            )
+            resp.set_header('Access-Control-Allow-Origin', req.get_header('Origin'))
+            print 'Sent response: {resp}'.format(resp=resp)
+        except:
+            raise falcon.HTTPError(
+                falcon.HTTP_500,
+                'Error',
+                'Something went horribly wrong, contact the administrator.'
+            )
 
 class Logics(object):
     def on_get(self, req, resp):
