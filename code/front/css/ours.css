@@ -2,6 +2,11 @@ figure.float-right {
 	float: right;
 	margin: 10px 10px 10px 0;
 }
+
+figcaption{
+	margin-bottom: 15px;
+}
+
 .motivation{
 	position: relative;
 }
