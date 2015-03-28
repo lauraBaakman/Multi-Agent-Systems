@@ -125,45 +125,44 @@ class TestParser(TestCase):
         with self.assertRaises(errors.ParserError):
             Ast.from_string(formula, "K")
 
-    @skip("Skip test")
     def test_parse_error_3(self):
         formula = "K_1"
         with self.assertRaises(errors.ParserError):
             Ast.from_string(formula, "K")
 
     @skip("Skip test")
-    def test_parse_error_3(self):
+    def test_parse_error_4(self):
         formula = "( K_1"
         with self.assertRaises(errors.ParserError):
             Ast.from_string(formula, "K")
 
     @skip("Skip test")
-    def test_parse_error_4(self):
+    def test_parse_error_5(self):
         formula = "K_1 )"
         with self.assertRaises(errors.ParserError):
             Ast.from_string(formula, "K")
 
     @skip("Skip test")
-    def test_parse_error_5(self):
+    def test_parse_error_6(self):
         formula = "& a"
         with self.assertRaises(errors.ParserError):
             Ast.from_string(formula, "K")
 
     @skip("Skip test")
-    def test_parse_error_6(self):
+    def test_parse_error_7(self):
         formula = "a ~ b"
         with self.assertRaises(errors.ParserError):
             Ast.from_string(formula, "K")
 
     @skip("Skip test")
-    def test_parse_error_7(self):
+    def test_parse_error_8(self):
         formula = "a K_1 b"
         Ast.from_string(formula, "K")
         with self.assertRaises(errors.ParserError):
             pass
 
     @skip("Skip test")
-    def test_parse_error_8(self):
+    def test_parse_error_9(self):
         formula = "a && b"
         Ast.from_string(formula, "K")
         with self.assertRaises(errors.ParserError):
