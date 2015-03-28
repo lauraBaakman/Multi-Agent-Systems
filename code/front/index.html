@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Epistemic Logic Playground</title>
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,700">
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -21,7 +23,7 @@
                 </h1>
             </div>
         </header>
-        <section class="row" id="app">
+<!--         <section class="row" id="app">
             <div class="col-md-3" id="app-info">
                 <div class="row" id="editor_container">
                     <div class="col-md-12" id="json_editor"></div>
@@ -34,179 +36,211 @@
             </div>
             <div class="col-md-9" id="app-canvas">
             </div>
-        </section>
+        </section> -->
         <section id="response">
         </section>
         <section class="row" id="report">
             <h2>Introduction</h2>
-            <p>
-                Below we discuss the modelchecker that is shown on this page. We start by explanining how we have implemented the modelchecker, then we shortly discuss the visualisation. 
-            </p>
-            <h2>Implementation</h2>
-            <p>
-                In this section we discuss how we represent the models and formulas within the model checker. Furthermore we also explain how the model checker verifies if a formula is true or not using these representations.
-            </p>
-            <h3>Formula</h3>
-            <p>
-                Since the axiom system $S5EC_{(m)}$ is a superset of $S5_{(m)}$, and $S5_{(m)}$ is a super set of $K_{(m)}$ we only discuss the representation of formulas in the axiom system $S5EC_{(m)}$.
-            </p>
-            <p>
-                Formulas are entered using the representation presented in the table below.
-                <table class="table table-striped table-hover table-condensed">
-                    <tr>
-                        <th></th>
-                        <th>Conventional notation</th>
-                        <th>Input format</th>
-                        <th>Notes</th>
-                    </tr>
-                    <tr>
-                        <td>Proposition</td>
-                        <td>$A$</td>
-                        <td><code>a</code></td>
-                        <td>
-                            The name of a proposition must start with a small letter, and may contain only letters and numbers after that.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Negation</td>
-                        <td>$\lnot A$</td>
-                        <td><code>~a</code></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Conjunction</td>
-                        <td>$A \land B$</td>
-                        <td><code>a &amp; b</code></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Conjunction</td>
-                        <td>$A \land B$</td>
-                        <td><code>a &amp; b</code></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Disjunction</td>
-                        <td>$A \lor B$</td>
-                        <td><code>a | b</code></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Implication</td>
-                        <td>$A \to B$</td>
-                        <td><code>a -&gt; b</code></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Implication</td>
-                        <td>$A \leftrightarrow B$</td>
-                        <td><code>a &lt;-&gt; b</code></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Knowledge</td>
-                        <td>$K_i$</td>
-                        <td><code>K_i</code></td>
-                        <td>
-                            The name of the agent must be a number.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Possible</td>
-                        <td>$M_i$</td>
-                        <td><code>M_i</code></td>
-                        <td>The name of the agent must be a number.</td>
-                    </tr>
-                    <tr>
-                        <td>Common knowledge</td>
-                        <td>$C$</td>
-                        <td><code>C</code></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Everybody</td>
-                        <td>$E$</td>
-                        <td><code>E</code></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Intention</td>
-                        <td>$I$</td>
-                        <td><code>I</code></td>
-                        <td></td>
-                    </tr>
-                </table>
-                To represent that it is common knowledge that agent $1$ knows that it is not the case that both $a$ and $b$ hold, i.e. \begin{equation} C K_1 \lnot (a \land b) \label{eq:exampleFormula} \end{equation} one would use <code>C K_1 ~(a &amp; b)</code> .
-            </p>
-            <h4>Tokens</h4>
-            <p>
-                Formulas that enter the model checker are converted to a list of tokens. The tokenized version of \eqref{eq:exampleFormula} is shown in the figure.
-                <figure>
-                    <object data="./img/tokenization.svg" type="image/svg+xml" align="middle">
-                        <img src="./img/tokenization.png" />
-                    </object>
-                    <figcaption>
-                        Tokenization of formula \eqref{eq:exampleFormula}
-                    </figcaption>
-                </figure>
-                The advantage of tokenizing is that it is easier to change the definition of the non terminals of the grammar without having to change the parser it self. Another upside of representing the formula as a list of tokens before parsing it is that we can already detect some errors in the formulas. For example if a user has selected the axiom system $S5_{(m)}$ and inputs formula \eqref{eq:exampleFormula} the process that generates the list of tokens detects that the formula is not valid in that language. Since the operator $C$ is not defined in $S5_{(m)}$.
-            </p>
-            <figure class="float-right">
-                <object data="./img/ast.svg" type="image/svg+xml">
-                    <img src="./img/ast.png" />
-                </object>
-                <figcaption>
-                    Expression tree of formula \eqref{eq:exampleFormula}
-                </figcaption>
-            </figure>
-            <h4>Expression Tree</h4>
-            <p>
-                If we have the list op token we need to build the expression tree. We do that using this grammar: \begin{array}{cccl} E & := & ~ & \langle T \rangle \land \langle T \rangle \; | \; \langle T \rangle \lor \langle T \rangle \; | \; \langle T \rangle \to \langle T \rangle \; | \; \langle T \rangle \leftrightarrow \langle T \rangle\\ T & := & ~ & C \langle F \rangle \; | \; K_i \langle F \rangle \; | \; M_i \langle F \rangle\\ F & := & ~ & \left( \langle E \rangle \right) \; | \; ~ \lnot \langle E \rangle \; | \; \mathit{proposition}\\ \end{array} In this grammar, non-terminals are presented in pointy brackets, terminals are represented as their logic symbol or in recursive text. Based on this grammar we can parse the tokenized expression using a recursive descent parser. This results in an expression tree.
-                <br> The structure of the tree represents the order in which parts of the formula should be evaluated. For example, $a \land b$ should be evaluated first, and the result of that expression should be negated. If we had not placed brackets around the conjunction the negation node would have been a child of the conjunction node.
-                <br> All binary operators in the grammar are right-associative, i.e. the expression $a \land b \land c$ is parsed as $(a \land (b \land c))$.
-            </p>
-            <h3>Model</h3>
-            <p>
-                <div class="alert alert-info" role="alert">
-                    Something on how the model is represented as an adjacency list. Possibly an example of how a specific model is represented as json.
-                </div>
-            </p>
-            <h3>Checker</h3>
-            <p>
-                Given the expression tree and the model we can evaluate the expression. We simply start from the root node and follow its truth definition. For each node we generate a condition that needs to be full filled for the node to hold and a conclusion. For all nodes other than the proposition we also generate an 'interlude' which shows why the condition is full filled, or not. For example the formula $K_1 M_2 p \leftrightarrow q$ would result in the following motivation in some model $M$:
-                <blockquote>
-                    TODO some example!
-                </blockquote>
-            </p>
-            <p>
-                <div class="alert alert-info" role="alert">
-                    Something on how evaluation is lazy.
-                </div>
-            </p>
-            <h2>Visualisation</h2>
-            <p>
-                The visualisation depicts a Kripke model as a graph. The worlds have a label that shows the valuations of the atomic propositions at that world. Reflexive relations are not supported at this moment.
-            </p>
-            <h3>How To Use</h3>
-            <p>
-                At this stage the user interface is not quite finished yet and a (probably) temporal solution is in place. This temporal solution includes an json editor in which the model can be edited. Our goal is to include a more user friendly interface where states and links can be added by simply clicking in the in the graph canvas.
-            </p>
-            <h4>JSON Format</h4>
-            <p>
-                An example is included in the editor for this. It contains an object called model. Within this model the states, relations, and logic system are defined.
-                <ul>
-                    <li> <strong>States</strong> is an array of objects. Each object represents a state and needs to have an "id" field followed by an integer. This id is used later in the relations. The "vals" field is followed by an array of valuations. The order of these valuations needs to be the same as that of the propositions array
-                    </li>
-                    <li> <strong>Relations</strong> This object needs to be an array of arrays. The inner arrays describe a relation between two states and of which of the maximum 5 agents this relations belongs to.
-                    </li>
-                    <li>
-                        <strong>
-                    Logic System
-                </strong> The logic system the Kripke belongs to. Will in final version compute the reflexive transitive etc. closures when that is necessary. Options for the logic system are "KM", "S5", and "S5CE"
-                    </li>
-                </ul>
-                The model object is followed by the formula you want to check on the system. Syntax is described in the table at the top of the page. The state field tells the model checker in which state the formula should hold.
-            </p>
+                <p>
+                    This page presents our project for the course Multi-Agent systems, we have build a system that given some model $\model$, some formula, and some state determines if the formula is true in that state. The following logics are supported:
+                    <ul class="quad">
+                        <li>$\K{\m}$</li>
+                        <li>$\T{\m}$</li>
+                        <li>$\SV{\m}$</li>
+                        <li>$\SF{\m}$</li>
+
+                        <li>$\KEC{\m}$</li>
+                        <li>$\TEC{\m}$</li>
+                        <li>$\SVEC{\m}$</li>
+                        <li>$\SFEC{\m}$</li>                    
+
+                        <li>$\KI{\m}$</li>
+                        <li>$\TI{\m}$</li>
+                        <li>$\SVI{\m}$</li>
+                        <li>$\SFI{\m}$</li>                                        
+                    </ul>
+                    We refer the reader to <cite>Epistemic Logic for AI and Computer Science by J.-J Ch. Meyer and W. van der Hoek</cite> for an explanation of the different logics.</p>
+
+                <p>
+                    The modelchecker, consists of a back-end written in <a href="https://www.python.org">Python</a> and a front-end that visualizes the model using <a href="http://d3js.org">D3</a>. One advantage of this approach is that it split the model cleanly in two independent halves. Another is that javascript is much more suitable for the visualisation and interaction than Python. Since Javascript does not support polymorphism we felt that Pyton was the better choice for the back-end.
+                </p>
+
+                <p>
+                    Below we discuss the <a href="#implementation">implementation</a> of the modelchecker and the <a href="#visualisation">visualisation</a> of the model. 
+                </p>
+            <h2><a name="implementation">Implementation</a></h2>
+                <p>
+                    In this section we discuss the used representation of the <a href="#formula">formulas</a>, the models <a href="#model">models</a> and, how we determine if some formula holds in some state in some model, i.e. how the <a href="#checker">checker</a> works.
+                </p>
+                <h3><a name="formula">Formula</a></h3>
+                    <p>
+                        Since the axiom system $S5EC_{(m)}$ is a superset of $S5_{(m)}$, and $S5_{(m)}$ is a super set of $K_{(m)}$ we only discuss the representation of formulas in the axiom system $S5EC_{(m)}$.
+                    </p>
+                    <p>
+                        Formulas are entered using the representation presented in the table below.
+                        <table class="table table-striped table-hover table-condensed">
+                            <tr>
+                                <th></th>
+                                <th>Conventional notation</th>
+                                <th>Input format</th>
+                                <th>Notes</th>
+                            </tr>
+                            <tr>
+                                <td>Proposition</td>
+                                <td>$A$</td>
+                                <td><code>a</code></td>
+                                <td>
+                                    The name of a proposition must start with a small letter, and may contain only letters and numbers after that.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Negation</td>
+                                <td>$\lnot A$</td>
+                                <td><code>~a</code></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Conjunction</td>
+                                <td>$A \land B$</td>
+                                <td><code>a &amp; b</code></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Conjunction</td>
+                                <td>$A \land B$</td>
+                                <td><code>a &amp; b</code></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Disjunction</td>
+                                <td>$A \lor B$</td>
+                                <td><code>a | b</code></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Implication</td>
+                                <td>$A \to B$</td>
+                                <td><code>a -&gt; b</code></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Implication</td>
+                                <td>$A \leftrightarrow B$</td>
+                                <td><code>a &lt;-&gt; b</code></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Knowledge</td>
+                                <td>$K_i$</td>
+                                <td><code>K_i</code></td>
+                                <td>
+                                    The name of the agent must be a number.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Possible</td>
+                                <td>$M_i$</td>
+                                <td><code>M_i</code></td>
+                                <td>The name of the agent must be a number.</td>
+                            </tr>
+                            <tr>
+                                <td>Common knowledge</td>
+                                <td>$C$</td>
+                                <td><code>C</code></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Everybody</td>
+                                <td>$E$</td>
+                                <td><code>E</code></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Intention</td>
+                                <td>$I$</td>
+                                <td><code>I</code></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                        To represent that it is common knowledge that agent $1$ knows that it is not the case that both $a$ and $b$ hold, i.e. \begin{equation} C K_1 \lnot (a \land b) \label{eq:exampleFormula} \end{equation} one would use <code>C K_1 ~(a &amp; b)</code> .
+                    </p>
+                    <h4>Tokens</h4>
+                    <p>
+                        Formulas that enter the model checker are converted to a list of tokens. The tokenized version of \eqref{eq:exampleFormula} is shown in the figure.
+                        <figure>
+                            <object data="./img/tokenization.svg" type="image/svg+xml" align="middle">
+                                <img src="./img/tokenization.png" />
+                            </object>
+                            <figcaption>
+                                Tokenization of formula \eqref{eq:exampleFormula}
+                            </figcaption>
+                        </figure>
+                        The advantage of tokenizing is that it is easier to change the definition of the non terminals of the grammar without having to change the parser it self. Another upside of representing the formula as a list of tokens before parsing it is that we can already detect some errors in the formulas. For example if a user has selected the axiom system $S5_{(m)}$ and inputs formula \eqref{eq:exampleFormula} the process that generates the list of tokens detects that the formula is not valid in that language. Since the operator $C$ is not defined in $S5_{(m)}$.
+                    </p>
+                    <figure class="float-right">
+                        <object data="./img/ast.svg" type="image/svg+xml">
+                            <img src="./img/ast.png" />
+                        </object>
+                        <figcaption>
+                            Expression tree of formula \eqref{eq:exampleFormula}
+                        </figcaption>
+                    </figure>
+                    <h4>Expression Tree</h4>
+                    <p>
+                        If we have the list op token we need to build the expression tree. We do that using this grammar: \begin{array}{cccl} E & := & ~ & \langle T \rangle \land \langle T \rangle \; | \; \langle T \rangle \lor \langle T \rangle \; | \; \langle T \rangle \to \langle T \rangle \; | \; \langle T \rangle \leftrightarrow \langle T \rangle\\ T & := & ~ & C \langle F \rangle \; | \; K_i \langle F \rangle \; | \; M_i \langle F \rangle\\ F & := & ~ & \left( \langle E \rangle \right) \; | \; ~ \lnot \langle E \rangle \; | \; \mathit{proposition}\\ \end{array} In this grammar, non-terminals are presented in pointy brackets, terminals are represented as their logic symbol or in recursive text. Based on this grammar we can parse the tokenized expression using a recursive descent parser. This results in an expression tree.
+                        <br> The structure of the tree represents the order in which parts of the formula should be evaluated. For example, $a \land b$ should be evaluated first, and the result of that expression should be negated. If we had not placed brackets around the conjunction the negation node would have been a child of the conjunction node.
+                        <br> All binary operators in the grammar are right-associative, i.e. the expression $a \land b \land c$ is parsed as $(a \land (b \land c))$.
+                    </p>
+                <h3><a name="model">Model</a></h3>
+                    <p>
+                        <div class="alert alert-info" role="alert">
+                            Something on how the model is represented as an adjacency list. Possibly an example of how a specific model is represented as json.
+                        </div>
+                        <div class="alert alert-info" role="alert">
+                            Something on how the different logics are supported.
+                        </div>                    
+                    </p>
+                <h3><a name="checker">Checker</a></h3>
+                    <p>
+                        Given the expression tree and the model we can evaluate the expression. We simply start from the root node and follow its truth definition. For each node we generate a condition that needs to be full filled for the node to hold and a conclusion. For all nodes other than the proposition we also generate an 'interlude' which shows why the condition is full filled, or not. For example the formula $K_1 M_2 p \leftrightarrow q$ would result in the following motivation in some model $M$:
+                        <blockquote>
+                            TODO some example!
+                        </blockquote>
+                        <div class="alert alert-info" role="alert">
+                            Iets over hoe we dingen omschrijven.
+                        </div>
+                    </p>
+                    <p>
+                        <div class="alert alert-info" role="alert">
+                            Something on how evaluation is lazy.
+                        </div>
+                    </p>
+
+            <h2><a name="visualisation">Visualisation</a></h2>
+                <p>
+                    The visualisation depicts a Kripke model as a graph. The worlds have a label that shows the valuations of the atomic propositions at that world. Reflexive relations are not supported at this moment.
+                </p>
+                <h3>How To Use</h3>
+                <p>
+                    At this stage the user interface is not quite finished yet and a (probably) temporal solution is in place. This temporal solution includes an json editor in which the model can be edited. Our goal is to include a more user friendly interface where states and links can be added by simply clicking in the in the graph canvas.
+                </p>
+                <h4>JSON Format</h4>
+                <p>
+                    An example is included in the editor for this. It contains an object called model. Within this model the states, relations, and logic system are defined.
+                    <ul>
+                        <li> <strong>States</strong> is an array of objects. Each object represents a state and needs to have an "id" field followed by an integer. This id is used later in the relations. The "vals" field is followed by an array of valuations. The order of these valuations needs to be the same as that of the propositions array
+                        </li>
+                        <li> <strong>Relations</strong> This object needs to be an array of arrays. The inner arrays describe a relation between two states and of which of the maximum 5 agents this relations belongs to.
+                        </li>
+                        <li>
+                            <strong>
+                        Logic System
+                    </strong> The logic system the Kripke belongs to. Will in final version compute the reflexive transitive etc. closures when that is necessary. Options for the logic system are "KM", "S5", and "S5CE"
+                        </li>
+                    </ul>
+                    The model object is followed by the formula you want to check on the system. Syntax is described in the table at the top of the page. The state field tells the model checker in which state the formula should hold.
+                </p>
+
         </section>
     </div>
     <footer class="footer">
