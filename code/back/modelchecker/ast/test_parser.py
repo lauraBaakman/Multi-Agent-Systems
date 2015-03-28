@@ -120,7 +120,6 @@ class TestParser(TestCase):
         with self.assertRaises(errors.ParserError):
             Ast.from_string(formula, "K")
 
-    @skip("Skip test")
     def test_parse_error_2(self):
         formula = "~"
         with self.assertRaises(errors.ParserError):
