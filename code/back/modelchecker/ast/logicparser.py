@@ -22,6 +22,11 @@ __author__ = 'laura'
 # Inspired by http://www.engr.mun.ca/~theo/Misc/exp_parsing.htm#classic
 
 
+class END(object):
+
+    def __repr__(self):
+        return "END"
+
 class Parser(object):
     """Parser object"""
 
@@ -51,16 +56,14 @@ class Parser(object):
         if self.next():
             self.tokens.pop(0)
 
-    def expect(self, expected_token=None):
+    def expect(self, expected_token):
         """
         Consume the next token if it is the expected_token, otherwise throw an error.
         :param expected_token: the expected token.
         :return: nothing
         :raises: ParserError if the expected token is not found.
         """
-        if not self.next():
-            return self.next() == expected_token
-        elif isinstance(self.next(), expected_token):
+        if isinstance(self.next(), expected_token):
             self.consume()
         else:
             raise ParserError(
@@ -116,8 +119,9 @@ class Parser(object):
         :return: an AST
         """
         self.tokens = tokens
+        self.tokens.append(END())
         t = self.e()
-        self.expect()
+        self.expect(END)
         return t
 
 
