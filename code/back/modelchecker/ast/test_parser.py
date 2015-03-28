@@ -58,6 +58,15 @@ class TestParser(TestCase):
         )
         self.assertEqual(computed_tree, expected_tree)
 
+    def test_parse_double_negation(self):
+        computed_tree = Ast.from_string("~ ~ p", "K").root
+        expected_tree = nodes.Negation(
+            nodes.Negation(
+                nodes.Proposition("p")
+            )
+        )
+        self.assertEqual(computed_tree, expected_tree)
+
     def test_parse_common(self):
         computed_tree = Ast.from_string("C p", "KEC").root
         expected_tree = nodes.Common(
@@ -80,6 +89,18 @@ class TestParser(TestCase):
         )
         self.assertEqual(computed_tree, expected_tree)
 
+
+    def test_parse_double_knowledge(self):
+        computed_tree = Ast.from_string("K_1 K_1 p", "K").root
+        expected_tree = nodes.Knowledge(
+            "1",
+                nodes.Knowledge(
+                    "1",
+                    nodes.Proposition("p")
+                )
+        )
+        self.assertEqual(computed_tree, expected_tree)
+
     def test_parse_possible(self):
         computed_tree = Ast.from_string("M_1 p", "K").root
         expected_tree = nodes.Possible(
@@ -95,7 +116,6 @@ class TestParser(TestCase):
         )
         self.assertEqual(computed_tree, expected_tree)
 
-    @skip("Skip test")
     def test_parse_error_1(self):
         formula = "a &"
         with self.assertRaises(errors.ParserError):
@@ -140,6 +160,13 @@ class TestParser(TestCase):
     @skip("Skip test")
     def test_parse_error_7(self):
         formula = "a K_1 b"
+        Ast.from_string(formula, "K")
+        with self.assertRaises(errors.ParserError):
+            pass
+
+    @skip("Skip test")
+    def test_parse_error_8(self):
+        formula = "a && b"
         Ast.from_string(formula, "K")
         with self.assertRaises(errors.ParserError):
             pass
