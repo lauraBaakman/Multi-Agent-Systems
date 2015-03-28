@@ -248,16 +248,13 @@
                         The presented grammar is LL(1), which means that it can be parsed using a predictive recursive descent parser. A consequence of using such a parser is that the binary operators in the grammar are interpreted as right-associative, i.e. the expression $a \land b \land c$ is parsed as $(a \land (b \land c))$.                        
                     </p>
 
-<!--                         Based on this grammar we can parse the tokenized expression using a predictive recursive descent parser. This results in an expression tree.
-
-                        Note that the grammar of e.g. $\KEC{\m}$ is the grammar presented above with the operator $I$ left out. 
-
-                        
-                    
+                    <p>
+                        If we feed a list of tokens to the parser it generates an expression tree. The tree generated for \eqref{eq:exampleFormula} is presented below with the root on the left.
+                    </p> 
 
                     <p>
-                        The structure of the tree represents the order in which parts of the formula should be evaluated. For example, $a \land b$ should be evaluated first, and the result of that expression should be negated. If we had not placed brackets around the conjunction the negation node would have been a child of the conjunction node.                        
-                    </p> -->
+                        The structure of the tree represents the order in which parts of the formula should be evaluated. For example, $a \land b$ should be evaluated first, and the result of that expression should be negated. If we had not placed brackets around the conjunction, the negation node would have been a child of the conjunction node, which represents the expression $(\lnot a) \land b$.
+                    </p>
                 <h3><a name="model">Model</a></h3>
                     <p>
                         <div class="alert alert-info" role="alert">
