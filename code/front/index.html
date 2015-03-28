@@ -149,7 +149,7 @@
                             <td>Knowledge</td>
                             <td>$K_i$</td>
                             <td><code>K_i</code></td>
-                            <td>all logics</td> 
+                            <td>all supported logics</td> 
                             <td><code>#_i</code></td>                                
                             <td>
                                 The name of the agent must be a number.
@@ -159,7 +159,7 @@
                             <td>Possible</td>
                             <td>$M_i$</td>
                             <td><code>M_i</code></td>
-                            <td>all logics</td> 
+                            <td>all supported logics</td> 
                             <td><code>%_i</code></td>                                                      
                             <td>The name of the agent must be a number.</td>
                         </tr>
@@ -249,36 +249,62 @@
                     </p>
 
                     <p>
-                        If we feed a list of tokens to the parser it generates an expression tree. The tree generated for \eqref{eq:exampleFormula} is presented below with the root on the left.
-                    </p> 
+                        The parser generates an expression tree representing the formula if we give a list of tokens. The tree generated for \eqref{eq:exampleFormula} is presented on the right. The structure of the tree represents the order in which parts of the formula should be evaluated. For example, $a \land b$ should be evaluated first, and the result of that expression should be negated. If we had not placed brackets around the conjunction, the negation node would have been a child of the conjunction node, which represents the expression $(\lnot a) \land b$.
+                    </p>
 
                     <p>
-                        The structure of the tree represents the order in which parts of the formula should be evaluated. For example, $a \land b$ should be evaluated first, and the result of that expression should be negated. If we had not placed brackets around the conjunction, the negation node would have been a child of the conjunction node, which represents the expression $(\lnot a) \land b$.
-                    </p>
+                        Any errors in the formula that have not been detected during tokenization are detected during parsing. For example if we input the formula $a \land \land b$ the parser generates an error, since it expects to find the non-terminal $\mathbf{T}$ after $\land$ but finds the terminal $\land$.
+                    </p>                    
                 <h3><a name="model">Model</a></h3>
                     <p>
-                        <div class="alert alert-info" role="alert">
-                            Something on how the model is represented as an adjacency list. Possibly an example of how a specific model is represented as json.
-                        </div>
-                        <div class="alert alert-info" role="alert">
-                            Something on how the different logics are supported.
-                        </div>                    
+                        The front-end sends a JSON-representation of the Kripke model to the back-end which generates its own representation of the model. A model is represented as a list of <span class="tt">states</span>. For each agent a <span class="tt">state</span> has a list of incoming and outgoing <span class="tt">relations</span>. Furthermore a state has a valuation for each proposition in the model. Each <span class="tt">relation</span> has an <span class="tt">agent</span>, and a source and destination <span class="tt">state</span>.
                     </p>
+                    <p>
+                        When converting the JSON representation to our own representation we check the model for inconsistencies. We check for example that the model has at least one state, or that it all relations in the model are between defined states.
+                    </p>
+                    <p>
+                        The Epistemic Logic Playground supports four classes of Kripke models, namely:
+                            <ul>
+                                <li>$\mathcal{K}$: the class of all Kripke models without specific properties.</li>
+                                <li>$\mathcal{T}$: the class of all reflexive Kripke models.</li>
+                                <li>$\mathcal{S4}$: the class of all reflexive-transitive Kripke models.</li>
+                                <li>$\mathcal{S5}$: the class of all reflexive-transitive-symmetric Kripke models.</li>
+                            </ul>
+                        The user does not need to specify which class his model has explicitly, since this follows from the selected logic. If the logic $\T{}$, $\TEC{}$ or $\TI{}$ is selected the associated class of Kripke models, $\mathcal{T}$ is selected automatically. 
+                    </p>
+                    <p>
+                        If the class $\mathcal{T}$ is selected, not only is the input model converted from JSON, the reflexive closure of the relations is also computed using. In the case that a logic associated with the class $\mathcal{S4}$ is selected the reflexive-transitive closure of the set of relations of the models is computed using depth first search. In the same way the reflexive-transitive-symmetric closure of the relations is computed if the selected logic is one of $\SF{}$, $\SFEC{}$, $\SFI{}$. The updated model is returned to the front-end and visualised there. Consequently one does not need to input a reflexive-transitive model to evaluate a formula in e.g. $\SVEC{}$.
+                    </p>
+
                 <h3><a name="checker">Checker</a></h3>
-                    <p>
-                        Given the expression tree and the model we can evaluate the expression. We simply start from the root node and follow its truth definition. For each node we generate a condition that needs to be full filled for the node to hold and a conclusion. For all nodes other than the proposition we also generate an 'interlude' which shows why the condition is full filled, or not. For example the formula $K_1 M_2 p \leftrightarrow q$ would result in the following motivation in some model $M$:
-                        <blockquote>
-                            TODO some example!
-                        </blockquote>
-                        <div class="alert alert-info" role="alert">
-                            Iets over hoe we dingen omschrijven.
-                        </div>
-                    </p>
-                    <p>
-                        <div class="alert alert-info" role="alert">
-                            Something on how evaluation is lazy.
-                        </div>
-                    </p>
+
+                    <h4>True or False?</h4>
+                        <p>
+                            Given some model, state and formula we need to determine if that formula holds or does not hold. This process starts at the root of the expression tree, the <span class="tt">Common</span> node in the presented expression tree. We then determine in which state(s) the child of this node, the subtree with <span class="tt">Knowledge</span> should hold. This recursive process halts if we arrive at a <span>Proposition</span> node, in which case the valuation of that proposition in the current state is requested from the model. 
+                        </p>
+
+                        <p>
+                            Each node is evaluated lazily, for example if the left handed side of a disjunction is evaluated as true we do not evaluate the right handed side, since it does not matter if that disjunct is true or false.
+                        </p>
+
+                        <p>
+                            Although most types of nodes have a truth condition, i.e. the <span class="tt">Negation</span> node 'knows' that it is true if its child is not true, some are evaluated differently. These nodes are 'rewritten' before evaluation, e.g. the <span class="tt">implication</span> node is transformed to a disjunction of implication nodes, see the image below. 
+
+                            <figure>
+                                <object data="./img/transformations.svg" type="image/svg+xml">
+                                    <img src="./img/transformations.png" />
+                                </object>
+                                <figcaption>
+                                    An expression tree representing an implication is transformed.
+                                </figcaption>
+                            </figure>                            
+
+                            The equivalence relation and the operator $\text{M}_i$ are evaluated are also evaluated by transforming the expression tree.
+                        </p>
+
+                    <h4>Motivation</h4>
+                        <p>Explaini how the motivation tree is generated and give an example given some model and the formula above.</p>
+
 
             <h2><a name="visualisation">Visualisation</a></h2>
                 <p>

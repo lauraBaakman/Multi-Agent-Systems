@@ -38,7 +38,7 @@
 		V76.416z"/>
 	<text transform="matrix(0.95 0 0 1 462.498 46.0225)" font-family="'OpenSans-Bold'" font-size="12">Proposition</text>
 	<g>
-		<text transform="matrix(0.95 0 0 1 477.4062 66.0225)" font-family="'OpenSans'" font-size="12">name</text>
+		<text transform="matrix(0.95 0 0 1 475.4062 66.0225)" font-family="'OpenSans'" font-size="12">name</text>
 		<text transform="matrix(0.95 0 0 1 505.2676 66.0225)" font-family="'OpenSans'" font-size="12">: a</text>
 	</g>
 </g>
@@ -61,7 +61,7 @@
 	<g>
 		<text transform="matrix(0.95 0 0 1 684.498 45.5225)" font-family="'OpenSans-Bold'" font-size="12">Proposition</text>
 		<g>
-			<text transform="matrix(0.95 0 0 1 696.9717 65.5225)" font-family="'OpenSans'" font-size="12">name</text>
+			<text transform="matrix(0.95 0 0 1 694.9717 65.5225)" font-family="'OpenSans'" font-size="12">name</text>
 			<text transform="matrix(0.95 0 0 1 724.833 65.5225)" font-family="'OpenSans'" font-size="12">: b</text>
 		</g>
 	</g>
