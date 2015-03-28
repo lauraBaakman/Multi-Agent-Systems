@@ -87,7 +87,12 @@ class Parser(object):
             node = nodeFactory.from_token(self.next())
             node.lhs = self.e()
         else:
-            raise ParserError("Could not parse the expression.")
+            raise ParserError(
+                "Could not parse the expression, expected a proposition, opening bracket or negation, "
+                "found {token} instead.".format(
+                    token=self.next()
+                )
+            )
 
     def t(self):
         if isinstance(self.next(), (tokens.BracketOpen, tokens.Proposition)):
@@ -99,11 +104,11 @@ class Parser(object):
             return node
         else:
             raise ParserError(
-                "Expected a opening bracket, proposition or a unary operator, found {token} instead".format(
+                "Could not parse the expression, expected a opening bracket, proposition or a unary operator, "
+                "found {token} instead".format(
                     token=self.next()
                 )
             )
-
 
     def e(self):
         t = self.t()
