@@ -5,17 +5,17 @@
 	 height="241px" viewBox="0 0 563 241" enable-background="new 0 0 563 241" xml:space="preserve">
 <g id="Nodes">
 	<g id="sa">
-		<circle fill="#BDCCD4" stroke="#000000" stroke-miterlimit="10" cx="194.5" cy="35.5" r="35"/>
+		<circle fill="#5BC0DE" stroke="#000000" stroke-miterlimit="10" cx="194.5" cy="35.5" r="35"/>
 		<text transform="matrix(1 0 0 1 184.1675 27.2402)" font-family="'OpenSans'" font-size="20">sa</text>
 		<text transform="matrix(1 0 0 1 175.2085 49.022)" font-family="'OpenSans'" font-size="12">p, q, ¬r</text>
 	</g>
 	<g id="sb">
-		<circle fill="#BDCCD4" stroke="#000000" stroke-miterlimit="10" cx="194.586" cy="205.5" r="35"/>
+		<circle fill="#5BC0DE" stroke="#000000" stroke-miterlimit="10" cx="194.586" cy="205.5" r="35"/>
 		<text transform="matrix(1 0 0 1 185.0542 197.2402)" font-family="'OpenSans'" font-size="20">sc</text>
 		<text transform="matrix(1 0 0 1 171.8638 219.022)" font-family="'OpenSans'" font-size="12">¬p, ¬q, r</text>
 	</g>
 	<g id="sd">
-		<circle fill="#BDCCD4" stroke="#000000" stroke-miterlimit="10" cx="499.5" cy="205.5" r="35"/>
+		<circle fill="#5BC0DE" stroke="#000000" stroke-miterlimit="10" cx="499.5" cy="205.5" r="35"/>
 		<text transform="matrix(1 0 0 1 488.6016 197.2402)" font-family="'OpenSans'" font-size="20">sd</text>
 		<text transform="matrix(1 0 0 1 476.7773 219.022)" font-family="'OpenSans'" font-size="12">¬p, q, ¬r</text>
 	</g>
@@ -23,30 +23,30 @@
 <g id="Paths_-_1">
 	<g>
 		<g>
-			<line fill="none" stroke="#7AC943" stroke-width="3" stroke-miterlimit="10" x1="193" y1="85.5" x2="193" y2="170.5"/>
+			<line fill="none" stroke="#5CB85C" stroke-width="3" stroke-miterlimit="10" x1="193" y1="85.5" x2="193" y2="170.5"/>
 			<g>
-				<polygon fill="#7AC943" points="182.529,88.5 193,70.366 203.472,88.5 				"/>
+				<polygon fill="#5CB85C" points="182.529,88.5 193,70.366 203.472,88.5 				"/>
 			</g>
 		</g>
 	</g>
 	<g>
 		<g>
-			<path fill="none" stroke="#FF931E" stroke-width="3" stroke-miterlimit="10" d="M244.002,40.086
+			<path fill="none" stroke="#F0AD4E" stroke-width="3" stroke-miterlimit="10" d="M244.002,40.086
 				C270.15,47.291,324.562,61.5,347,61.5c22.437,0,76.843-14.207,102.993-21.412"/>
 			<g>
-				<polygon fill="#FF931E" points="244.153,50.959 229.5,36 249.781,30.787 				"/>
+				<polygon fill="#F0AD4E" points="244.153,50.959 229.5,36 249.781,30.787 				"/>
 			</g>
 			<g>
-				<polygon fill="#FF931E" points="449.847,50.959 464.5,36 444.219,30.787 				"/>
+				<polygon fill="#F0AD4E" points="449.847,50.959 464.5,36 444.219,30.787 				"/>
 			</g>
 		</g>
 	</g>
 	<g>
 		<g>
-			<path fill="none" stroke="#7AC943" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" d="M152.194,45.405
+			<path fill="none" stroke="#5CB85C" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" d="M152.194,45.405
 				c-0.556,0.062-1.122,0.095-1.694,0.095c-8.284,0-15-6.716-15-15s6.716-15,15-15c4.876,0,9.209,2.327,11.949,5.931"/>
 			<g>
-				<polygon fill="#7AC943" points="148.311,40.039 160.112,42.015 152.502,51.249 				"/>
+				<polygon fill="#5CB85C" points="148.311,40.039 160.112,42.015 152.502,51.249 				"/>
 			</g>
 		</g>
 	</g>
@@ -54,22 +54,22 @@
 <g id="Paths_-_2">
 	<g>
 		<g>
-			<path fill="none" stroke="#FF931E" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" d="M151.194,215.405
+			<path fill="none" stroke="#F0AD4E" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" d="M151.194,215.405
 				c-0.556,0.062-1.122,0.095-1.694,0.095c-8.284,0-15-6.716-15-15s6.716-15,15-15c4.876,0,9.209,2.326,11.949,5.931"/>
 			<g>
-				<polygon fill="#FF931E" points="147.311,210.039 159.112,212.015 151.502,221.249 				"/>
+				<polygon fill="#F0AD4E" points="147.311,210.039 159.112,212.015 151.502,221.249 				"/>
 			</g>
 		</g>
 	</g>
 	<g>
 		<g>
 			
-				<line fill="none" stroke="#FF931E" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="237.917" y1="180.42" x2="454.331" y2="56.967"/>
+				<line fill="none" stroke="#F0AD4E" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="237.917" y1="180.42" x2="454.331" y2="56.967"/>
 			<g>
-				<polygon fill="#FF931E" points="245.767,187.997 224.827,187.887 235.39,169.806 				"/>
+				<polygon fill="#F0AD4E" points="245.767,187.997 224.827,187.887 235.39,169.806 				"/>
 			</g>
 			<g>
-				<polygon fill="#FF931E" points="456.858,67.581 467.421,49.5 446.481,49.39 				"/>
+				<polygon fill="#F0AD4E" points="456.858,67.581 467.421,49.5 446.481,49.39 				"/>
 			</g>
 		</g>
 	</g>
@@ -77,36 +77,36 @@
 <g id="Paths_-_3">
 	<g>
 		<g id="sc">
-			<circle fill="#BDCCD4" stroke="#000000" stroke-miterlimit="10" cx="499.5" cy="35.5" r="35"/>
+			<circle fill="#5BC0DE" stroke="#000000" stroke-miterlimit="10" cx="499.5" cy="35.5" r="35"/>
 			<text transform="matrix(1 0 0 1 490.7207 27.2402)" font-family="'OpenSans'" font-size="20">sb</text>
 			<text transform="matrix(1 0 0 1 478.7578 49.022)" font-family="'OpenSans'" font-size="12">p, ¬q, r</text>
 		</g>
 		<g>
 			<g>
-				<path fill="none" stroke="#3FA9F5" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" d="M539.713,21.12
+				<path fill="none" stroke="#D9534F" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" d="M539.713,21.12
 					c2.038-1.036,4.344-1.62,6.787-1.62c8.284,0,15,6.716,15,15s-6.716,15-15,15c-5.351,0-10.047-2.802-12.702-7.018"/>
 				<g>
-					<polygon fill="#3FA9F5" points="545.222,24.805 533.471,27.063 537.389,15.757 					"/>
+					<polygon fill="#D9534F" points="545.222,24.805 533.471,27.063 537.389,15.757 					"/>
 				</g>
 			</g>
 		</g>
 	</g>
 	<g>
 		<g>
-			<path fill="none" stroke="#3FA9F5" stroke-width="3" stroke-miterlimit="10" d="M244.044,32.065
+			<path fill="none" stroke="#D9534F" stroke-width="3" stroke-miterlimit="10" d="M244.044,32.065
 				C270.217,25.14,324.61,11.5,347,11.5c22.388,0,76.775,13.638,102.951,20.563"/>
 			<g>
-				<polygon fill="#3FA9F5" points="249.726,41.422 229.5,36 244.307,21.193 				"/>
+				<polygon fill="#D9534F" points="249.726,41.422 229.5,36 244.307,21.193 				"/>
 			</g>
 			<g>
-				<polygon fill="#3FA9F5" points="444.274,41.422 464.5,36 449.693,21.193 				"/>
+				<polygon fill="#D9534F" points="444.274,41.422 464.5,36 449.693,21.193 				"/>
 			</g>
 		</g>
 	</g>
 </g>
 <g id="Legend">
-	<text transform="matrix(1 0 0 1 0 23.5)" fill="#7AC943" font-family="'OpenSans'" font-size="20">agent 1</text>
-	<text transform="matrix(1 0 0 1 0 46)" fill="#FF931E" font-family="'OpenSans'" font-size="20">agent 2</text>
-	<text transform="matrix(1 0 0 1 0 67.5)" fill="#3FA9F5" font-family="'OpenSans'" font-size="20">agent 3</text>
+	<text transform="matrix(1 0 0 1 0 23.5)" fill="#5CB85C" font-family="'OpenSans'" font-size="20">agent 1</text>
+	<text transform="matrix(1 0 0 1 0 46)" fill="#F0AD4E" font-family="'OpenSans'" font-size="20">agent 2</text>
+	<text transform="matrix(1 0 0 1 0 67.5)" fill="#D9534F" font-family="'OpenSans'" font-size="20">agent 3</text>
 </g>
 </svg>
