@@ -13,6 +13,10 @@ svg {
   user-select: none;
 }
 
+path.link.selected {
+  stroke-dasharray: 10,2;
+}
+
 path.link {
     fill: none;
     stroke: #000;

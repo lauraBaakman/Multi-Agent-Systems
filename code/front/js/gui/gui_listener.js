@@ -43,7 +43,6 @@ define("gui_listener", ["d3"], function(d3) {
             }
             // because :active only works in WebKit?
             // gui.get_canvas().classed('active', false);
-
             // clear mouse event vars
             self.reset_mouse_vars();
         };
@@ -88,7 +87,6 @@ define("gui_listener", ["d3"], function(d3) {
                 gui.selected_node = null;
                 gui.draw();
             }
-            // selected_link = link;
         }
 
         this.mousedown_link = function(d) {
@@ -98,8 +96,10 @@ define("gui_listener", ["d3"], function(d3) {
             // select link
             mousedown_link = d;
             if (mousedown_link === gui.selected_link) gui.selected_link = null;
-            else gui.selected_link = gui.mousedown_link;
+            else gui.selected_link = mousedown_link;
             gui.selected_node = null;
+
+            console.log(gui.selected_link);
             gui.draw();
         }
 

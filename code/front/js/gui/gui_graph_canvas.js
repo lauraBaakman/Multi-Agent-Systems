@@ -20,6 +20,8 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
             link_labels = null;
 
         this.selected_link = null;
+        // this.selected_link_id = -1;
+
         this.selected_node = null;
 
         var listener = null
