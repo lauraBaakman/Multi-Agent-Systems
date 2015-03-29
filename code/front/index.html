@@ -261,7 +261,7 @@
                     </p>
                     <p>
                         When converting the JSON representation to our own representation we check the model for inconsistencies. We check for example that the model has at least one state, or that it all relations in the model are between defined states.
-                    </p>
+                    </p>                    
                     <p>
                         The Epistemic Logic Playground supports four classes of Kripke models, namely:
                             <ul>
@@ -295,11 +295,10 @@
                                     <img src="./img/transformations.png" />
                                 </object>
                                 <figcaption>
-                                    An expression tree representing an implication is transformed.
+                                    An expression tree representing an implication is transformed to an expression tree with a disjunction as the root node. 
                                 </figcaption>
                             </figure>                            
-
-                            The equivalence relation and the operator $\text{M}_i$ are evaluated are also evaluated by transforming the expression tree.
+                            The equivalence relation is evaluated as a conjunction of implications using the fact that $\phi \leftrightarrow \psi \equiv (\phi \to \psi) \land (\psi \to \phi)$. The operator $\text{M}_i \phi$ is evaluated as $\lnot K_i \lnot \phi$. 
                         </p>
 
                     <h4>Motivation</h4>
