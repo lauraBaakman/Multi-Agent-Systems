@@ -9,6 +9,7 @@ define("gui_listener", ["d3"], function(d3) {
 
         var mousedown_node = null;
         var mouseup_node = null;
+        var mousedown_link = null;
 
         this.mousedown = function() {
             console.log("Mouse down");
@@ -82,9 +83,22 @@ define("gui_listener", ["d3"], function(d3) {
                 return;
             }
 
-            gui.get_model().add_link(mousedown_node.id, mouseup_node.id);
-
+            if (gui.get_model().link_exists(mousedown_node.id, mouseup_node.id) === null) {
+                gui.get_model().add_link(mousedown_node.id, mouseup_node.id);
+                gui.selected_node = null;
+                gui.draw();
+            }
             // selected_link = link;
+        }
+
+        this.mousedown_link = function(d) {
+            console.log('Mousedown on link: ' + d.id);
+            if (d3.event.altKey) return;
+
+            // select link
+            mousedown_link = d;
+            if (mousedown_link === gui.selected_link) gui.selected_link = null;
+            else gui.selected_link = gui.mousedown_link;
             gui.selected_node = null;
             gui.draw();
         }
@@ -98,6 +112,21 @@ define("gui_listener", ["d3"], function(d3) {
             if (d3.event.keyCode === 18) {
                 gui.get_nodes().call(gui.get_layout().drag);
                 // gui.get_canvas().classed('alt', true);
+            }
+
+            if (!gui.selected_node && !gui.selected_link) return;
+            switch (d3.event.keyCode) {
+                case 8: // backspace
+                case 46: // delete
+                    if (gui.selected_node) {
+                        console.log("Delete selected node!" + gui.selected_node.id);
+                    } else if (selected_link) {
+                        console.log("Delete selected link!" + gui.selected_link.id);
+                    }
+                    gui.selected_link = null;
+                    gui.selected_node = null;
+                    gui.draw();
+                    break;
             }
 
         };

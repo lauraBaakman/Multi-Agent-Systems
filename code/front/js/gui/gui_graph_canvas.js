@@ -186,7 +186,8 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
                 })
                 .attr("id", function(d) {
                     return "linkId_" + d.id;
-                });
+                })
+                .on('mousedown', listener.mousedown_link);
 
             // remove old links
             links.exit().remove();
