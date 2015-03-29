@@ -12,10 +12,10 @@ define("gui_listener", ["d3"], function(d3) {
 
         this.mousedown = function() {
             console.log("Mouse down");
-            if (d3.event.altKey || mousedown_node) return;
-
-            gui.get_model().add_state();
-            gui.draw();
+            if (last_key_down === 65) {
+                gui.get_model().add_state();
+                gui.draw();
+            }
         };
 
         this.mousemove = function() {
@@ -96,7 +96,6 @@ define("gui_listener", ["d3"], function(d3) {
             last_key_down = d3.event.keyCode;
 
             if (d3.event.keyCode === 18) {
-
                 gui.get_nodes().call(gui.get_layout().drag);
                 // gui.get_canvas().classed('alt', true);
             }

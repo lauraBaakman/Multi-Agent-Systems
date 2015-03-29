@@ -59,6 +59,10 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
                 .append('svg')
                 .attr('width', width)
                 .attr('height', height);
+
+            canvas.on('mousedown', listener.mousedown);
+            canvas.on('mousemove', listener.mousemove);
+            canvas.on('mouseup', listener.mouseup);
         }
 
         function init_layout() {
@@ -268,11 +272,6 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
             model = app.get_model();
             draw_paths();
             draw_nodes();
-
-            canvas.on('mousedown', listener.mousedown);
-            canvas.on('mousemove', listener.mousemove);
-            canvas.on('mouseup', listener.mouseup);
-
             layout.start();
         }
 

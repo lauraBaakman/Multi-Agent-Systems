@@ -3,6 +3,16 @@
 }
 */
 
+svg {
+  background-color: #FFF;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
 path.link {
     fill: none;
     stroke: #000;
