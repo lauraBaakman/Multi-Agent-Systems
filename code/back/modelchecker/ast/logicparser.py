@@ -22,6 +22,11 @@ __author__ = 'laura'
 # Inspired by http://www.engr.mun.ca/~theo/Misc/exp_parsing.htm#classic
 
 
+class END(object):
+
+    def __repr__(self):
+        return "END"
+
 class Parser(object):
     """Parser object"""
 
@@ -51,20 +56,18 @@ class Parser(object):
         if self.next():
             self.tokens.pop(0)
 
-    def expect(self, expected_token=None):
+    def expect(self, expected_token):
         """
         Consume the next token if it is the expected_token, otherwise throw an error.
         :param expected_token: the expected token.
         :return: nothing
         :raises: ParserError if the expected token is not found.
         """
-        if not self.next():
-            return self.next() == expected_token
-        elif isinstance(self.next(), expected_token):
+        if isinstance(self.next(), expected_token):
             self.consume()
         else:
             raise ParserError(
-                "Expected {expected} but found {found}.".format(
+                "expected {expected} but found {found}.".format(
                     expected=expected_token,
                     found=self.next()
                 )
@@ -84,19 +87,28 @@ class Parser(object):
             node = nodeFactory.from_token(self.next())
             node.lhs = self.e()
         else:
-            raise ParserError("Could not parse the expression.")
+            raise ParserError(
+                "expected a proposition, opening bracket or negation, "
+                "found {token} instead.".format(
+                    token=self.next()
+                )
+            )
 
     def t(self):
         if isinstance(self.next(), (tokens.BracketOpen, tokens.Proposition)):
             return self.f()
-        elif isinstance(self.next(), tokens.AgentOperator):
+        elif isinstance(self.next(), (tokens.AgentOperator, tokens.UnaryOperator)):
             node = nodeFactory.from_token(self.next())
+            self.consume()
+            node.lhs = self.e()
+            return node
         else:
-            node = nodeFactory.from_token(self.next())
-        # Execute this for both agent and unary tokens
-        self.consume()
-        node.lhs = self.e()
-        return node
+            raise ParserError(
+                "expected a opening bracket, proposition or a unary operator, "
+                "found {token} instead".format(
+                    token=self.next()
+                )
+            )
 
     def e(self):
         t = self.t()
@@ -116,8 +128,9 @@ class Parser(object):
         :return: an AST
         """
         self.tokens = tokens
+        self.tokens.append(END())
         t = self.e()
-        self.expect()
+        self.expect(END)
         return t
 
 

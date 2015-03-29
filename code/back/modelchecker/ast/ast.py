@@ -8,6 +8,7 @@ __author__ = 'laura'
 
 from modelchecker.ast.logicparser import Parser
 from modelchecker.tokenize import tokenizer
+import modelchecker.errors as errors
 
 
 class Ast(object):
@@ -21,7 +22,10 @@ class Ast(object):
         :rtype : Ast
         """
         parser = Parser()
-        self.root = parser.parse(tokens)
+        try:
+            self.root = parser.parse(tokens)
+        except errors.ParserError:
+            raise
 
     def __repr__(self):
         """
@@ -35,7 +39,9 @@ class Ast(object):
         try:
             tokens = tokenizer.tokenize(logic, string)
             return Ast(tokens)
-        except:
+        except errors.TokenizeError:
+            raise
+        except errors.ParserError:
             raise
 
     def is_true(self, state):

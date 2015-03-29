@@ -16,16 +16,7 @@ class TokenizeError(IOError):
     """
     Exception raised when the string cannot be tokenized.
     """
-
-    def __init__(self, expr, msg):
-        """
-        Constructor for TokenizeError
-        :param expr: input expression in which the error occurred
-        :param msg: explanation of the error
-        """
-        self.expr = expr
-        self.msg = msg
-
+    pass
 
 class ParserError(IOError):
     """
@@ -37,4 +28,4 @@ class ParserError(IOError):
         Constructor for TokenizeError
         :param msg: explanation of the error
         """
-        self.msg = msg
+        super(ParserError, self).__init__('Could not parse the expression, {}'.format(msg))

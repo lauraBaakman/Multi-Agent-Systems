@@ -14,7 +14,19 @@ def get_agent_from_string(string):
     """
     return re.search(r"\d+", string).group()
 
-class Proposition(object):
+class Token(object):
+    def __eq__(self, other):
+        return (isinstance(other, self.__class__)
+                and self.__dict__ == other.__dict__)
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+
+    def __hash__(self):
+        return hash(self.__dict__)
+
+class Proposition(Token):
 
     def __init__(self, name):
         self.name = name
@@ -25,7 +37,7 @@ class Proposition(object):
             "PROPOSITION({obj.name})".format(obj=self)
         )
 
-class BinaryOperator(object):
+class BinaryOperator(Token):
 
     def __init__(self, type):
         self.type = type
@@ -36,7 +48,7 @@ class BinaryOperator(object):
             "BINOP({obj.type})".format(obj=self)
         )
 
-class UnaryOperator(object):
+class UnaryOperator(Token):
 
     def __init__(self, type):
         self.type = type
@@ -48,7 +60,7 @@ class UnaryOperator(object):
         )
 
 
-class AgentOperator(object):
+class AgentOperator(Token):
 
     def __init__(self, string, type):
         """
@@ -66,14 +78,14 @@ class AgentOperator(object):
             "AGENTOP({obj.type})_{obj.agent}".format(obj=self)
         )
 
-class BracketOpen():
+class BracketOpen(Token):
     def __repr__(self):
         """Print-friendly representation."""
         return (
             "BRACKET_OPEN"
         )
 
-class BracketClose():
+class BracketClose(Token):
     def __repr__(self):
         """Print-friendly representation."""
         return (

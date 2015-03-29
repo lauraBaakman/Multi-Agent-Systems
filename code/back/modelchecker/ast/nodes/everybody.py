@@ -23,34 +23,25 @@ class Everybody(Unary):
         :return: (truthvalue, dict) truthvalue is the truth value of the formula, dict contains the motivation.
         :rtype: (bool, dict)
         """
-        states = list(set([s.destination for _, states in state.outgoing.iteritems() for s in states]))
-        if not states:
-            return self._is_true_no_relation(
-                evaluation_state=state
-            )
-        elif len(states) == 1:
-            return self._is_true_one_relation(
-                evaluation_state=state,
-                destination_state=states[0]
-            )
-        else:
-            return self._is_true_multiple_relations(
-                evaluation_state=state,
-                destination_states=states
-            )
+        return super(Everybody, self).is_true(
+            state=state,
+            destination_states=list(set([
+                s.destination
+                for _, states
+                in state.outgoing.iteritems()
+                for s in states
+            ]))
+        )
 
 
     def _conclusion_no_relations(self, state):
-        def union_of_relations(state):
-            agents = list(state.model.agents)
-            result = 'R_{}'.format(agents[0])
-            for i in range(1, len(agents)):
-                result = format('{} \cup R_{}'.format(result, agents[i]))
-            return result
-
         return super(Everybody, self)._conclusion_no_relations(
             evaluation_state=state,
-            empty_set=union_of_relations(state)
+            empty_set=self._agents_as_string(
+                agents=list(state.model.agents),
+                operator='\cup'
+            )
+
         )
 
     def _truth_condition(self, state):

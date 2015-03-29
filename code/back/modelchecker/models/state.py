@@ -72,21 +72,38 @@ class State(object):
             raise result
         return result
 
-    def get_all_outgoing_as_two_tuple(self):
+    def get_all_outgoing_as_two_tuple(self, agent = None):
         """
         Get all outgoing relations as a tuple with two elements, namely the source and destination state.
         :return: set of tuples with states
         :rtype: set
         """
-        return set([
-            (source, destination)
-            for (source, destination, _)
-            in [
-                relation.to_tuple()
-                for _, relations in self.outgoing.iteritems()
-                for relation in relations
-            ]
-        ])
+        if not agent:
+            return set([
+                (source, destination)
+                for (source, destination, _)
+                in [
+                    relation.to_tuple()
+                    for _, relations in self.outgoing.iteritems()
+                    for relation in relations
+                ]
+            ])
+        else:
+            if agent in self.model.agents:
+                return set([
+                    (source, destination)
+                    for (source, destination, _)
+                    in [
+                        relation.to_tuple()
+                        for relation in self.outgoing.get(agent, [])
+                    ]
+                ])
+            else:
+                raise errors.ModelError(
+                    'The state {agent} does not exist in the model.'.format(
+                        agent=agent
+                    )
+                )
 
     def __repr__(self):
         return (

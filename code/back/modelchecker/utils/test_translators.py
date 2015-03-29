@@ -11,7 +11,7 @@ __author__ = 'laura'
 
 class TestMotivation_to_latex(TestCase):
     def setUp(self):
-        self.logic = "KM"
+        self.logic = "K"
         filename = './modelchecker/models/test_model_km.json'
         data = read_json(filename)
         self.model = models.KModel.from_json(data)

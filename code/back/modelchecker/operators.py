@@ -20,7 +20,7 @@ class Unary(Operator):
     negation = 5
     common = 6
     everybody = 7
-
+    implicit = 10
 
 class Agent(Operator):
     knowledge = 8

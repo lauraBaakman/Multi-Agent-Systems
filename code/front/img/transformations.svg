@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.4, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="881px"
+	 height="371px" viewBox="0 0 881 371" enable-background="new 0 0 881 371" xml:space="preserve">
+<g id="Conjunction">
+	<g id="Proposition_a_3_">
+		<path fill="#7AC943" stroke="#000000" stroke-miterlimit="10" d="M105,209.666c0,8.824-9.313,16.084-20.867,16.084H21.368
+			c-11.554,0-20.868-7.26-20.868-16.084v-47.937c0-8.826,9.313-15.979,20.868-15.979h62.765c11.554,0,20.867,7.153,20.867,15.979
+			V209.666z"/>
+		<text transform="matrix(0.95 0 0 1 19.8555 179.2725)" font-family="'OpenSans-Bold'" font-size="12">Proposition</text>
+		<g>
+			<text transform="matrix(0.95 0 0 1 32.7637 199.2725)" font-family="'OpenSans'" font-size="12">name</text>
+			<text transform="matrix(0.95 0 0 1 62.625 199.2725)" font-family="'OpenSans'" font-size="12">: a</text>
+		</g>
+	</g>
+	<g id="Proposition_a_2_">
+		<path fill="#7AC943" stroke="#000000" stroke-miterlimit="10" d="M245,209.666c0,8.824-9.314,16.084-20.867,16.084h-62.766
+			c-11.553,0-20.867-7.26-20.867-16.084v-47.938c0-8.824,9.312-15.979,20.867-15.979h62.766c11.553,0,20.867,7.154,20.867,15.979
+			V209.666z"/>
+		<text transform="matrix(0.95 0 0 1 159.8555 179.2725)" font-family="'OpenSans-Bold'" font-size="12">Proposition</text>
+		<g>
+			<text transform="matrix(0.95 0 0 1 172.7637 199.2725)" font-family="'OpenSans'" font-size="12">name</text>
+			<text transform="matrix(0.95 0 0 1 202.625 199.2725)" font-family="'OpenSans'" font-size="12">: b</text>
+		</g>
+	</g>
+	<g id="Conjunction_2_">
+		<path fill="#3FA9F5" stroke="#000000" stroke-miterlimit="10" d="M175,65.417c0,8.824-8.365,16.084-19.918,16.084H92.318
+			c-11.555,0-21.818-7.26-21.818-16.084V17.479C70.5,8.654,80.764,1.5,92.318,1.5h62.763c11.554,0,19.918,7.154,19.918,15.979
+			L175,65.417L175,65.417z"/>
+		<text transform="matrix(0.95 0 0 1 90.3174 44.8838)" font-family="'OpenSans-Bold'" font-size="12">Implication</text>
+	</g>
+	<g>
+		<g>
+			<line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="122.75" y1="81.5" x2="61.643" y2="137.588"/>
+			<g>
+				<path d="M52.75,145.75c2.759-5.393,5.52-12.807,6.162-18.567l3.897,9.334l8.965,4.68C65.981,141.345,58.358,143.46,52.75,145.75
+					z"/>
+			</g>
+		</g>
+	</g>
+	<g>
+		<g>
+			<line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="122.75" y1="81.5" x2="183.857" y2="137.588"/>
+			<g>
+				<path d="M192.75,145.75c-5.609-2.288-13.232-4.404-19.026-4.552l8.966-4.681l3.896-9.333
+					C187.229,132.944,189.989,140.358,192.75,145.75z"/>
+			</g>
+		</g>
+	</g>
+	<g>
+		<g id="Proposition_a_5_">
+			<path fill="#7AC943" stroke="#000000" stroke-miterlimit="10" d="M740.5,354.416c0,8.824-9.313,16.084-20.867,16.084h-62.765
+				c-11.554,0-20.868-7.26-20.868-16.084v-47.937c0-8.826,9.313-15.979,20.868-15.979h62.765c11.554,0,20.867,7.153,20.867,15.979
+				V354.416z"/>
+			<text transform="matrix(0.95 0 0 1 655.3555 324.0225)" font-family="'OpenSans-Bold'" font-size="12">Proposition</text>
+			<g>
+				<text transform="matrix(0.95 0 0 1 668.2637 344.0225)" font-family="'OpenSans'" font-size="12">name</text>
+				<text transform="matrix(0.95 0 0 1 698.125 344.0225)" font-family="'OpenSans'" font-size="12">: a</text>
+			</g>
+		</g>
+		<g id="Proposition_a_4_">
+			<path fill="#7AC943" stroke="#000000" stroke-miterlimit="10" d="M880.5,209.666c0,8.824-9.314,16.084-20.867,16.084h-62.766
+				c-11.553,0-20.867-7.26-20.867-16.084v-47.938c0-8.824,9.312-15.979,20.867-15.979h62.766c11.553,0,20.867,7.154,20.867,15.979
+				V209.666z"/>
+			<text transform="matrix(0.95 0 0 1 795.3555 179.2725)" font-family="'OpenSans-Bold'" font-size="12">Proposition</text>
+			<g>
+				<text transform="matrix(0.95 0 0 1 808.2637 199.2725)" font-family="'OpenSans'" font-size="12">name</text>
+				<text transform="matrix(0.95 0 0 1 838.125 199.2725)" font-family="'OpenSans'" font-size="12">: b</text>
+			</g>
+		</g>
+		<g id="Conjunction_1_">
+			<path fill="#FF931E" stroke="#000000" stroke-miterlimit="10" d="M740.5,209.666c0,8.824-8.365,16.084-19.918,16.084h-62.764
+				c-11.555,0-21.818-7.26-21.818-16.084v-47.937c0-8.825,10.264-15.979,21.818-15.979h62.763c11.554,0,19.918,7.154,19.918,15.979
+				L740.5,209.666L740.5,209.666z"/>
+			<text transform="matrix(0.95 0 0 1 662.0957 189.1338)" font-family="'OpenSans-Bold'" font-size="12">Negation</text>
+		</g>
+		<g id="Conjunction_3_">
+			<path fill="#FF7BAC" stroke="#000000" stroke-miterlimit="10" d="M810.5,64.416c0,8.824-8.365,16.084-19.918,16.084h-62.764
+				C716.264,80.5,706,73.24,706,64.416V16.479C706,7.654,716.264,0.5,727.818,0.5h62.763c11.554,0,19.918,7.154,19.918,15.979
+				L810.5,64.416L810.5,64.416z"/>
+			<text transform="matrix(0.95 0 0 1 725.8066 43.8838)" font-family="'OpenSans-Bold'" font-size="12">Disjunction</text>
+		</g>
+		<g>
+			<g>
+				<line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="758.25" y1="80.5" x2="697.079" y2="137.52"/>
+				<g>
+					<path d="M688.25,145.75c2.718-5.414,5.421-12.85,6.02-18.614l3.969,9.304l9.001,4.61
+						C701.446,141.243,693.84,143.417,688.25,145.75z"/>
+				</g>
+			</g>
+		</g>
+		<g>
+			<g>
+				<line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="758.25" y1="80.5" x2="819.421" y2="137.52"/>
+				<g>
+					<path d="M828.25,145.75c-5.592-2.331-13.198-4.506-18.99-4.698l9.002-4.612l3.968-9.302
+						C822.828,132.902,825.531,140.337,828.25,145.75z"/>
+				</g>
+			</g>
+		</g>
+		<g>
+			<g>
+				<line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="687.5" y1="225.5" x2="687.5" y2="278.5"/>
+				<g>
+					<path d="M687.25,290.5c-2.107-5.68-5.703-12.727-9.512-17.095l9.512,3.44l9.51-3.44
+						C692.951,277.773,689.355,284.82,687.25,290.5z"/>
+				</g>
+			</g>
+		</g>
+	</g>
+	<g>
+		<g>
+			
+				<line fill="none" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-miterlimit="10" x1="332.5" y1="185.5" x2="520.5" y2="185.5"/>
+			<g>
+				<polygon points="548.5,185.5 508.703,201.762 518.146,185.5 508.703,169.242 				"/>
+			</g>
+		</g>
+	</g>
+</g>
+<g id="Disjunction">
+</g>
+</svg>

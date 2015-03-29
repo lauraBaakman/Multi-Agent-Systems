@@ -93,11 +93,10 @@ class KModel(object):
         :param state: the state to be added to the models
         :return:
         """
-        if state.name in self.states:
-            if not state == self.states[state.name]:
-                raise errors.ModelError(
-                    "The state '{state.name}' has two different definitions.".format(state=state)
-                )
+        if state.name in self.states.keys():
+            raise errors.ModelError(
+                "The state '{state.name}' has two different definitions.".format(state=state)
+            )
         self.states[state.name] = state
 
     def get_state_by_name(self, state_name):
@@ -152,8 +151,8 @@ class KModel(object):
                         self
                     )
                 )
-            except:
-                raise
+            except errors.ModelError as e:
+                raise e
 
         if len(self.states.keys()) == 0:
             raise errors.ModelError('A model should have at least one state.')
@@ -219,8 +218,6 @@ class KModel(object):
             reachable_states = previous_set.union(new_relations)
         return reachable_states
 
-
-
     @classmethod
     def from_json(cls, json_data):
         """
@@ -232,6 +229,6 @@ class KModel(object):
         try:
             model.add_states_from_json(json_data)
             model.add_relations_from_json(json_data)
-        except:
-            raise
+        except errors.ModelError as e:
+            raise e
         return model

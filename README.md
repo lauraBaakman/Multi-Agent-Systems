@@ -2,6 +2,51 @@
 
 This README documents presentes the current state of our project and explains how to actually view the current state.
 
+## API ##
+
+### /valuate ###
+* POST
+* Request
+    {
+        "state": "sc",
+        "formula": "K_1 M_2 p <-> q",
+        "model": {
+            "states": [
+                {
+                    "id": "sa",
+                    "vals": [true, true, false]
+                }
+            ],
+            "propositions": ["p","q","r"],
+            "relations": [
+                ["sa","1","sa"]
+            ],
+            "logic": "T"
+        }
+    }
+* Returns
+    - 202: 
+        {
+            "truth_value": 
+            "motivation":
+            "model":
+        }
+        * truth_value is a boolean
+        * motivation is the motivation as html.
+        * model is the (updated) model in the same format as in the request.
+    - 400: With a error title and message, if there is an error when evaluation or parsing.
+    - 500: With a error title and message, if something else goes wrong.
+
+### /logics ###
+* GET
+* Request
+* Returns
+    - 200:
+        {
+            "logics":
+        }
+        * logics is a list of strings with the names of logics that are accepted in POSTs to valuate.
+
 ### Current State ###
 
 #### Back End ####

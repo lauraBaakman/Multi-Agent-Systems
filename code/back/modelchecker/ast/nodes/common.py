@@ -4,7 +4,6 @@ __author__ = 'laura'
 
 from unary import Unary
 from node import models
-import modelchecker.utils.closures as closures
 
 class Common(Unary):
     def __init__(self, lhs=None):
@@ -24,17 +23,10 @@ class Common(Unary):
         :return: (truthvalue, dict) truthvalue is the truth value of the formula, dict contains the motivation.
         :rtype: (bool, dict)
         """
-        destination_states = list(state.model.all_states_eventually_reachable_from(state) | {state})
-        if len(destination_states) == 1:
-            return self._is_true_one_relation(
-                evaluation_state=state,
-                destination_state=destination_states[0]
-            )
-        else:
-            return self._is_true_multiple_relations(
-                evaluation_state=state,
-                destination_states=destination_states
-            )
+        return  super(Common, self).is_true(
+            state=state,
+            destination_states=list(state.model.all_states_eventually_reachable_from(state) | {state})
+        )
 
     def _truth_condition(self, state):
         """
@@ -48,17 +40,6 @@ class Common(Unary):
             lhs_models=models('t', self.lhs, '$'),
             state=state.name
         )
-
-    def _conclusion(self, state, truth_value):
-        """
-        Return the conclusion motivation the truth value of this formula
-        :param state: the state in which the formula should be evaluated.
-        :type state: modelchecker.models.state
-        :param truth_value: the truth value of this formula
-        :type truth_value: bool
-        :return: String with the motivation
-        :rtype: String
-        """
 
     def to_latex(self, delimiter='', operator='\\text{{C}}'):
         """

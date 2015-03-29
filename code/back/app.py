@@ -8,4 +8,5 @@ import api.resources as resources
 
 api = application = falcon.API()
 
-api.add_route('/valuate', resources.Resource())
+api.add_route('/valuate', resources.Valuate())
+api.add_route('/logics', resources.Logics())
