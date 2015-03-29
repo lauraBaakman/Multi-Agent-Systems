@@ -187,6 +187,7 @@
                             <td></td>
                             <td></td>
                         </tr>
+                        <caption>The operators defined for the Epistemic Logic Playground, their counterparts in OOPS and the languages in which they can be used.</caption>
                     </table>
 
                     <p>
@@ -199,8 +200,8 @@
                         </p>
 
                         <figure>
-                            <object data="./img/tokenization.svg" type="image/svg+xml" align="middle">
-                                <img src="./img/tokenization.png" />
+                            <object class="center-block" data="./img/tokenization.svg" type="image/svg+xml" align="middle">
+                            <img class="center-block" src="./img/tokenization.png" />
                             </object>
                             <figcaption>
                                 Tokenization of formula \eqref{eq:exampleFormula}.
@@ -263,9 +264,8 @@
                         When converting the JSON representation to our own representation we check the model for inconsistencies. We check for example that the model has at least one state, or that it all relations in the model are between defined states.
                     </p>                    
                     <p>
-                        The Epistemic Logic Playground supports four classes of Kripke models, namely:
+                        Apart from the 'normal' Kripke models the Epistemic Logic Playground supports three classes of Kripke models, namely:
                             <ul>
-                                <li>$\mathcal{K}$: the class of all Kripke models without specific properties.</li>
                                 <li>$\mathcal{T}$: the class of all reflexive Kripke models.</li>
                                 <li>$\mathcal{S4}$: the class of all reflexive-transitive Kripke models.</li>
                                 <li>$\mathcal{S5}$: the class of all reflexive-transitive-symmetric Kripke models.</li>
@@ -277,32 +277,49 @@
                     </p>
 
                 <h3><a name="checker">Checker</a></h3>
+                    <p>
+                    Given some model, state and formula we need to determine if that formula holds or does not hold. Furthermore we also need to generate some explanation as to how we arrived at the found truth value. In the section  <a href="#trueOrFalse">'True or False'</a> we discuss how we determine if some formula is true or false in some model in some state. The section <a href="#motivation">'Motivation'</a> explains how we generate the motivation for that answer.
+                    </p>
 
-                    <h4>True or False?</h4>
+                    <h4 name="trueOrFalse">True or False?</h4>
                         <p>
-                            Given some model, state and formula we need to determine if that formula holds or does not hold. This process starts at the root of the expression tree, the <span class="tt">Common</span> node in the presented expression tree. We then determine in which state(s) the child of this node, the subtree with <span class="tt">Knowledge</span> should hold. This recursive process halts if we arrive at a <span>Proposition</span> node, in which case the valuation of that proposition in the current state is requested from the model. 
+                            We determine if some formula holds in some state in some model using depth first search. This is best explained with two examples. The first example only uses propositional operators, which means that we do not have to concern ourselves with different states. 
                         </p>
-
+                        <!-- Voorbeeld 1 -->
                         <p>
-                            Each node is evaluated lazily, for example if the left handed side of a disjunction is evaluated as true we do not evaluate the right handed side, since it does not matter if that disjunct is true or false.
+                            Imagine we want to determine if it is the case that 
+                            \begin{equation}
+                            \label{eq:example2}
+                            (\model, s) \models \lnot (a \land b).
+                            \end{equation}
+                            The root node of the expression tree representing this formula is a <span class="tt">Negation</span> node. The truth definition of this node states that it is true if its child ($a \land b$) is false. Consequently we need to evaluate the child of the <span class="tt">Negation</span> node, i.e. the sub tree with the <span class="tt">Conjunction</span> node as its root. According to the truth definition of this node, it only holds if both its left-hand side, LHS, and right-hand side, RHS, hold. Since we want lazy evaluation we do not evaluate the RHS if we do not need to, i.e. we only evaluate it if the LHS holds. The LHS of the <span class="tt">Conjunction</span> node is a <span class="tt">Proposition</span> node, thus we ask the model if the proposition $a$ holds in state $s$. If $(\model, s) \models a$ we evaluate the RHS of the <span class="tt">Conjunction</span> node and return the <span class="tt">and</span> of the evaluation of $a$ and the evaluation of $b$. If $(\model, s) \not\models a$ we know that $(\model, s) \not\models a \land b$ and thus we return <span class="tt">false</span>. The <span class="tt">Negation</span> node returns the negation of the result of the <span class="tt">Conjunction</span> node. 
                         </p>
-
+                        <!-- Voorbeeld 2 -->
                         <p>
-                            Although most types of nodes have a truth condition, i.e. the <span class="tt">Negation</span> node 'knows' that it is true if its child is not true, some are evaluated differently. These nodes are 'rewritten' before evaluation, e.g. the <span class="tt">implication</span> node is transformed to a disjunction of implication nodes, see the image below. 
-
+                            In the previous example we have shown how the checker handles propositional formulas. When evaluating epistemic formulas, 
+                            \begin{equation}
+                                \label{eq:example3}
+                                (\model, s) \models K_i a.
+                            \end{equation}
+                            for example, we need to consider other states as well. To evaluate \eqref{eq:example3} we first determine in which states $t$ $(\model, t) \models a$ should hold, we then evaluate the child of the <span class="tt">Knowledge</span> node, the proposition $a$ in this case, in those states. If for some state $t$ $(\model, t) \not\models a$ the evaluation stops and the evaluation of \eqref{eq:example3} is set to false. This ensures that evaluation is lazy and that we do not do unnecessary evaluations.
+                        </p>
+                        <!--  Herschrijven -->
+                        <p>
+                            Although most types of nodes have a truth condition, i.e. the <span class="tt">Negation</span> node 'knows' that it is true if its child is not true, some nodes are evaluated differently. These nodes are 'rewritten' before evaluation, e.g. the <span class="tt">implication</span> node is transformed according to the equivalence $\phi \to \psi \equiv (\lnot \phi) \lor \psi$. Instead of evaluating the tree with the <span class="tt">Implication</span> as root, we transform it to a tree with a <span class="tt">Disjunction</span> node as root and evaluate that tree. 
                             <figure>
-                                <object data="./img/transformations.svg" type="image/svg+xml">
-                                    <img src="./img/transformations.png" />
+                                <object class="center-block" data="./img/transformations.svg" type="image/svg+xml">
+                                    <img class="center-block" src="./img/transformations.png" />
                                 </object>
                                 <figcaption>
-                                    An expression tree representing an implication is transformed to an expression tree with a disjunction as the root node. 
+                                    An expression tree representing an implication that is transformed to an expression tree with a disjunction as the root node. 
                                 </figcaption>
                             </figure>                            
-                            The equivalence relation is evaluated as a conjunction of implications using the fact that $\phi \leftrightarrow \psi \equiv (\phi \to \psi) \land (\psi \to \phi)$. The operator $\text{M}_i \phi$ is evaluated as $\lnot K_i \lnot \phi$. 
+                            Other relations that are evaluated using an equivalent formulation are the bi-implication and the operator $\text{M}_i$, the first is evaluated according to the equivalence 
+                            $\phi \leftrightarrow \psi \equiv (\phi \to \psi) \land (\psi \to \phi)$, the second is evaluated as $\lnot K_i \lnot \phi$.
                         </p>
 
-                    <h4>Motivation</h4>
-                        <p>Explaini how the motivation tree is generated and give an example given some model and the formula above.</p>
+                    <h4 name="motivation">Motivation</h4>
+                        <!-- <p>Explaini how the motivation tree is generated and give an example given some model and the formula above.</p> -->
 
 
             <h2><a name="visualisation">Visualisation</a></h2>
