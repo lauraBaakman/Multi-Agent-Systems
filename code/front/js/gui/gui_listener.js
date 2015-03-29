@@ -129,6 +129,20 @@ define("gui_listener", ["d3"], function(d3) {
                     gui.selected_node = null;
                     gui.draw();
                     break;
+                case 82: // r
+                    if (gui.selected_node) {
+                        if (gui.selected_node.reflexive === false) {
+                            gui.get_model().add_link(gui.selected_node.id, gui.selected_node.id);
+                            gui.selected_node.reflexive = true;
+                        } else {
+                            gui.get_model().remove_link(gui.get_model().link_exists(gui.selected_node.id, gui.selected_node.id));
+                            gui.selected_node.reflexive = false;
+                        }
+                    }
+                    gui.selected_link = null;
+                    gui.selected_node = null;
+                    gui.draw();
+                    break;
             }
 
         };
