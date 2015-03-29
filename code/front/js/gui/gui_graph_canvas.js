@@ -73,7 +73,7 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
                 .links(model.get_links())
                 .size([width, height])
                 .linkDistance(300)
-                .charge(-400)
+                .charge(-600)
                 .on('tick', tick);
         }
 
@@ -241,7 +241,7 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
 
             g.append('svg:circle')
                 .attr('class', 'node')
-                .attr('r', 22)
+                .attr('r', 20)
                 .style('fill', function(d) {
                     return (d === self.selected_node) ? d3.rgb('#DDD').brighter().toString() : d3.rgb('#DDD');
                 })

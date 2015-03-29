@@ -65,10 +65,14 @@ define("epl_model", [], function() {
 
         // Todo: Agent
         this.remove_link = function(link_id) {
+            console.log("removing link: " + link_id);
+
             var link_idx = self.get_link_idx(link_id);
             if (link_idx < 0) return;
             // Remove 1 item at index
             links.splice(link_idx, 1);
+
+            console.log(links);
         };
 
         // !!BROKEN!! 
@@ -104,14 +108,14 @@ define("epl_model", [], function() {
             states.splice(state_idx, 1);
 
             // Get all links that link to this state
-            var link_indices = [];
+            var link_ids = [];
             links.forEach(function(link, index) {
                 if (link.source.id === state_id || link.target.id === state_id) {
-                    link_indices.push(index);
+                    link_ids.push(link.id);
                 }
             });
 
-            link_indices.forEach(function(link_idx) {
+            link_ids.forEach(function(link_idx) {
                 self.remove_link(link_idx);
             });
         };

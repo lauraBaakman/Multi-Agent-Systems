@@ -20,7 +20,7 @@ path.link.selected {
 path.link {
     fill: none;
     stroke: #000;
-    stroke-width: 2px;
+    stroke-width: 3px;
     cursor: default;
 }
 
@@ -41,6 +41,7 @@ text.id {
 text {
   pointer-events: none;
 }
+
 
 text::selection {
   background: none; /* WebKit/Blink Browsers */
