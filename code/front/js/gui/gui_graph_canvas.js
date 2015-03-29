@@ -28,6 +28,14 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
             return drag_line;
         }
 
+        this.get_layout = function() {
+            return layout;
+        }
+
+        this.get_nodes = function () {
+            return nodes;
+        }
+
         this.get_model = function() {
             return model;
         }
@@ -246,13 +254,6 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
                     return d.id;
                 });
 
-            // text shadow
-            // g.append('svg:text')
-            //     .attr('x', 24)
-            //     .attr('y', 4)
-            //     .attr('class', 'shadow')
-            //     .text(valuation_to_string);
-
             // text foreground
             g.append('svg:text')
                 .attr('x', 24)
@@ -284,7 +285,8 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
             init_listener();
 
             d3.select(window)
-                .on('keydown', listener.keydown);
+                .on('keydown', listener.keydown)
+                .on('keyup', listener.keyup);
 
             init_canvas();
             init_layout();

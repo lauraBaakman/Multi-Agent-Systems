@@ -1,7 +1,7 @@
 define("gui_listener", ["d3"], function(d3) {
 
     function Listener(graph_canvas) {
-    	var self = this;
+        var self = this;
 
         var gui = graph_canvas;
 
@@ -22,7 +22,7 @@ define("gui_listener", ["d3"], function(d3) {
             if (!mousedown_node) return;
             // update drag line
             gui.get_drag_line()
-            	.attr('d', 'M' + mousedown_node.x + ',' + mousedown_node.y + 'L' + d3.mouse(this)[0] + ',' + d3.mouse(this)[1]);
+                .attr('d', 'M' + mousedown_node.x + ',' + mousedown_node.y + 'L' + d3.mouse(this)[0] + ',' + d3.mouse(this)[1]);
 
             gui.draw();
         };
@@ -41,7 +41,7 @@ define("gui_listener", ["d3"], function(d3) {
                     .style('marker-end', '');
             }
             // because :active only works in WebKit?
-            gui.get_canvas().classed('active', false);
+            // gui.get_canvas().classed('active', false);
 
             // clear mouse event vars
             self.reset_mouse_vars();
@@ -95,16 +95,23 @@ define("gui_listener", ["d3"], function(d3) {
             if (last_key_down !== -1) return;
             last_key_down = d3.event.keyCode;
 
-            // // ctrl
-            // if (d3.event.keyCode === 18) {
-            //     // circle.call(force.drag);
-            //     // gui.get_canvas().classed('alt', true);
-            // }
+            if (d3.event.keyCode === 18) {
 
-            last_key_down = -1;
+                gui.get_nodes().call(gui.get_layout().drag);
+                // gui.get_canvas().classed('alt', true);
+            }
+
         };
 
+        this.keyup = function() {
+            last_key_down = -1;
 
+            if (d3.event.keyCode === 18) {
+                gui.get_nodes()
+                    .on('mousedown.drag', null)
+                    .on('touchstart.drag', null);
+            }
+        };
     }
 
     return Listener;

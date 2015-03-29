@@ -69,9 +69,10 @@ define("gui_info_panel", ["d3", "json_editor", "mathjax"], function(d3, JSONEdit
 
                     document.getElementById("playground").removeChild(loading);
                 })
-                .on("error", function() {
+                .on("error", function(error) {
                     console.log("error");
                     document.getElementById("playground").removeChild(loading);
+                    console.log(error.title);
 
                 })
                 .post(JSON.stringify(editor.get()));
