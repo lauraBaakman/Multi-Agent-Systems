@@ -207,6 +207,8 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
                     return "#linkId_" + d.id;
                 })
                 .text(relation_to_string);
+
+            link_labels.exit().remove();
         }
 
         function valuation_to_string(node) {

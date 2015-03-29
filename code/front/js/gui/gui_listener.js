@@ -120,8 +120,10 @@ define("gui_listener", ["d3"], function(d3) {
                 case 46: // delete
                     if (gui.selected_node) {
                         console.log("Delete selected node!" + gui.selected_node.id);
-                    } else if (selected_link) {
+                        gui.get_model().remove_state(gui.selected_node.id);
+                    } else if (gui.selected_link) {
                         console.log("Delete selected link!" + gui.selected_link.id);
+                        gui.get_model().remove_link(gui.selected_link.id);
                     }
                     gui.selected_link = null;
                     gui.selected_node = null;
