@@ -82,6 +82,29 @@ text::-moz-selection {
     padding-bottom: 10px;
 }
 
+#instruction {
+  position: absolute;
+  bottom: 0;
+  padding-top: 20px;
+  margin-top: 20px;
+  border-top: 1px solid #e3e3e3;
+}
+
+#mode-select {
+  margin-bottom: 5px;
+}
+
+#link-information {
+  margin-top: 10px;
+}
+
+#state-information {
+  margin-top: 10px;
+}
+
+.inactive {
+  display: none;
+}
 
 /* ######## Spinner ######## */
 
