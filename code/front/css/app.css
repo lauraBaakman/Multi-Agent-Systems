@@ -82,28 +82,6 @@ text::-moz-selection {
     padding-bottom: 10px;
 }
 
-#editor_container {
-	padding-top: 10px;
-	min-height: 616px;
-	max-height: 616px;
-}
-
-#json_editor {
-	min-height: 560px;
-}
-
-#json_editor .jsoneditor {
-	min-height: inherit;
-}
-
-#json_editor .jsoneditor .outer {
-	min-height: inherit;
-}
-
-#json_editor .jsoneditor .outer .text{
-	min-height: inherit;
-}
-
 
 /* ######## Spinner ######## */
 

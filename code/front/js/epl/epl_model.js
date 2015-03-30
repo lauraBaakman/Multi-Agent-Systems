@@ -87,6 +87,7 @@ define("epl_model", [], function() {
                 return false;
             });
             state.reflexive = false;
+            state.agents = [];
 
             states.push(state);
         };
@@ -252,16 +253,25 @@ define("epl_model", [], function() {
             var sendable_relations = [];
 
             links.forEach(function(link) {
+                console.log(link);
                 var relations = link.agents.map(function(agent) {
                     return [
                         link.source.id.toString(),
-                        agent,
+                        agent.toString(),
                         link.target.id.toString()
                     ];
                 });
                 relations.forEach(function(relation) {
                     sendable_relations.push(relation);
                 });
+            });
+
+            states.forEach(function(state) {
+                if(state.reflexive) {
+                    state.agents.forEach(function(agent) {
+                        sendable_relations.push([state.id.toString(), agent.toString(), state.id.toString()]);
+                    });
+                }
             });
 
             return {

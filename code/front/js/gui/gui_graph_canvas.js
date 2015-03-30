@@ -65,6 +65,9 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
             canvas.on('mousedown', listener.mousedown);
             canvas.on('mousemove', listener.mousemove);
             canvas.on('mouseup', listener.mouseup);
+            canvas.on('onchange', function() {
+                console.log("change!!!");
+            });
         }
 
         function init_layout() {

@@ -83,7 +83,8 @@ define("gui_listener", ["d3"], function(d3) {
             }
 
             if (gui.get_model().link_exists(mousedown_node.id, mouseup_node.id) === null) {
-                gui.get_model().add_link(mousedown_node.id, mouseup_node.id);
+                var link_id = gui.get_model().add_link(mousedown_node.id, mouseup_node.id);
+                gui.get_model().add_agent_to_link(link_id, 0);
                 gui.selected_node = null;
                 gui.draw();
             }
@@ -132,11 +133,14 @@ define("gui_listener", ["d3"], function(d3) {
                 case 82: // r
                     if (gui.selected_node) {
                         if (gui.selected_node.reflexive === false) {
-                            gui.get_model().add_link(gui.selected_node.id, gui.selected_node.id);
-                            gui.selected_node.reflexive = true;
+                            // gui.get_model().add_link(gui.selected_node.id, gui.selected_node.id);
+                            gui.get_model().get_state(gui.selected_node.id).reflexive = true;
+                            gui.get_model().get_state(gui.selected_node.id).agents.push(0);
+                            console.log(gui.selected_node);
                         } else {
-                            gui.get_model().remove_link(gui.get_model().link_exists(gui.selected_node.id, gui.selected_node.id));
-                            gui.selected_node.reflexive = false;
+                            // gui.get_model().remove_link(gui.get_model().link_exists(gui.selected_node.id, gui.selected_node.id));
+                            gui.get_model().get_state(gui.selected_node.id).reflexive = false;
+                            gui.get_model().get_state(gui.selected_node.id).agents = [];
                         }
                     }
                     gui.selected_link = null;
