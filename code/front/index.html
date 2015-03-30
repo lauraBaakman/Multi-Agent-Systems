@@ -23,7 +23,7 @@
                 </h1>
             </div>
         </header>
-<!--         <section class="row" id="app">
+        <section class="row" id="app">
             <div class="col-md-3" id="app-info">
                 <div class="row" id="editor_container">
                     <div class="col-md-12" id="json_editor"></div>
@@ -36,18 +36,13 @@
             </div>
             <div class="col-md-9" id="app-canvas">
             </div>
-        </section> -->
-        <blockquote>
-            fjdsafas
-        </blockquote>
-
-
+        </section>
         <section id="response">
         </section>
         <section class="row" id="report">
             <h2>Introduction</h2>
                 <p>
-                    This page presents our project for the course Multi-Agent systems, we have build a system that given some model $\model$, some formula, and some state determines if the formula is true in that state. The following logics are supported:
+                    This page presents our project for the course Multi-Agent systems, the Epistemic Logic Playground. We have built a system that given some model $\model$, some formula, and some state  $s$ determines if the formula holds in state $s$ in model $\model$. The Epistemic Logic Playground supports the following logics:
                     <ul class="quad">
                         <li>$\K{\m}$</li>
                         <li>$\T{\m}$</li>
@@ -64,10 +59,9 @@
                         <li>$\SVI{\m}$</li>
                         <li>$\SFI{\m}$</li>                                        
                     </ul>
-                    We refer the reader to <cite>Epistemic Logic for AI and Computer Science by J.-J Ch. Meyer and W. van der Hoek</cite> for an explanation of the different logics.</p>
-
+                    We refer the reader to <cite>Epistemic Logic for AI and Computer Science by J.-J Ch. Meyer and W. van der Hoek</cite> for a definition of the different logics.</p>
                 <p>
-                    The modelchecker, consists of a back-end written in <a href="https://www.python.org">Python</a> and a front-end that visualizes the model using <a href="http://d3js.org">D3</a>. One advantage of this approach is that it split the model cleanly in two independent halves. Another is that javascript is much more suitable for the visualisation and interaction than Python. Since Javascript does not support polymorphism we felt that Pyton was the better choice for the back-end.
+                    The modelchecker, consists of a back-end written in <a href="https://www.python.org">Python</a> and a front-end that visualizes the model using <a href="http://d3js.org">D3</a>. One advantage of this approach is that it split the project cleanly in two independent halves. Another is that javascript is much more suitable for the visualisation and interaction than Python. We felt that Python was the better choice for the actual model checking.
                 </p>
 
                 <p>
@@ -79,25 +73,25 @@
                 </p>
                 <h3><a name="formula">Formula</a></h3>
                     <p>
-                        Users of the 'Epistemic Logic Playground' input formulas as strings, for example the formula 
+                        Users of the Epistemic Logic Playground input formulas as strings, for example the formula 
                             \begin{equation} 
                                 \label{eq:exampleFormula} 
                                 C K_1 \lnot (a \land b), 
                             \end{equation}
-                        is input as <code>C K_1 ~(a &amp; b)</code>. The table below presents the representation users should use to represent a formula. Furthermore for each operator the logics in which it is supported is presented in the table. 
+                        is input as <code>C K_1 ~(a &amp; b)</code>. The table below presents the notation users should use, it also shows in which logics each operator can be used.
                     </p>
 
                     <p>
-                        Readers familiar with <a href="https://github.com/gertvv/oops">OOPS</a> might recognise some of the notation we use. However since we do not use the exact same notation as OOPS the OOPS operators are also provided in the table below to avoid confusion.
+                        Readers familiar with <a href="https://github.com/gertvv/oops">OOPS</a> might be familiar with the notation we use. However since we do not use the exact same notation as OOPS, the OOPS operators are also provided in the table below to avoid confusion.
                     <p/>
 
                     <table class="table table-striped table-hover table-condensed">
                         <tr>
                             <th width="160"></th>
-                            <th>Conventional notation</th>
-                            <th width="80em">Input format</th>
+                            <th width="100em">Conventional notation</th>
+                            <th width="100em">Input format</th>
                             <th width="250">Logics</th>
-                            <th>OOPS notation</th>                                
+                            <th width="100em">OOPS notation</th>                                
                             <th>Notes</th>
                         </tr>
                         <tr>
@@ -214,7 +208,7 @@
                         </figure>
 
                         <p>
-                        The advantage of tokenizing is that it is easier to change the definition of the non terminals of the grammar without having to change the parser itself. Another upside of representing the formula as a list of tokens before parsing it is that we can already detect some errors in the formulas. For example if a user has selected the axiom system $\SF{\m}$ and inputs formula \eqref{eq:exampleFormula} the process that generates the list of tokens detects that the formula is well formed in that language, since the operator $C$ is not defined in $\SF{\m}$. Consequently, if we present a list of tokens to the parser we do not need to consider cases where a formula contained tokens that are not allowed. 
+                        The advantage of tokenizing is that it is easier to change the definition of the non terminals of the grammar without having to change the parser itself. Another upside of representing the formula as a list of tokens before parsing it is that we can already detect some errors in the formulas. For example if a user has selected the axiom system $\SF{\m}$ and inputs formula \eqref{eq:exampleFormula} the process that generates the list of tokens detects that the formula is not well formed in that language, since the operator $C$ is not defined in $\SF{\m}$. Consequently, if we present a list of tokens to the parser we do not need to consider cases where a formula contained tokens that are not allowed. 
                         </p>
                     <figure class="float-right">
                         <object data="./img/ast.svg" type="image/svg+xml">
@@ -246,8 +240,7 @@
                             ~ \lnot \mathbf{X}           \; | \; 
                             \mathit{proposition}                \\ 
                         \end{array} 
-
-                        Terminals, parts of the expression that cannot be expanded according to some rule in the grammar, are presented as their symbol ($\lnot$, $\land$, $\lor$, $\to$, $($, $)$, $\leftrightarrow$) or as <em>italic text</em>. Non-terminals, parts of the grammar that can be expanded according to some rule, are shown in <b>bold</b>. 
+                        Note that this grammar is the union of the grammars of the different logics supported in the Epistemic Logic Playground. Terminals, parts of the expression that cannot be expanded according to some rule in the grammar, are presented as their symbol ($\lnot$, $\land$, $\lor$, $\to$, $($, $)$, $\leftrightarrow$) or as <em>italic text</em>. Non-terminals, parts of the grammar that can be expanded according to some rule, are shown in <b>bold</b>. 
                     </p>
         
                     <p>
@@ -255,7 +248,7 @@
                     </p>
 
                     <p>
-                        The parser generates an expression tree representing the formula if we give a list of tokens. The tree generated for \eqref{eq:exampleFormula} is presented on the right. The structure of the tree represents the order in which parts of the formula should be evaluated. For example, $a \land b$ should be evaluated first, and the result of that expression should be negated. If we had not placed brackets around the conjunction, the negation node would have been a child of the conjunction node, which represents the expression $(\lnot a) \land b$.
+                        The parser generates an expression tree representing the formula, which is input as a list of tokens. The tree generated for \eqref{eq:exampleFormula} is presented on the right. The structure of the tree represents the order in which parts of the formula should be evaluated. For example, $a \land b$ should be evaluated first, and the result of that expression should be negated. If we had not placed brackets around the conjunction, the negation node would have been a child of the conjunction node, which represents the expression $(\lnot a) \land b$.
                     </p>
 
                     <p>
@@ -263,14 +256,15 @@
                     </p>
 
                     <p>
-                        By traversing the expression tree in order we can generate a human-readable representation of the formula it represents. Concerning brackets we have opted for the better safe than sorry approach, and have added brackets around every sub tree, except when a negation is place in front of a proposition.
-                    </p>                    
+                        By traversing the expression tree inorder we generate a human-readable representation of the formula it represents. Concerning brackets we have opted for the better safe than sorry approach, and have added brackets around every sub tree, except when a negation is the parent node of a leaf, .i.e. a proposition.
+                    </p>                   
+
                 <h3><a name="model">Model</a></h3>
                     <p>
                         The front-end sends a JSON-representation of the Kripke model to the back-end which generates its own representation of the model. A model is represented as a list of <span class="tt">states</span>. For each agent a <span class="tt">state</span> has a list of incoming and outgoing <span class="tt">relations</span>. Furthermore a state has a valuation for each proposition in the model. Each <span class="tt">relation</span> has an <span class="tt">agent</span>, and a source and destination <span class="tt">state</span>.
                     </p>
                     <p>
-                        When converting the JSON representation to our own representation we check the model for inconsistencies. We check for example that the model has at least one state, or that it all relations in the model are between defined states.
+                        When converting the JSON representation to our own representation we check the model for inconsistencies. For example we check if the model has at least one state, and that all relations in the model are between defined states.
                     </p>                    
                     <p>
                         Apart from the 'normal' Kripke models the Epistemic Logic Playground supports three classes of Kripke models, namely:
@@ -279,10 +273,10 @@
                                 <li>$\mathcal{S4}$: the class of all reflexive-transitive Kripke models.</li>
                                 <li>$\mathcal{S5}$: the class of all reflexive-transitive-symmetric Kripke models.</li>
                             </ul>
-                        The user does not need to specify which class his model has explicitly, since this follows from the selected logic. If the logic $\T{}$, $\TEC{}$ or $\TI{}$ is selected the associated class of Kripke models, $\mathcal{T}$ is selected automatically. 
+                        The user does not need to explicity specify which class his model has, since this follows from the selected logic. If the logic $\T{}$, $\TEC{}$ or $\TI{}$ is selected the associated class of Kripke models, $\mathcal{T}$ is selected automatically. 
                     </p>
                     <p>
-                        If the class $\mathcal{T}$ is selected, not only is the input model converted from JSON, the reflexive closure of the relations is also computed using. In the case that a logic associated with the class $\mathcal{S4}$ is selected the reflexive-transitive closure of the set of relations of the models is computed using depth first search. In the same way the reflexive-transitive-symmetric closure of the relations is computed if the selected logic is one of $\SF{}$, $\SFEC{}$, $\SFI{}$. The updated model is returned to the front-end and visualised there. Consequently one does not need to input a reflexive-transitive model to evaluate a formula in e.g. $\SVEC{}$.
+                        If the class $\mathcal{T}$ is selected, not only is the input model converted from JSON, the reflexive closure of the relations is also computed. In the case that a logic associated with the class $\mathcal{S4}$ is selected the reflexive-transitive closure of the set of relations of the models is computed using depth first search. In the same way the reflexive-transitive-symmetric closure of the relations is computed if the selected logic is one of $\SF{}$, $\SFEC{}$, $\SFI{}$. The updated model is returned to the front-end and visualised there. Consequently one does not need to input a reflexive-transitive model to evaluate a formula in e.g. $\SVEC{}$. We use depth-first search to find the transitive and symmetric closure of the set of relations in a model.
                     </p>
 
                 <h3><a name="checker">Checker</a></h3>
@@ -292,24 +286,30 @@
 
                     <h4 name="trueOrFalse">True or False?</h4>
                         <p>
-                            We determine if some formula holds in some state in some model using depth first search. This is best explained with two examples. The first example only uses propositional operators, which means that we do not have to concern ourselves with different states. 
+                            We determine if some formula holds in some state in some model using depth first search. This is best explained with two examples. The 
+                            <a href="#example1">first example</a> only uses propositional operators, which means that we do not have to concern ourselves with different states. The <a href="#example2">second example</a> shows how we handle operators where multiple states need to be considered.
                         </p>
                         <!-- Voorbeeld 1 -->
+                        <h5 name="example1">Example I</h5>
                         <p>
                             Imagine we want to determine if it is the case that 
                             \begin{equation}
                             \label{eq:example2}
                             (\model, s) \models \lnot (a \land b).
                             \end{equation}
-                            The root node of the expression tree representing this formula is a <span class="tt">Negation</span> node. The truth definition of this node states that it is true if its child ($a \land b$) is false. Consequently we need to evaluate the child of the <span class="tt">Negation</span> node, i.e. the sub tree with the <span class="tt">Conjunction</span> node as its root. According to the truth definition of this node, it only holds if both its left-hand side, LHS, and right-hand side, RHS, hold. Since we want lazy evaluation we do not evaluate the RHS if we do not need to, i.e. we only evaluate it if the LHS holds. The LHS of the <span class="tt">Conjunction</span> node is a <span class="tt">Proposition</span> node, thus we ask the model if the proposition $a$ holds in state $s$. If $(\model, s) \models a$ we evaluate the RHS of the <span class="tt">Conjunction</span> node and return the <span class="tt">and</span> of the evaluation of $a$ and the evaluation of $b$. If $(\model, s) \not\models a$ we know that $(\model, s) \not\models a \land b$ and thus we return <span class="tt">false</span>. The <span class="tt">Negation</span> node returns the negation of the result of the <span class="tt">Conjunction</span> node. 
+                            The root node of the expression tree representing this formula is a <span class="tt">Negation</span> node. The truth definition of this node states that it is true if its child ($a \land b$) is false. Consequently we need to evaluate the child of the <span class="tt">Negation</span>     node, i.e. the sub tree with the <span class="tt">Conjunction</span> node as its root. 
                         </p>
+                        <p>
+                            According to the truth definition of the conjunction, the formula represented by the tree with this node as its root holds if both its left-hand side, LHS, and right-hand side, RHS, hold. Since we want evaluation to be lazy we do not evaluate the RHS if we do not need to, i.e. we only evaluate it if the LHS holds. The LHS of the <span class="tt">Conjunction</span> node is a <span class="tt">Proposition</span> node, thus we ask the model if the proposition $a$ holds in state $s$. If $(\model, s) \models a$ we evaluate the RHS of the <span class="tt">Conjunction</span> node and return the <span class="tt">and</span> of the evaluation of $a$ and the evaluation of $b$. If $(\model, s) \not\models a$ we know that $(\model, s) \not\models a \land b$ and thus we return <span class="tt">false</span>. The <span class="tt">Negation</span> node returns the negation of the result of the <span class="tt">Conjunction</span> node. 
+                        </p>
+                        <h5 name="example2">Example II</h5>
                         <p>
                             In the previous example we have shown how the checker handles propositional formulas. When evaluating epistemic formulas, 
                             \begin{equation}
                                 \label{eq:example3}
                                 (\model, s) \models K_i a.
                             \end{equation}
-                            for example, we need to consider other states as well. To evaluate \eqref{eq:example3} we first determine in which states $t$ $(\model, t) \models a$ should hold, we then evaluate the child of the <span class="tt">Knowledge</span> node, the proposition $a$ in this case, in those states. If for some state $t$ $(\model, t) \not\models a$ the evaluation stops and the evaluation of \eqref{eq:example3} is set to false. This ensures that evaluation is lazy and that we do not do unnecessary evaluations.
+                            for example, we need to consider other states as well. To evaluate \eqref{eq:example3} we first determine in which states $t$ $(\model, t) \models a$ should hold, we then evaluate the child of the <span class="tt">Knowledge</span> node, the proposition $a$ in this case, in those states. If for some state $t$ $(\model, t) \not\models a$ the evaluation stops and the evaluation of \eqref{eq:example3} is set to false. This ensures that evaluation is lazy.
                         </p>
                         <p>
                             Although most types of nodes have a truth condition, i.e. the <span class="tt">Negation</span> node 'knows' that it is true if its child is not true, some nodes are evaluated differently. These nodes are 'rewritten' before evaluation, e.g. the <span class="tt">implication</span> node is transformed according to the equivalence $\phi \to \psi \equiv (\lnot \phi) \lor \psi$. Instead of evaluating the tree with the <span class="tt">Implication</span> as root, we transform it to a tree with a <span class="tt">Disjunction</span> node as root and evaluate that tree. 
@@ -321,13 +321,12 @@
                                     An expression tree representing an implication that is transformed to an expression tree with a disjunction as the root node. 
                                 </figcaption>
                             </figure>                            
-                            Other relations that are evaluated using an equivalent formulation are the bi-implication and the operator $\text{M}_i$, the first is evaluated according to the equivalence 
-                            $\phi \leftrightarrow \psi \equiv (\phi \to \psi) \land (\psi \to \phi)$, the second is evaluated as $\lnot K_i \lnot \phi$.
+                            Other relations that are evaluated using an equivalent formulation are the bi-implication and the operator $\text{M}_i$, the first is evaluated according to the equivalence $\phi \leftrightarrow \psi \equiv (\phi \to \psi) \land (\psi \to \phi)$, the second is evaluated as $\lnot K_i \lnot \phi$.
                         </p>
 
                     <h4 name="motivation">Motivation</h4>
                         <p>
-                            To illustrate how we generate the motivation we best look at some concrete model, such as the model presented below.
+                            In essence the motivation of an answer given by the checker is generated with the lazy depth first search presented above. Its excact workings are best discussed with some examples. All formulas used that are evaluated to illustrate how the motivation is generated are checked in the model below. 
                             <figure>
                                 <object class="center-block" data="./img/model.svg" type="image/svg+xml">
                                     <img class="center-block" src="./img/model.png" />
@@ -338,7 +337,7 @@
                             <figure>
                                 <div class="motivation">
                                     <div class='left-align'>
-                                        $\left(M, \text{sb} \right) \models \left(\text{p}\land\text{q}\right)$ iff $\left(M, \text{sb} \right) \models \text{p}$ and $\left(M, \text{sb} \right) \models \text{q}$.
+                                        $\left(M, \text{sb} \right) \models \left(\text{p}\land\text{q}\right)$ iff $\left(M, \text{sb} \right) \models \text{p}$ and $\left(M, \text{sb} \right) \models \text{q}$.    
                                         <div class='left-align'>
                                             $\left(M, \text{sb} \right) \models \text{p}$ iff $\pi\left(sb\right)\left( p \right) = 1$.
                                             <br>
@@ -349,12 +348,12 @@
                                             <br> 
                                             $\left(M, \text{sb} \right) \models \text{q}$ does not hold since $\pi\left(sb\right)\left( q \right) = 0$.
                                         </div> 
-                                        $\left(M, \text{sb} \right) \models \left(\text{p}\land\text{q}\right)$ does not hold since $\left(M, \text{sb} \right) \models \text{q}$ does not hold.
+                                            $\left(M, \text{sb} \right) \models \left(\text{p}\land\text{q}\right)$ does not hold since $\left(M, \text{sb} \right) \models \text{q}$ does not hold.    
                                     </div>
                                 </div> 
                                 <figcaption>The motivation generated for $(\model, sb) \models p \land q$.</figcaption>
                             </figure>
-                        We see that for each node that is not a <span class="tt">Proposition</span> node the checker generates a condition under which it is true, and a conclusion. The indented section between the condition and conclusion shows the steps taken to determine if the conclusion is true or false. When evaluating <span class="tt">Proposition</span> nodes the system also generates only generates a condition and a conclusion, since there are no intermediate steps to consider. Considering the final conclusion shown above we also see that these are motivated lazy, i.e. we state that $\left(M, \text{sb} \right) \not\models \left(\text{p}\land\text{q}\right)$ since $\left(M, \text{sb} \right) \not\models \text{q}$, we do not mention the fact that $\left(M, \text{sb} \right) \models \text{p}$ since it is irrelevant.
+                        We see that for each node that is not a <span class="tt">Proposition</span> node the checker generates a condition under which it is true, and a conclusion. The indented section between the condition and conclusion shows the steps taken to determine if the conclusion is true or false. When evaluating <span class="tt">Proposition</span> nodes the system also generates only generates a condition and a conclusion, since there are no intermediate steps to consider. Considering the final conclusion shown above we also see that the motivations are lazy, i.e. we state that $\left(M, \text{sb} \right) \not\models \left(\text{p}\land\text{q}\right)$ since $\left(M, \text{sb} \right) \not\models \text{q}$, we do not mention the fact that $\left(M, \text{sb} \right) \models \text{p}$ since it is irrelevant.
                         </p>
 
                         <p>
@@ -385,7 +384,7 @@
                                 </div> 
                                 <figcaption>The motivation generated for $(\model, sb) \models p \leftrightarrow q$.</figcaption>
                             </figure>                            
-                            This motivation is structured in the same way as the previous one, each tree is gets a condition and a conclusion, with the motivation indented. The interesting part of this motivation lies in the first rule, which shows the reformulation of the equivalence relation to a conjunction of disjunctions. If we consider the final conclusion in this motivation we also see the disadvantage of this method, the final conclusion does mention the original formula, but uses the rewritten form, i.e. instead of '$\left(M, \text{sb} \right) \models \left( p \leftrightarrow q\right)$ does not hold ...' we get '$\left(M, \text{sb} \right) \models \left(\left(\text{p}\to\text{q}\right)\land\left(\text{q}\to\text{p}\right)\right)$ does not hold ...'.
+                            This motivation is structured in the same way as the previous one, each (sub) tree gets a condition and a conclusion, with the motivation indented. The interesting part of this motivation lies in the first rule, which shows the reformulation of the equivalence relation to a conjunction of disjunctions. If we consider the final conclusion in this motivation we also see the disadvantage of this method, the final conclusion does mention the original formula, but uses the rewritten form, i.e. instead of '$\left(M, \text{sb} \right) \models \left( p \leftrightarrow q\right)$ does not hold ...' we get '$\left(M, \text{sb} \right) \models \left(\left(\text{p}\to\text{q}\right)\land\left(\text{q}\to\text{p}\right)\right)$ does not hold ...'.
                         </p>
 
                         <p>
@@ -402,7 +401,7 @@
                                 </div> 
                                 <figcaption>The motivation generated for $(\model, sc) \models K_2 p$.</figcaption>
                             </figure>                             
-                            We see that the checker has first evaluated the child of the <span class="tt">Knowledge</span> node first in state $sc$, since $(\model, sc) \not\models p$ it terminates evaluation since this means that $(\model, sc) \not\models K_2 p$. Note that the states are not considered in any particular order, i.e. it is a coincidence that the checker first checked the state which made the formula false. If we evaluate $(\model, sc) \models K_2 p \lor r$ the resulting motivation is comparable to that of $(\model, sc) \models K_2 p$, but the conclusion reads as follows: <q>$\left(M, \text{sc} \right) \models  \text{K}_{\text{2}} \left(\left(\text{p}\lor\text{r}\right)\right)$ holds since  $\left(M, \text{sb} \right) \models \left(\text{p}\lor\text{r}\right)$,  and $\left(M, \text{sc} \right) \models \left(\text{p}\lor\text{r}\right)$.</q>
+                            We see that the checker has evaluated the child of the <span class="tt">Knowledge</span> node first in the state $sc$. Since $(\model, sc) \not\models p$ the checker terminates evaluation, since this means that $(\model, sc) \not\models K_2 p$. Note that the states are not considered in any particular order, i.e. it is a coincidence that the checker first checked the state which made the formula false. If we evaluate $(\model, sc) \models K_2 p \lor r$ the resulting motivation is comparable to that of $(\model, sc) \models K_2 p$, but the conclusion reads as follows: <q>$\left(M, \text{sc} \right) \models  \text{K}_{\text{2}} \left(\left(\text{p}\lor\text{r}\right)\right)$ holds since  $\left(M, \text{sb} \right) \models \left(\text{p}\lor\text{r}\right)$,  and $\left(M, \text{sc} \right) \models \left(\text{p}\lor\text{r}\right)$.</q>
                         </p>
             <h2><a name="visualisation">Visualisation</a></h2>
                 <p>
