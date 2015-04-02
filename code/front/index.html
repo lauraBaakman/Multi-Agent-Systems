@@ -91,10 +91,10 @@
         </section>
         <section class="row" id="response">
         </section>
-<section class="row" id="report">
+        <section class="row" id="report">
             <h2>Introduction</h2>
                 <p>
-                    This page presents our project for the course Multi-Agent Systems, the Epistemic Logic Playground. We have built a system that given some model $\model$, some formula, and some state  $s$ determines if the formula holds in state $s$ in model $\model$. The Epistemic Logic Playground supports the following logics:
+                    This page presents our project for the course Multi-Agent Systems, the Epistemic Logic Playground. We have built a system that given some model $\model$, some formula $\phi$, and some state $s$ determines if $(\model, s) \models \phi$ holds. The Epistemic Logic Playground supports the following logics:
                     <ul class="quad">
                         <li>$\K{\m}$</li>
                         <li>$\T{\m}$</li>
@@ -113,15 +113,15 @@
                     </ul>
                     We refer the reader to <cite>Epistemic Logic for AI and Computer Science by J.-J Ch. Meyer and W. van der Hoek</cite> for a definition of the different logics.</p>
                 <p>
-                    The modelchecker, consists of a back-end written in <a href="https://www.python.org">Python</a> and a front-end that visualizes the model using <a href="http://d3js.org">D3</a>. One advantage of this approach is that it split the project cleanly in two independent halves. Another is that javascript is much more suitable for the visualisation and interaction than Python. We felt that Python was the better choice for the actual model checking.
+                    The Epistemic Logic Playground consists of a back-end written in <a href="https://www.python.org">Python</a> and a front-end that visualizes the model using <a href="http://d3js.org">D3</a>. One advantage of this approach is that it split the project cleanly in two independent halves. Another is that javascript is much more suitable for the visualisation and user-interaction than Python, whereas Python was the better choice for the actual model checking.
                 </p>
 
                 <p>
-                    Below we discuss the <a href="#implementation">implementation</a> of the modelchecker and the <a href="#visualisation">visualisation</a> of the model. 
+                    Below we discuss the <a href="#implementation">implementation</a> of the modelchecker, i.e. the back-end, and the <a href="#visualisation">visualisation</a> of the model, i.e. the front-end.
                 </p>
             <h2><a name="implementation">Implementation</a></h2>
                 <p>
-                    In this section we discuss the used representation of the <a href="#formula">formulas</a>, the models <a href="#model">models</a> and, how we determine if some formula holds in some state in some model, i.e. how the <a href="#checker">checker</a> works.
+                    We start the section by discussion how we represent <a href="#formula">formulas</a> and <a href="#model">models</a>. Lastly we show how given our representation of a formula and a model we determine if that formula holds in some state in that model, i.e. how the <a href="#checker">checker</a> works.
                 </p>
                 <h3><a name="formula">Formula</a></h3>
                     <p>
@@ -130,11 +130,11 @@
                                 \label{eq:exampleFormula} 
                                 C K_1 \lnot (a \land b), 
                             \end{equation}
-                        is input as <code>C K_1 ~(a &amp; b)</code>. The table below presents the notation users should use, it also shows in which logics each operator can be used.
+                        is input as <code>C K_1 ~(a &amp; b)</code>. The table below presents the notation that is expected by the Epsitemic Logic Playground. The table also shows for each operator in which logics it is supported.
                     </p>
 
                     <p>
-                        Readers familiar with <a href="https://github.com/gertvv/oops">OOPS</a> might be familiar with the notation we use. However since we do not use the exact same notation as OOPS, the OOPS operators are also provided in the table below to avoid confusion.
+                        Readers familiar with <a href="https://github.com/gertvv/oops">OOPS</a> might recognise some of the notation we use. However since we do not use the exact same notation as OOPS, the OOPS operators are also provided in the table below to avoid confusion.
                     <p/>
 
                     <table class="table table-striped table-hover table-condensed">
@@ -242,7 +242,7 @@
                     </table>
 
                     <p>
-                        Given some formula we need a suitable representation to determine if it holds in some model in some state. We represent formulas as an <a href="#expressiontree">expression tree</a>. Before parsing the formula, to generate the expression tree we first convert it to list of <a href="#tokens">tokens</a>.
+                        Given some formula we need a suitable representation to determine if it holds in some model in some state. We represent formulas as an <a href="#expressiontree">expression tree</a>. Before parsing the formula, to generate the expression tree we first convert it to a list of <a href="#tokens">tokens</a>.
                     </p>
 
                     <h4><a name="tokens">Tokens</a></h4>
