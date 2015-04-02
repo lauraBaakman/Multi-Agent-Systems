@@ -1,4 +1,4 @@
-define("gui_info_panel", ["d3", "json_editor", "mathjax"], function(d3, JSONEditor, MathJax) {
+define("gui_info_panel", ["d3", "mathjax"], function(d3, JSONEditor, MathJax) {
 
     function InfoPanel(container, app) {
 
