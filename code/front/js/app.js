@@ -4,12 +4,8 @@ define("app", ["d3", "gui_graph_canvas", "gui_info_panel", "epl_model", "mathjax
 
         var model = new EplModel();
 
-        this.get_model = function() {
-            return model;
-        };
-
         var container = d3.select(graph_id);
-        var graph_canvas = new GraphCanvas(container, this);
+        var graph_canvas = new GraphCanvas(container, model);
         graph_canvas.start();
 
         this.redraw = function() {
@@ -17,7 +13,7 @@ define("app", ["d3", "gui_graph_canvas", "gui_info_panel", "epl_model", "mathjax
         };
 
         container = d3.select(info_id);
-        var info_panel = new InfoPanel(container, this);
+        var info_panel = new InfoPanel(container, model);
         info_panel.init();
     }
     return App;

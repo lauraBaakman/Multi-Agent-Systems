@@ -1,6 +1,6 @@
 define("gui_info_panel", ["d3", "mathjax"], function(d3, JSONEditor, MathJax) {
 
-    function InfoPanel(container, app) {
+    function InfoPanel(container, model) {
 
         var self = this;
 
@@ -41,13 +41,14 @@ define("gui_info_panel", ["d3", "mathjax"], function(d3, JSONEditor, MathJax) {
             //     })
             //     .post(JSON.stringify(editor.get()));
 
-            console.log(app.get_model().save_to_model_object());
+            console.log(model.save_to_model_object());
 
             // editor.set(app.get_model().save_to_model_object());
         };
 
-        
-
+        this.set_selected_state = function(selected_node) {
+            d3.select('#state-information').html("Selected state: " + selected_state.id);
+        };
 
         this.init = function() {
             // var editor_container = container.select('#json_editor');
@@ -61,7 +62,7 @@ define("gui_info_panel", ["d3", "mathjax"], function(d3, JSONEditor, MathJax) {
 
             var submit_button = document.getElementById("json_submit_button");
             submit_button.onclick = self.send;
-        }
+        };
     }
     return InfoPanel;
 });

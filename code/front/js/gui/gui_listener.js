@@ -1,6 +1,6 @@
 define("gui_listener", ["d3"], function(d3) {
 
-    function Listener(graph_canvas, graph_info) {
+    function Listener(graph_canvas, model) {
         var self = this;
 
         var gui = graph_canvas;
@@ -14,7 +14,7 @@ define("gui_listener", ["d3"], function(d3) {
         this.mousedown = function() {
             console.log("Mouse down");
             if (last_key_down === 65) {
-                gui.get_model().add_state();
+                model.add_state();
                 gui.draw();
             }
         };
@@ -22,7 +22,7 @@ define("gui_listener", ["d3"], function(d3) {
         this.mousemove = function() {
             if (!mousedown_node) return;
             // update drag line
-            gui.get_drag_line()
+            gui.drag_line
                 .attr('d', 'M' + mousedown_node.x + ',' + mousedown_node.y + 'L' + d3.mouse(this)[0] + ',' + d3.mouse(this)[1]);
 
             gui.draw();
@@ -37,7 +37,7 @@ define("gui_listener", ["d3"], function(d3) {
             console.log("Mouse up");
             if (mousedown_node) {
                 // hide drag line
-                gui.get_drag_line()
+                gui.drag_line
                     .classed('hidden', true)
                     .style('marker-end', '');
             }
@@ -53,12 +53,16 @@ define("gui_listener", ["d3"], function(d3) {
             if (d3.event.altKey) return;
             // select node
             mousedown_node = d;
-            if (mousedown_node === gui.selected_node) gui.selected_node = null;
-            else gui.selected_node = mousedown_node;
-            gui.selected_link = null;
+
+            if (mousedown_node === gui.selected_node) {
+                self.set_selected_node(null);
+            } else {
+                self.set_selected_node(mousedown_node);
+            }
+            self.set_selected_link(null);
 
             // reposition drag line
-            gui.get_drag_line()
+            gui.drag_line
                 .style('marker-end', 'url(#end-arrow)')
                 .classed('hidden', false)
                 .attr('d', 'M' + mousedown_node.x + ',' + mousedown_node.y + 'L' + mousedown_node.x + ',' + mousedown_node.y);
@@ -71,7 +75,7 @@ define("gui_listener", ["d3"], function(d3) {
 
             if (!mousedown_node) return;
             // needed by FF
-            gui.get_drag_line()
+            gui.drag_line
                 .classed('hidden', true)
                 .style('marker-end', '');
 
@@ -82,10 +86,10 @@ define("gui_listener", ["d3"], function(d3) {
                 return;
             }
 
-            if (gui.get_model().link_exists(mousedown_node.id, mouseup_node.id) === null) {
-                var link_id = gui.get_model().add_link(mousedown_node.id, mouseup_node.id);
-                gui.get_model().add_agent_to_link(link_id, 0);
-                gui.selected_node = null;
+            if (model.link_exists(mousedown_node.id, mouseup_node.id) === null) {
+                var link_id = model.add_link(mousedown_node.id, mouseup_node.id);
+                model.add_agent_to_link(link_id, 0);
+                self.set_selected_node(null);
                 gui.draw();
             }
         }
@@ -96,9 +100,12 @@ define("gui_listener", ["d3"], function(d3) {
 
             // select link
             mousedown_link = d;
-            if (mousedown_link === gui.selected_link) gui.selected_link = null;
-            else gui.selected_link = mousedown_link;
-            gui.selected_node = null;
+            if (mousedown_link === gui.selected_link) {
+                self.set_selected_link(null);
+            } else {
+                self.set_selected_link(mousedown_link);
+            }
+            self.set_selected_node(null);
 
             console.log(gui.selected_link);
             gui.draw();
@@ -111,7 +118,7 @@ define("gui_listener", ["d3"], function(d3) {
             last_key_down = d3.event.keyCode;
 
             if (d3.event.keyCode === 18) {
-                gui.get_nodes().call(gui.get_layout().drag);
+                gui.nodes.call(gui.layout.drag);
                 // gui.get_canvas().classed('alt', true);
             }
 
@@ -121,30 +128,31 @@ define("gui_listener", ["d3"], function(d3) {
                 case 46: // delete
                     if (gui.selected_node) {
                         console.log("Delete selected node!" + gui.selected_node.id);
-                        gui.get_model().remove_state(gui.selected_node.id);
+                        model.remove_state(gui.selected_node.id);
                     } else if (gui.selected_link) {
                         console.log("Delete selected link!" + gui.selected_link.id);
-                        gui.get_model().remove_link(gui.selected_link.id);
+                        model.remove_link(gui.selected_link.id);
                     }
-                    gui.selected_link = null;
-                    gui.selected_node = null;
+                    self.set_selected_node(null);
+                    self.set_selected_link(null);
+
                     gui.draw();
                     break;
                 case 82: // r
                     if (gui.selected_node) {
                         if (gui.selected_node.reflexive === false) {
-                            // gui.get_model().add_link(gui.selected_node.id, gui.selected_node.id);
-                            gui.get_model().get_state(gui.selected_node.id).reflexive = true;
-                            gui.get_model().get_state(gui.selected_node.id).agents.push(0);
+                            // model.add_link(gui.selected_node.id, gui.selected_node.id);
+                            model.get_state(gui.selected_node.id).reflexive = true;
+                            model.get_state(gui.selected_node.id).agents.push(0);
                             console.log(gui.selected_node);
                         } else {
-                            // gui.get_model().remove_link(gui.get_model().link_exists(gui.selected_node.id, gui.selected_node.id));
-                            gui.get_model().get_state(gui.selected_node.id).reflexive = false;
-                            gui.get_model().get_state(gui.selected_node.id).agents = [];
+                            // model.remove_link(model.link_exists(gui.selected_node.id, gui.selected_node.id));
+                            model.get_state(gui.selected_node.id).reflexive = false;
+                            model.get_state(gui.selected_node.id).agents = [];
                         }
                     }
-                    gui.selected_link = null;
-                    gui.selected_node = null;
+                    self.set_selected_link(null);
+                    self.set_selected_node(null);
                     gui.draw();
                     break;
             }
@@ -155,11 +163,48 @@ define("gui_listener", ["d3"], function(d3) {
             last_key_down = -1;
 
             if (d3.event.keyCode === 18) {
-                gui.get_nodes()
+                gui.nodes
                     .on('mousedown.drag', null)
                     .on('touchstart.drag', null);
             }
         };
+
+        this.set_active = function(id, bool) {
+            d3.select(id).classed("inactive", !bool);
+            
+        };
+
+        this.set_message = function(id, message) {
+            d3.select(id).html(message);
+        };
+
+        this.set_selected_node = function(node) {
+            gui.selected_node = node;
+            var message = "Currently selected state: ";
+            if (node) {
+                message += node.id;
+                self.set_active('#state-information', true);
+            } else {
+                self.set_active('#state-information', false);
+            }
+            self.set_message('#state-information', message);
+            
+
+        };
+
+        this.set_selected_link = function(link) {
+            gui.selected_link = link;
+            var message = "Currently selected link: ";
+            if (link) {
+                message += link.id;
+                self.set_active('#link-information', true);
+            } else {
+                self.set_active('#link-information', false);
+            }
+            self.set_message('#link-information', message);
+            
+        };
+
     }
 
     return Listener;

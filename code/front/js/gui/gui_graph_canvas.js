@@ -1,23 +1,21 @@
 define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
 
-    function GraphCanvas(container, app) {
+    function GraphCanvas(container, model) {
 
         var self = this;
 
-        var model = app.get_model();
-
         // General visualisation variables
-        var canvas,
-            layout,
-            width,
-            height,
-            colors,
-            drag_line;
+        this.canvas = null;
+        this.layout = null;
+        this.width = 800;
+        this.height = 600;
+        this.colors = null;
+        this.drag_line = null
 
         // Specific/model :p visualisation variables
-        var nodes = null,
-            links = null,
-            link_labels = null;
+        this.nodes = null;
+        this.links = null;
+        this.link_labels = null;
 
         this.selected_link = null;
         // this.selected_link_id = -1;
@@ -26,61 +24,38 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
 
         var listener = null
 
-        this.get_drag_line = function() {
-            return drag_line;
-        }
-
-        this.get_layout = function() {
-            return layout;
-        }
-
-        this.get_nodes = function () {
-            return nodes;
-        }
-
-        this.get_model = function() {
-            return model;
-        }
-
-        this.get_canvas = function() {
-            return canvas;
-        }
-
         function init_listener() {
-            listener = new Listener(self);
+            listener = new Listener(self, model);
         }
 
         function init_canvas() {
             // Get meassurement of the container of the graph canvas
             var padding = 5;
-            width = container.node().getBoundingClientRect().width - padding;
-            height = container.node().getBoundingClientRect().height - padding;
-            colors = d3.scale.category10();
-            canvas = container
+            self.width = container.node().getBoundingClientRect().width - padding;
+            self.height = container.node().getBoundingClientRect().height - padding;
+            self.colors = d3.scale.category10();
+            self.canvas = container
                 .append('svg')
-                .attr('width', width)
-                .attr('height', height);
+                .attr('width', self.width)
+                .attr('height', self.height);
 
-            canvas.on('mousedown', listener.mousedown);
-            canvas.on('mousemove', listener.mousemove);
-            canvas.on('mouseup', listener.mouseup);
-            canvas.on('onchange', function() {
-                console.log("change!!!");
-            });
+            self.canvas.on('mousedown', listener.mousedown);
+            self.canvas.on('mousemove', listener.mousemove);
+            self.canvas.on('mouseup', listener.mouseup);
         }
 
         function init_layout() {
-            layout = d3.layout.force()
+            self.layout = d3.layout.force()
                 .nodes(model.get_states())
                 .links(model.get_links())
-                .size([width, height])
+                .size([self.width, self.height])
                 .linkDistance(300)
                 .charge(-600)
                 .on('tick', tick);
         }
 
         function tick() {
-            links.attr('d', function(d) {
+            self.links.attr('d', function(d) {
                 var dx = d.target.x - d.source.x,
                     dy = d.target.y - d.source.y;
 
@@ -117,13 +92,13 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
                     target_x + ',' + target_y;
             });
 
-            nodes.attr('transform', function(d) {
+            self.nodes.attr('transform', function(d) {
                 return 'translate(' + d.x + ',' + d.y + ')';
             });
         };
 
         function init_arrow_markers() {
-            canvas.append('svg:defs').append('svg:marker')
+            self.canvas.append('svg:defs').append('svg:marker')
                 .attr('id', 'end-arrow')
                 .attr('viewBox', '0 -5 10 10')
                 .attr('refX', 6)
@@ -136,15 +111,15 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
         }
 
         function init_drag_line() {
-            drag_line = canvas.append('svg:path')
+            self.drag_line = self.canvas.append('svg:path')
                 .attr('class', 'link dragline hidden')
                 .attr('d', 'M0,0L0,0');
         }
 
         function init_handles() {
-            links = canvas.append('svg:g').selectAll('path');
-            nodes = canvas.append('svg:g').selectAll('g');
-            link_labels = canvas.append('svg:g').selectAll('g.link_labels');
+            self.links = self.canvas.append('svg:g').selectAll('path');
+            self.nodes = self.canvas.append('svg:g').selectAll('g');
+            self.link_labels = self.canvas.append('svg:g').selectAll('g.link_labels');
         }
 
         function relation_to_string(link) {
@@ -169,10 +144,10 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
 
         function draw_paths() {
             // path (link) group
-            links = links.data(model.get_links());
+            self.links = self.links.data(model.get_links());
 
             // update existing links
-            links.classed('selected', function(d) {
+            self.links.classed('selected', function(d) {
                     return d === self.selected_link;
                 })
                 .style('marker-end', function(d) {
@@ -180,7 +155,7 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
                 });
 
             // add new links
-            links.enter().append('svg:path')
+            self.links.enter().append('svg:path')
                 .attr('class', 'link')
                 .classed('selected', function(d) {
                     return d === self.selected_link;
@@ -194,11 +169,11 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
                 .on('mousedown', listener.mousedown_link);
 
             // remove old links
-            links.exit().remove();
+            self.links.exit().remove();
 
-            link_labels = link_labels.data(model.get_links());
+            self.link_labels = self.link_labels.data(model.get_links());
 
-            link_labels.enter().append("g").attr("class", "link_label_holder")
+            self.link_labels.enter().append("g").attr("class", "link_label_holder")
                 .append("text")
                 .attr("class", "link_label")
                 .attr("dx", 110)
@@ -210,7 +185,7 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
                 })
                 .text(relation_to_string);
 
-            link_labels.exit().remove();
+            self.link_labels.exit().remove();
         }
 
         function valuation_to_string(node) {
@@ -225,12 +200,12 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
 
         function draw_nodes() {
             // NB: the function arg is crucial here! nodes are known by id, not by index!
-            nodes = nodes.data(model.get_states(), function(d) {
+            self.nodes = self.nodes.data(model.get_states(), function(d) {
                 return d.id;
             });
 
             // update existing nodes (reflexive & selected visual states)
-            nodes.selectAll('circle')
+            self.nodes.selectAll('circle')
                 .style('fill', function(d) {
                     return (d === self.selected_node) ? d3.rgb('#DDD').brighter().toString() : d3.rgb('#DDD');
                 })
@@ -239,7 +214,7 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
                 });
 
             // add new nodes
-            var g = nodes.enter().append('svg:g');
+            var g = self.nodes.enter().append('svg:g');
 
             g.append('svg:circle')
                 .attr('class', 'node')
@@ -272,14 +247,14 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
                 .text(valuation_to_string);
 
             // remove old nodes
-            nodes.exit().remove();
+            self.nodes.exit().remove();
         }
 
         this.draw = function() {
-            model = app.get_model();
+            // model = app.get_model();
             draw_paths();
             draw_nodes();
-            layout.start();
+            self.layout.start();
         }
 
         this.reset = function() {
