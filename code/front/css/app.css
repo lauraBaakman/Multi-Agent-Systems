@@ -21,7 +21,11 @@ path.link {
     fill: none;
     stroke: #000;
     stroke-width: 3px;
-    cursor: default;
+    cursor: pointer;
+}
+
+circle.node {
+  cursor: pointer;
 }
 
 path.label {

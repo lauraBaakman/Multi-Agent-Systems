@@ -2,11 +2,6 @@ define("app", ["d3", "gui_graph_canvas", "gui_info_panel", "epl_model", "mathjax
 
     function App(graph_id, info_id) {
 
-        var MODE = {
-            EDIT: 0,
-            Eval: 1
-        }
-        var _app_mode = MODE.EDIT;
         var model = new EplModel();
 
         this.get_model = function() {

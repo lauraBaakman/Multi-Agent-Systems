@@ -50,7 +50,6 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
             listener = new Listener(self);
         }
 
-
         function init_canvas() {
             // Get meassurement of the container of the graph canvas
             var padding = 5;
