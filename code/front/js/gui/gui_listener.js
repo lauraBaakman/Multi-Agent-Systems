@@ -1,6 +1,6 @@
 define("gui_listener", ["d3"], function(d3) {
 
-    function Listener(graph_canvas) {
+    function Listener(graph_canvas, graph_info) {
         var self = this;
 
         var gui = graph_canvas;
