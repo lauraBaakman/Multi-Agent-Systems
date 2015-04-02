@@ -381,34 +381,44 @@
 
                     <h4 name="motivation">Motivation</h4>
                         <p>
-                            In essence the motivation of an answer given by the checker is generated with the lazy depth first search presented above. Its excact workings are best discussed with some examples. All formulas used that are evaluated to illustrate how the motivation is generated are checked in the model below. 
+                            In essence the motivation of an answer given by the checker is generated with the lazy depth first search presented above. Its excact workings are best discussed with some examples. All formulas below are evaluated in this model:
                             <figure>
                                 <object class="center-block" data="./img/model.svg" type="image/svg+xml">
                                     <img class="center-block" src="./img/model.png" />
                                 </object>
                                 <figcaption>A representation of a Kripke model $\model$. </figcaption>
                             </figure>                                   
-                            If we input $(\model, sb) \models p \land q$ the model checker returns the following motivation:
+                            If we input $(\model, sb) \models p \land q$ the the following motivation is generated:
                             <figure>
                                 <div class="motivation">
                                     <div class='left-align'>
-                                        $\left(M, \text{sb} \right) \models \left(\text{p}\land\text{q}\right)$ iff $\left(M, \text{sb} \right) \models \text{p}$ and $\left(M, \text{sb} \right) \models \text{q}$.    
+                                        <div class="condition">
+                                            $\left(M, \text{sb} \right) \models \left(\text{p}\land\text{q}\right)$ iff $\left(M, \text{sb} \right) \models \text{p}$ and $\left(M, \text{sb} \right) \models \text{q}$.        
+                                        </div>
                                         <div class='left-align'>
-                                            $\left(M, \text{sb} \right) \models \text{p}$ iff $\pi\left(sb\right)\left( p \right) = 1$.
-                                            <br>
-                                            $\left(M, \text{sb} \right) \models \text{p}$ holds since $\pi\left(sb\right)\left( p \right) = 1$.</div>
+                                            <div class="condition">
+                                                $\left(M, \text{sb} \right) \models \text{p}$ iff $\pi\left(sb\right)\left( p \right) = 1$.
+                                            </div>
+                                            <div class="conclusion">
+                                                $\left(M, \text{sb} \right) \models \text{p}$ holds since $\pi\left(sb\right)\left( p \right) = 1$.</div>
+                                            </div>
                                             <br>
                                         <div class='left-align'>
+                                            <div class="condition">
                                             $\left(M, \text{sb} \right) \models \text{q}$ iff $\pi\left(sb\right)\left( q \right) = 1$.
-                                            <br> 
+                                            </div>
+                                            <div class="conclusion">
                                             $\left(M, \text{sb} \right) \models \text{q}$ does not hold since $\pi\left(sb\right)\left( q \right) = 0$.
+                                            </div>
                                         </div> 
-                                            $\left(M, \text{sb} \right) \models \left(\text{p}\land\text{q}\right)$ does not hold since $\left(M, \text{sb} \right) \models \text{q}$ does not hold.    
+                                            <div class="conclusion">
+                                                $\left(M, \text{sb} \right) \models \left(\text{p}\land\text{q}\right)$ does not hold since $\left(M, \text{sb} \right) \models \text{q}$ does not hold.        
+                                            </div>
                                     </div>
                                 </div> 
-                                <figcaption>The motivation generated for $(\model, sb) \models p \land q$.</figcaption>
+                                <figcaption>The motivation generated for $(\model, sb) \models p \land q$. The conditions are shown in <span class="condition">red</span>, the conclusions in <span class="condition">blue</span>.</figcaption>
                             </figure>
-                        We see that for each node that is not a <span class="tt">Proposition</span> node the checker generates a condition under which it is true, and a conclusion. The indented section between the condition and conclusion shows the steps taken to determine if the conclusion is true or false. When evaluating <span class="tt">Proposition</span> nodes the system also generates only generates a condition and a conclusion, since there are no intermediate steps to consider. Considering the final conclusion shown above we also see that the motivations are lazy, i.e. we state that $\left(M, \text{sb} \right) \not\models \left(\text{p}\land\text{q}\right)$ since $\left(M, \text{sb} \right) \not\models \text{q}$, we do not mention the fact that $\left(M, \text{sb} \right) \models \text{p}$ since it is irrelevant.
+                        We see that for each node that is not a <span class="tt">Proposition</span> node the checker generates a condition under which it is true, shown in red, and a conclusion, shown in blue. The indented section between the condition and conclusion shows the steps taken to determine if the conclusion is true or false. When evaluating <span class="tt">Proposition</span> nodes the system also generates only generates a condition and a conclusion, since there are no intermediate steps to consider. Considering the final conclusion shown above we also see that the motivations are lazy, i.e. we state that $\left(M, \text{sb} \right) \not\models \left(\text{p}\land\text{q}\right)$ since $\left(M, \text{sb} \right) \not\models \text{q}$, we do not mention the fact that $\left(M, \text{sb} \right) \models \text{p}$ since it is irrelevant.
                         </p>
 
                         <p>
@@ -417,7 +427,10 @@
                             <figure>
                                 <div class="motivation">
                                     <div class='left-align'>
-                                        $\left(M, \text{sb} \right) \models \left(\text{p}\leftrightarrow\text{q}\right)$ iff $\left(M, \text{sb} \right) \models \left(\left(\text{p}\to\text{q}\right)\land\left(\text{q}\to\text{p}\right)\right)$. $\left(M, \text{sb} \right) \models \left(\left(\text{p}\to\text{q}\right)\land\left(\text{q}\to\text{p}\right)\right)$ iff $\left(M, \text{sb} \right) \models \left(\text{p}\to\text{q}\right)$ and $\left(M, \text{sb} \right) \models \left(\text{q}\to\text{p}\right)$. 
+                                        <span class="rewrite">
+                                            $\left(M, \text{sb} \right) \models \left(\text{p}\leftrightarrow\text{q}\right)$ iff $\left(M, \text{sb} \right) \models \left(\left(\text{p}\to\text{q}\right)\land\left(\text{q}\to\text{p}\right)\right)$.    
+                                        </span>
+                                         $\left(M, \text{sb} \right) \models \left(\left(\text{p}\to\text{q}\right)\land\left(\text{q}\to\text{p}\right)\right)$ iff $\left(M, \text{sb} \right) \models \left(\text{p}\to\text{q}\right)$ and $\left(M, \text{sb} \right) \models \left(\text{q}\to\text{p}\right)$. 
                                         <div class='left-align'>
                                             $\left(M, \text{sb} \right) \models \left(\text{p}\to\text{q}\right)$ iff $\left(M, \text{sb} \right) \models \left( \lnot \text{p}\lor\text{q}\right)$. $\left(M, \text{sb} \right) \models \left( \lnot \text{p}\lor\text{q}\right)$ iff $\left(M, \text{sb} \right) \models  \lnot \text{p}$ or $\left(M, \text{sb} \right) \models \text{q}$. 
                                             <div class='left-align'>
@@ -437,9 +450,9 @@
                                             $\left(M, \text{sb} \right) \models \left(\left(\text{p}\to\text{q}\right)\land\left(\text{q}\to\text{p}\right)\right)$ does not hold since $\left(M, \text{sb} \right) \models \left(\text{q}\to\text{p}\right)$ does not hold.
                                     </div>
                                 </div> 
-                                <figcaption>The motivation generated for $(\model, sb) \models p \leftrightarrow q$.</figcaption>
+                                <figcaption>The motivation generated for $(\model, sb) \models p \leftrightarrow q$. The use of equivalence relations to verify the truth value of the formula is shown in green.</figcaption>
                             </figure>                            
-                            This motivation is structured in the same way as the previous one, each (sub) tree gets a condition and a conclusion, with the motivation indented. The interesting part of this motivation lies in the first rule, which shows the reformulation of the equivalence relation to a conjunction of disjunctions. If we consider the final conclusion in this motivation we also see the disadvantage of this method, the final conclusion does mention the original formula, but uses the rewritten form, i.e. instead of '$\left(M, \text{sb} \right) \models \left( p \leftrightarrow q\right)$ does not hold ...' we get '$\left(M, \text{sb} \right) \models \left(\left(\text{p}\to\text{q}\right)\land\left(\text{q}\to\text{p}\right)\right)$ does not hold ...'.
+                            This motivation is structured in the same way as the previous one, each (sub) tree gets a condition and a conclusion, with the motivation indented. The interesting part of this motivation lies in the first rule, which shows the reformulation of the equivalence relation to a conjunction of disjunctions in green. If we consider the final conclusion in this motivation we also see the disadvantage of this method, the final conclusion does mention the original formula, but uses the rewritten form, i.e. instead of '$\left(M, \text{sb} \right) \models \left( p \leftrightarrow q\right)$ does not hold ...' we get '$\left(M, \text{sb} \right) \models \left(\left(\text{p}\to\text{q}\right)\land\left(\text{q}\to\text{p}\right)\right)$ does not hold ...'.
                         </p>
 
                         <p>
