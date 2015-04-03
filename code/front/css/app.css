@@ -21,6 +21,12 @@ svg {
   padding-top: 15px;
 }
 
+#response {
+  margin-top: 15px;
+  padding: 10px;
+  border: 1px solid #e3e3e3;
+}
+
 path.link.selected {
   stroke-dasharray: 10,2;
 }

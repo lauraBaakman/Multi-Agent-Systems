@@ -14,7 +14,7 @@ define("app", ["d3", "gui_graph_canvas", "gui_info_panel", "epl_model", "gui_lis
         };
 
         container = d3.select(info_id);
-        var info_panel = new InfoPanel(container, model);
+        var info_panel = new InfoPanel(container, model, this);
         info_panel.init();
 
         this.get_listener = function() {

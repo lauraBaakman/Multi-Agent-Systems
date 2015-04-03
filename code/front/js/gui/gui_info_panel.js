@@ -1,12 +1,17 @@
-define("gui_info_panel", ["d3", "mathjax"], function(d3, JSONEditor, MathJax) {
+define("gui_info_panel", ["d3", "mathjax"], function(d3, MathJax) {
 
-    function InfoPanel(container, model) {
+    function InfoPanel(container, model, app) {
 
         var self = this;
 
         var loading = null;
 
         this.send = function() {
+            console.log(d3.select('#formula'));
+            console.log(d3.select('#state'));
+            console.log(d3.select('#logic'));
+
+
             d3.json("http://localhost:8000/valuate")
                 .on("beforesend", function() {
                     loading = document.createElement('div')
@@ -28,7 +33,7 @@ define("gui_info_panel", ["d3", "mathjax"], function(d3, JSONEditor, MathJax) {
                     var new_model = JSON.parse(data.model);
                     console.log(new_model);
 
-                    app.get_model().load_from_model_object(new_model);
+                    model.load_from_model_object(new_model);
                     app.redraw();
 
                     document.getElementById("playground").removeChild(loading);
@@ -41,13 +46,13 @@ define("gui_info_panel", ["d3", "mathjax"], function(d3, JSONEditor, MathJax) {
                 })
                 .post(JSON.stringify({
                     state: "0",
-                    formula: "K_1 M_2 p <-> q",
+                    formula: "p",
                     model: model.save_to_model_object()
                 }));
 
                 console.log(JSON.stringify({
                     state: "0",
-                    formula: "K_1 M_2 p <-> q",
+                    formula: "p",
                     model: model.save_to_model_object()
                 }));
 
