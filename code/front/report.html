@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Epistemic Logic Playground Report</title>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/ours.css">
+    <script data-main="js/config" src="js/libs/require.js"></script>
+</head>
+
+<body>
+    <div class="container" id="playground">
+        <header class="page-header row">
+            <h1>Epistemic Logic Playground - Report</h1>
+            <small>A project for the course Multi-Agent Systems</small>
+        </header>
+
+        <section class="row" id="report">
+            <h2>Introduction</h2>
+            <p>
+                This page presents our project for the course Multi-Agent Systems, the Epistemic Logic Playground. We have built a system that given some model $\model$, some formula $\phi$, and some state $s$ determines if $(\model, s) \models \phi$ holds. The Epistemic Logic Playground supports the following logics:
+                <ul class="quad">
+                    <li>$\K{\m}$</li>
+                    <li>$\T{\m}$</li>
+                    <li>$\SV{\m}$</li>
+                    <li>$\SF{\m}$</li>
+                    <li>$\KEC{\m}$</li>
+                    <li>$\TEC{\m}$</li>
+                    <li>$\SVEC{\m}$</li>
+                    <li>$\SFEC{\m}$</li>
+                    <li>$\KI{\m}$</li>
+                    <li>$\TI{\m}$</li>
+                    <li>$\SVI{\m}$</li>
+                    <li>$\SFI{\m}$</li>
+                </ul>
+                We refer the reader to
+                <cite>Epistemic Logic for AI and Computer Science by J.-J Ch. Meyer and W. van der Hoek</cite> for a definition of the different logics.</p>
+            <p>
+                The Epistemic Logic Playground consists of a back-end written in <a href="https://www.python.org">Python</a> and a front-end that visualizes the model using <a href="http://d3js.org">D3</a>. One advantage of this approach is that it split the project cleanly in two independent halves. Another is that javascript is much more suitable for the visualisation and user-interaction than Python, whereas Python was the better choice for the actual model checking.
+            </p>
+            <p>
+                Below we discuss the <a href="#implementation">implementation</a> of the modelchecker, i.e. the back-end, and the <a href="#visualisation">visualisation</a> of the model, i.e. the front-end.
+            </p>
+            <h2><a name="implementation">Implementation</a></h2>
+            <p>
+                We start the section by discussion how we represent <a href="#formula">formulas</a> and <a href="#model">models</a>. Lastly we show how given our representation of a formula and a model we determine if that formula holds in some state in that model, i.e. how the <a href="#checker">checker</a> works.
+            </p>
+            <h3><a name="formula">Formula</a></h3>
+            <p>
+                Users of the Epistemic Logic Playground input formulas as strings, for example the formula \begin{equation} \label{eq:exampleFormula} C K_1 \lnot (a \land b), \end{equation} is input as <code>C K_1 ~(a &amp; b)</code>. The table below presents the notation that is expected by the Epsitemic Logic Playground. The table also shows for each operator in which logics it is supported.
+            </p>
+            <p>
+                Readers familiar with <a href="https://github.com/gertvv/oops">OOPS</a> might recognise some of the notation we use. However since we do not use the exact same notation as OOPS, the OOPS operators are also provided in the table below to avoid confusion.
+                <p/>
+                <table class="table table-striped table-hover table-condensed">
+                    <tr>
+                        <th width="160"></th>
+                        <th width="100em">Conventional notation</th>
+                        <th width="100em">Input format</th>
+                        <th width="250">Logics</th>
+                        <th width="100em">OOPS notation</th>
+                        <th>Notes</th>
+                    </tr>
+                    <tr>
+                        <td>Proposition</td>
+                        <td>$A$</td>
+                        <td><code>a</code></td>
+                        <td>all supported logics</td>
+                        <td><code>a</code></td>
+                        <td>
+                            The name of a proposition must start with a small letter.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Negation</td>
+                        <td>$\lnot A$</td>
+                        <td><code>~a</code></td>
+                        <td>all supported logics</td>
+                        <td><code>~a</code></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Conjunction</td>
+                        <td>$A \land B$</td>
+                        <td><code>a &amp; b</code></td>
+                        <td>all supported logics</td>
+                        <td><code>a &amp; b</code></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Disjunction</td>
+                        <td>$A \lor B$</td>
+                        <td><code>a | b</code></td>
+                        <td>all supported logics</td>
+                        <td><code>a | b</code></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Implication</td>
+                        <td>$A \to B$</td>
+                        <td><code>a -&gt; b</code></td>
+                        <td>all supported logics</td>
+                        <td><code>a &gt; b</code></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Equivalence</td>
+                        <td>$A \leftrightarrow B$</td>
+                        <td><code>a &lt;-&gt; b</code></td>
+                        <td>all supported logics</td>
+                        <td><code>a = b</code></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Knowledge</td>
+                        <td>$K_i$</td>
+                        <td><code>K_i</code></td>
+                        <td>all supported logics</td>
+                        <td><code>#_i</code></td>
+                        <td>
+                            The name of the agent must be a number.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Possible</td>
+                        <td>$M_i$</td>
+                        <td><code>M_i</code></td>
+                        <td>all supported logics</td>
+                        <td><code>%_i</code></td>
+                        <td>The name of the agent must be a number.</td>
+                    </tr>
+                    <tr>
+                        <td>Common knowledge</td>
+                        <td>$C$</td>
+                        <td><code>C</code></td>
+                        <td>$\KEC{\m}$, $\TEC{\m}$, $\SVEC{\m}$, $\SFEC{\m}$</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Everybody</td>
+                        <td>$E$</td>
+                        <td><code>E</code></td>
+                        <td>$\KEC{\m}$, $\TEC{\m}$, $\SVEC{\m}$, $\SFEC{\m}$</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Intention</td>
+                        <td>$I$</td>
+                        <td><code>I</code></td>
+                        <td>$\KI{\m}$, $\TI{\m}$, $\SVI{\m}$, $\SFI{\m}$</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <caption>The operators defined for the Epistemic Logic Playground, their counterparts in OOPS and the languages in which they can be used.</caption>
+                </table>
+                <p>
+                    Given some formula we need a suitable representation to determine if it holds in some model in some state. We represent formulas as an <a href="#expressiontree">expression tree</a>. Before parsing the formula, to generate the expression tree we first convert it to a list of <a href="#tokens">tokens</a>.
+                </p>
+                <h4><a name="tokens">Tokens</a></h4>
+                <p>
+                    Formulas that enter the model checker are converted to a list of tokens. The tokenized version of \eqref{eq:exampleFormula} is shown in the figure below.
+                </p>
+                <figure>
+                    <object class="center-block" data="./img/tokenization.svg" type="image/svg+xml" align="middle">
+                        <img class="center-block" src="./img/tokenization.png" />
+                    </object>
+                    <figcaption>
+                        Tokenization of formula \eqref{eq:exampleFormula}.
+                    </figcaption>
+                </figure>
+                <p>
+                    One advantage of tokenizing is that it is easier to change the definition of the non terminals of the grammar without having to change the parser itself. Another upside of representing the formula as a list of tokens before parsing it is that we can already detect some errors in the formulas. For example if a user has selected the axiom system $\SF{\m}$ and inputs formula \eqref{eq:exampleFormula} the process that generates the list of tokens detects that the formula is not well formed in that language, since the operator $C$ is not defined in $\SF{\m}$. Consequently when parsing we do not need to be worried about terminals, parts of the expression that cannot be expanded according to some rule in the grammar, that are not allowed in the language.
+                </p>
+                <figure class="float-right">
+                    <object data="./img/ast.svg" type="image/svg+xml">
+                        <img src="./img/ast.png" />
+                    </object>
+                    <figcaption>
+                        Expression tree of formula \eqref{eq:exampleFormula}.
+                    </figcaption>
+                </figure>
+                <h4><a name="expressiontree">Expression Tree</a></h4>
+                <p>
+                    Given a list of tokens we need to build an expression tree. We do this according to the following grammar: \begin{array}{cccl} \mathbf{X} & := & ~ & \mathbf{T} \land \mathbf{T} \; | \; \mathbf{T} \lor \mathbf{T} \; | \; \mathbf{T} \to \mathbf{T} \; | \; \mathbf{T} \leftrightarrow \mathbf{T} \\ \mathbf{T} & := & ~ & \text{I}\: \mathbf{F} \; | \; \text{E}\: \mathbf{F} \; | \; \text{C}\: \mathbf{F} \; | \; \text{K}_i\: \mathbf{F} \; | \; \text{M}_i\: \mathbf{F} \\ \mathbf{F} & := & ~ & \left( \mathbf{X} \right) \; | \; ~ \lnot \mathbf{X} \; | \; \mathit{proposition} \\ \end{array} Note that this grammar is the union of the grammars of the different logics supported in the Epistemic Logic Playground. Terminals are presented as their symbol ($\lnot$, $\land$, $\lor$, $\to$, $($, $)$, $\leftrightarrow$) or as <em>italic text</em>. Non-terminals, parts of the grammar that can be expanded according to some rule, are shown in <b>bold</b>.
+                </p>
+                <p>
+                    The presented grammar is LL(1), which means that it can be parsed using a predictive recursive descent parser. A consequence of using such a parser is that the binary operators in the grammar are interpreted as right-associative, i.e. the expression $a \land b \land c$ is parsed as $(a \land (b \land c))$. For a extensive treatment of different grammars, parsers and their properties wer refer the reader to
+                    <cite>Compilers: Principles, Techniques and Tools by A.V. Aho, M.S. Lam, R. Sethi and J.D. Ullman</cite>.
+                </p>
+                <p>
+                    The parser generates an expression tree representing the formula, which is input as a list of tokens. The tree generated for \eqref{eq:exampleFormula} is presented on the right. The structure of the tree represents the order in which parts of the formula should be evaluated. For example, $a \land b$ should be evaluated first, and the result of that expression should be negated. If we had not placed brackets around the conjunction, the negation node would have been a child of the conjunction node, which represents the expression $(\lnot a) \land b$.
+                </p>
+                <p>
+                    Any errors in the formula that have not been detected during tokenization are detected during parsing. For example if we input the formula $a \land \land b$ the parser generates an error, since it expects to find the non-terminal $\mathbf{T}$ after $\land$ but finds the terminal $\land$.
+                </p>
+                <p>
+                    By traversing the expression tree inorder we generate a human-readable representation of the formula it represents. Concerning brackets we have opted for the better safe than sorry approach, and have added brackets around every sub tree. There is one exception to this case, namely when a <span class="tt">negation</span> node is the parent of a <span class="tt">Propostion</span>, in that case we do not place brackets around the proposition.
+                </p>
+                <h3><a name="model">Model</a></h3>
+                <p>
+                    The front-end sends a JSON-representation of the Kripke model to the back-end which generates its own representation of the model. A model is represented as a list of <span class="tt">states</span> in the back-end. For each agent a <span class="tt">state</span> has a list of incoming and outgoing <span class="tt">relations</span>. Furthermore a state has a valuation for each proposition in the model. Each <span class="tt">relation</span> has an <span class="tt">agent</span>, and a source and destination <span class="tt">state</span>.
+                </p>
+                <p>
+                    When converting the JSON representation to our own representation we check the model for inconsistencies. For example we check if the model has at least one state, and that all relations in the model are between defined states.
+                </p>
+                <p>
+                    Apart from the 'normal' Kripke models the Epistemic Logic Playground supports three classes of Kripke models, namely:
+                    <ul>
+                        <li>$\mathcal{T}$: the class of all reflexive Kripke models.</li>
+                        <li>$\mathcal{S4}$: the class of all reflexive-transitive Kripke models.</li>
+                        <li>$\mathcal{S5}$: the class of all reflexive-transitive-symmetric Kripke models.</li>
+                    </ul>
+                    The user does not need to explicity specify which class his model has, since this follows from the selected logic. If the logic $\T{}$, $\TEC{}$ or $\TI{}$ is selected the associated class of Kripke models, $\mathcal{T}$ is selected automatically.
+                </p>
+                <p>
+                    If the class $\mathcal{T}$ is selected, not only is the input model converted from JSON, the reflexive closure of the relations is also computed. In the case that a logic associated with the class $\mathcal{S4}$ is selected the reflexive-transitive closure of the set of relations of the models is computed using depth first search. In the same way the reflexive-transitive-symmetric closure of the relations is computed if the selected logic is one of $\SF{}$, $\SFEC{}$, $\SFI{}$. The updated model is returned to the front-end and visualised there. Consequently one does not need to input a reflexive-transitive model to evaluate a formula in e.g. $\SVEC{}$.
+
+                </p>
+                <p>
+                    The reflexive-transitive closure and the reflexive-transitive-symmetric closure of the relations in a model are determined using depth-first search.
+                </p>
+                <h3><a name="checker">Checker</a></h3>
+                <p>
+                    Given some model, state and formula we need to determine if that formula holds or does not hold. Furthermore we also need to generate some explanation as to how we arrived at the found truth value. In the section <a href="#trueOrFalse">'True or False'</a> we discuss how we determine if some formula is true or false in some model in some state. The section <a href="#motivation">'Motivation'</a> explains how we generate the motivation for that answer.
+                </p>
+                <h4 name="trueOrFalse">True or False?</h4>
+                <p>
+                    We determine if some formula holds in some state in some model using depth first search. This is best explained with two examples. The
+                    <a href="#example1">first example</a> only uses propositional operators, which means that we do not have to concern ourselves with different states. The <a href="#example2">second example</a> shows how we handle operators where multiple states need to be considered.
+                </p>
+                <!-- Voorbeeld 1 -->
+                <h5 name="example1">Example I</h5>
+                <p>
+                    Imagine we want to determine if it is the case that \begin{equation} \label{eq:example2} (\model, s) \models \lnot (a \land b). \end{equation} The root node of the expression tree representing this formula is a <span class="tt">Negation</span> node. The truth definition of this node states that it is true if its child ($a \land b$) is false. Consequently we need to evaluate the child of the <span class="tt">Negation</span> node, i.e. the sub tree with the <span class="tt">Conjunction</span> node as its root.
+                </p>
+                <p>
+                    According to the truth definition of the conjunction, the formula represented by the tree with this node as its root holds if both its left-hand side, LHS, and right-hand side, RHS, hold. Since we want evaluation to be lazy we do not evaluate the RHS if we do not need to, i.e. we only evaluate it if the LHS holds. The LHS of the <span class="tt">Conjunction</span> node is a <span class="tt">Proposition</span> node, thus we ask the model if the proposition $a$ holds in state $s$. If $(\model, s) \models a$ we evaluate the RHS of the <span class="tt">Conjunction</span> node and return the <span class="tt">and</span> of the evaluation of $a$ and the evaluation of $b$. If $(\model, s) \not\models a$ we know that $(\model, s) \not\models a \land b$ and thus we return <span class="tt">false</span>. The <span class="tt">Negation</span> node returns the negation of the result of the <span class="tt">Conjunction</span> node.
+                </p>
+                <h5 name="example2">Example II</h5>
+                <p>
+                    In the previous example we have shown how the checker handles propositional formulas. When evaluating epistemic formulas, \begin{equation} \label{eq:example3} (\model, s) \models K_i a. \end{equation} for example, one needs to take the relations of different agent between different states into account. To evaluate \eqref{eq:example3} we first determine in which states $t$ $(\model, t) \models a$ should hold, we then evaluate the child of the <span class="tt">Knowledge</span> node, the proposition $a$ in this case, in those states. If for some state $t$ $(\model, t) \not\models a$ the evaluation stops and the evaluation of \eqref{eq:example3} is set to false. This ensures that evaluation is lazy.
+                </p>
+                <p>
+                    Although most types of nodes have a truth condition, i.e. the <span class="tt">Negation</span> node 'knows' that it is true if its child is not true, some nodes are evaluated differently. These nodes are 'rewritten' before evaluation, e.g. the <span class="tt">implication</span> node is transformed according to the equivalence $\phi \to \psi \equiv (\lnot \phi) \lor \psi$. Instead of evaluating the tree with the <span class="tt">Implication</span> as root, we transform it to a tree with a <span class="tt">Disjunction</span> node as root and evaluate that tree.
+                    <figure>
+                        <object class="center-block" data="./img/transformations.svg" type="image/svg+xml">
+                            <img class="center-block" src="./img/transformations.png" />
+
+                        </object>
+                        <figcaption>
+                            An expression tree representing an implication that is transformed to an expression tree with a disjunction as the root node.
+                        </figcaption>
+                    </figure>
+                    Other relations that are evaluated using an equivalent formulation are the bi-implication and the operator $\text{M}_i$, the first is evaluated according to the equivalence $\phi \leftrightarrow \psi \equiv (\phi \to \psi) \land (\psi \to \phi)$, the second is evaluated as $\lnot K_i \lnot \phi$.
+                </p>
+                <h4 name="motivation">Motivation</h4>
+                <p>
+                    In essence the motivation of an answer given by the checker is generated with the lazy depth first search presented above. Its excact workings are best discussed with some examples. All formulas below are evaluated in this model:
+                    <figure>
+                        <object class="center-block" data="./img/model.svg" type="image/svg+xml">
+                            <img class="center-block" src="./img/model.png" />
+                        </object>
+                        <figcaption>A representation of a Kripke model $\model$. </figcaption>
+                    </figure>
+                    If we input $(\model, sb) \models p \land q$ the the following motivation is generated:
+                    <figure>
+                        <div class="motivation">
+                            <div class='left-align'>
+                                <div class="condition">
+                                    $\left(M, \text{sb} \right) \models \left(\text{p}\land\text{q}\right)$ iff $\left(M, \text{sb} \right) \models \text{p}$ and $\left(M, \text{sb} \right) \models \text{q}$.
+                                </div>
+                                <div class='left-align'>
+                                    <div class="condition">
+                                        $\left(M, \text{sb} \right) \models \text{p}$ iff $\pi\left(sb\right)\left( p \right) = 1$.
+                                    </div>
+                                    <div class="conclusion">
+                                        $\left(M, \text{sb} \right) \models \text{p}$ holds since $\pi\left(sb\right)\left( p \right) = 1$.</div>
+                                </div>
+                                <br>
+                                <div class='left-align'>
+                                    <div class="condition">
+                                        $\left(M, \text{sb} \right) \models \text{q}$ iff $\pi\left(sb\right)\left( q \right) = 1$.
+                                    </div>
+                                    <div class="conclusion">
+                                        $\left(M, \text{sb} \right) \models \text{q}$ does not hold since $\pi\left(sb\right)\left( q \right) = 0$.
+                                    </div>
+                                </div>
+                                <div class="conclusion">
+                                    $\left(M, \text{sb} \right) \models \left(\text{p}\land\text{q}\right)$ does not hold since $\left(M, \text{sb} \right) \models \text{q}$ does not hold.
+                                </div>
+                            </div>
+                        </div>
+                        <figcaption>The motivation generated for $(\model, sb) \models p \land q$. The conditions are shown in <span class="condition">red</span>, the conclusions in <span class="condition">blue</span>.</figcaption>
+                    </figure>
+                    We see that for each node that is not a <span class="tt">Proposition</span> node the checker generates a condition under which it is true, shown in red, and a conclusion, shown in blue. The indented section between the condition and conclusion shows the steps taken to determine if the conclusion is true or false. When evaluating <span class="tt">Proposition</span> nodes the system also generates only generates a condition and a conclusion, since there are no intermediate steps to consider. Considering the final conclusion shown above we also see that the motivations are lazy, i.e. we state that $\left(M, \text{sb} \right) \not\models \left(\text{p}\land\text{q}\right)$ since $\left(M, \text{sb} \right) \not\models \text{q}$, we do not mention the fact that $\left(M, \text{sb} \right) \models \text{p}$ since it is irrelevant.
+                </p>
+                <p>
+                    If we input $(\model, sb) \models p \leftrightarrow q$ we can view the rewriting mechanism at work, since the checker evaluates this as: $(\model, sb) \models ((\lnot p) \lor q) \land ((\lnot q) \lor p)$.
+                    <figure>
+                        <div class="motivation">
+                            <div class='left-align'>
+                                <span class="rewrite">
+                                            $\left(M, \text{sb} \right) \models \left(\text{p}\leftrightarrow\text{q}\right)$ iff $\left(M, \text{sb} \right) \models \left(\left(\text{p}\to\text{q}\right)\land\left(\text{q}\to\text{p}\right)\right)$.    
+                                        </span> $\left(M, \text{sb} \right) \models \left(\left(\text{p}\to\text{q}\right)\land\left(\text{q}\to\text{p}\right)\right)$ iff $\left(M, \text{sb} \right) \models \left(\text{p}\to\text{q}\right)$ and $\left(M, \text{sb} \right) \models \left(\text{q}\to\text{p}\right)$.
+                                <div class='left-align'>
+                                    $\left(M, \text{sb} \right) \models \left(\text{p}\to\text{q}\right)$ iff $\left(M, \text{sb} \right) \models \left( \lnot \text{p}\lor\text{q}\right)$. $\left(M, \text{sb} \right) \models \left( \lnot \text{p}\lor\text{q}\right)$ iff $\left(M, \text{sb} \right) \models \lnot \text{p}$ or $\left(M, \text{sb} \right) \models \text{q}$.
+                                    <div class='left-align'>
+                                        $\left(M, \text{sb} \right) \models \lnot \text{p}$ iff not $\left(M, \text{sb} \right) \models \text{p}$.
+                                        <div class='left-align'>
+                                            $\left(M, \text{sb} \right) \models \text{p}$ iff $\pi\left(sb\right)\left( p \right) = 1$.
+                                            <br> $\left(M, \text{sb} \right) \models \text{p}$ holds since $\pi\left(sb\right)\left( p \right) = 1$.
+                                        </div>
+                                        $\left(M, \text{sb} \right) \models \lnot \text{p}$ does not hold since $\left(M, \text{sb} \right) \models \text{p}$ holds.
+                                    </div>
+                                    <br>
+                                    <div class='left-align'>
+                                        $\left(M, \text{sb} \right) \models \text{q}$ iff $\pi\left(sb\right)\left( q \right) = 1$.
+                                        <br> $\left(M, \text{sb} \right) \models \text{q}$ does not hold since $\pi\left(sb\right)\left( q \right) = 0$.
+                                    </div>
+                                    $\left(M, \text{sb} \right) \models \left( \lnot \text{p}\lor\text{q}\right)$ does not hold since neither $\left(M, \text{sb} \right) \models \lnot \text{p}$ nor $\left(M, \text{sb} \right) \models \text{q}$ holds.
+                                </div>
+                                $\left(M, \text{sb} \right) \models \left(\left(\text{p}\to\text{q}\right)\land\left(\text{q}\to\text{p}\right)\right)$ does not hold since $\left(M, \text{sb} \right) \models \left(\text{q}\to\text{p}\right)$ does not hold.
+                            </div>
+                        </div>
+                        <figcaption>The motivation generated for $(\model, sb) \models p \leftrightarrow q$. The use of equivalence relations to verify the truth value of the formula is shown in green.</figcaption>
+                    </figure>
+                    This motivation is structured in the same way as the previous one, each (sub) tree gets a condition and a conclusion, with the motivation indented. The interesting part of this motivation lies in the first rule, which shows the reformulation of the equivalence relation to a conjunction of disjunctions in green. If we consider the final conclusion in this motivation we also see the disadvantage of this method, the final conclusion does mention the original formula, but uses the rewritten form, i.e. instead of '$\left(M, \text{sb} \right) \models \left( p \leftrightarrow q\right)$ does not hold ...' we get '$\left(M, \text{sb} \right) \models \left(\left(\text{p}\to\text{q}\right)\land\left(\text{q}\to\text{p}\right)\right)$ does not hold ...'.
+                </p>
+                <p>
+                    If we input $(\model, sc) \models K_2 p$ we get an example of the lazy evaluation of the epistemic operators.
+                    <figure>
+                        <div class="motivation">
+                            <div class='left-align'>
+                                $\left(M, \text{sc} \right) \models \text{K}_{\text{2}} \left(\text{p}\right)$ iff $\left(M, \text{t} \right) \models \text{p}$ for all $t$ with $(sc, t) \in R_{2}$.
+                                <div class='left-align'>
+                                    $\left(M, \text{sc} \right) \models \text{p}$ iff $\pi\left(sc\right)\left( p \right) = 1$.
+                                    <br> $\left(M, \text{sc} \right) \models \text{p}$ does not hold since $\pi\left(sc\right)\left( p \right) = 0$.
+                                </div>
+                                $\left(M, \text{sc} \right) \models \text{K}_{\text{2}} \left(\text{p}\right)$ does not hold since $\left(M, \text{sc} \right) \models \text{p}$ does not hold.
+                            </div>
+                        </div>
+                        <figcaption>The motivation generated for $(\model, sc) \models K_2 p$.</figcaption>
+                    </figure>
+                    We see that the checker has evaluated the child of the <span class="tt">Knowledge</span> node first in the state $sc$. Since $(\model, sc) \not\models p$ the checker terminates evaluation, since this means that $(\model, sc) \not\models K_2 p$. Note that the states are not considered in any particular order, i.e. it is a coincidence that the checker first checked the state which made the formula false. If we evaluate $(\model, sc) \models K_2 p \lor r$ the resulting motivation is comparable to that of $(\model, sc) \models K_2 p$, but the conclusion reads as follows:
+                    <q>$\left(M, \text{sc} \right) \models \text{K}_{\text{2}} \left(\left(\text{p}\lor\text{r}\right)\right)$ holds since $\left(M, \text{sb} \right) \models \left(\text{p}\lor\text{r}\right)$, and $\left(M, \text{sc} \right) \models \left(\text{p}\lor\text{r}\right)$.</q>
+                </p>
+                <h2><a name="visualisation">Visualisation</a></h2>
+                <p>
+                    The visualisation depicts a Kripke model as a graph. The worlds have a label that shows the valuations of the atomic propositions at that world. Reflexive relations are not supported at this moment.
+                </p>
+                <h3>How To Use</h3>
+                <p>
+                    At this stage the user interface is not quite finished yet and a (probably) temporal solution is in place. This temporal solution includes an json editor in which the model can be edited. Our goal is to include a more user friendly interface where states and links can be added by simply clicking in the in the graph canvas.
+                </p>
+                <h4>JSON Format</h4>
+                <p>
+                    An example is included in the editor for this. It contains an object called model. Within this model the states, relations, and logic system are defined.
+                    <ul>
+                        <li> <strong>States</strong> is an array of objects. Each object represents a state and needs to have an "id" field followed by an integer. This id is used later in the relations. The "vals" field is followed by an array of valuations. The order of these valuations needs to be the same as that of the propositions array
+                        </li>
+                        <li> <strong>Relations</strong> This object needs to be an array of arrays. The inner arrays describe a relation between two states and of which of the maximum 5 agents this relations belongs to.
+                        </li>
+                        <li>
+                            <strong>
+                        Logic System
+                    </strong> The logic system the Kripke belongs to. Will in final version compute the reflexive transitive etc. closures when that is necessary. Options for the logic system are "KM", "S5", and "S5CE"
+                        </li>
+                    </ul>
+                    The model object is followed by the formula you want to check on the system. Syntax is described in the table at the top of the page. The state field tells the model checker in which state the formula should hold.
+                </p>
+        </section>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted">
+                Epistemic Logic Playground is an adaption of
+                <a href="https://github.com/rkirsling/modallogic">Modal Logic Playground</a> by
+                <a href="https://bitbucket.org/rick_van_veen">Rick van Veen</a> and
+                <a href="https://github.com/lauraBaakman">Laura Baakman</a>, released under the
+                <a href="http://opensource.org/licenses/mit-license.php"> 
+            MIT License</a>.
+            </p>
+        </div>
+    </footer>
+</body>
+
+</html>
