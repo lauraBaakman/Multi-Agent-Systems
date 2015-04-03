@@ -277,7 +277,7 @@ define("epl_model", [], function() {
                 "states": sendable_states,
                 "propositions": sendable_propositions,
                 "relations": sendable_relations,
-                "logic": "K"
+                "logic": "S5"
             }
         };
     }
