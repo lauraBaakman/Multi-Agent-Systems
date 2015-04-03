@@ -13,10 +13,10 @@ import modelchecker.ast as ast
 import modelchecker.config as config
 
 def get_from_data(data, key, message=None):
-    result = data.get(key)
+    result = data.get(key, None)
     if not message:
         message = "A {}, with the key '{}' is required".format(key, key)
-    if not result:
+    if result is None:
         raise falcon.HTTPError(
             falcon.HTTP_400,
             message
@@ -63,7 +63,8 @@ def get_model_from_data(data):
 
 def get_ast_from_data(logic, data):
     formula = get_from_data(data, 'formula')
-
+    if not formula:
+        raise falcon.HTTP_400(falcon.HTTPError, 'Input Error', 'You are required to enter a formula.')
     try:
         return ast.Ast.from_string(formula, logic)
     except errors.TokenizeError as e:
@@ -72,13 +73,19 @@ def get_ast_from_data(logic, data):
         raise falcon.HTTPError(falcon.HTTP_400, 'Parse Error', e.message)
 
 def get_state_from_data(data):
-    return data.get('state')
+    state = data.get('state')
+    if not state:
+        raise falcon.HTTP_400(falcon.HTTPError, 'Input Error', 'You are required to enter a state.')
+    else:
+        return state
 
 def evaluate_model(model, formula, state):
     try:
         return model.is_true(formula, state)
     except errors.ValuationError as e:
         raise falcon.HTTPError(falcon.HTTP_400, 'Evaluation Error', e.message)
+    except errors.ModelError as e:
+        raise falcon.HTTPError(falcon.HTTP_400, 'Model Error', e.message)
 
 class Valuate(object):
 
