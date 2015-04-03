@@ -130,7 +130,7 @@ define("gui_graph_canvas", ["d3"], function(d3) {
         }
 
         function relation_to_string(link) {
-            console.log(link);
+            // console.log(link);
 
             var agent_to_unicode = {
                     0: '\u2080',
@@ -142,7 +142,7 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                 // ( \u208D ) '\u208E'
             var str = 'R';
 
-            console.log(link.source.id, link.agents, link.target.id);
+            // console.log(link.source.id, link.agents, link.target.id);
 
             link.agents.forEach(function(agent) {
                 str += agent_to_unicode[agent];
@@ -272,7 +272,7 @@ define("gui_graph_canvas", ["d3"], function(d3) {
         }
 
         this.reset = function() {
-            console.log('reset');
+            // console.log('reset');
             self.layout.stop();
 
             self.canvas.remove();

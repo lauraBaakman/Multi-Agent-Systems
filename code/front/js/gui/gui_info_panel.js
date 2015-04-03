@@ -21,22 +21,10 @@ define("gui_info_panel", ["d3", "mathjax"], function(d3, MathJax) {
                     document.getElementById("playground").appendChild(loading);
                 })
                 .on("load", function(data) {
-                    var new_child = document.createElement('div');
-                    new_child.innerHTML = data.motivation;
-
-                    var response = document.getElementById("response");
-                    while (response.firstChild) {
-                        response.removeChild(response.firstChild);
-                    }
-                    response.appendChild(new_child);
-
-                    console.log(data.model);
-
-                    if(data.truth_value) {
-                        response.className += " success"
-                    } else {
-                        response.className += " failure"
-                    }
+                    d3.select('#response')
+                        .classed('failure', !data.truth_value)
+                        .classed('success', data.truth_value)
+                        .html(data.motivation);
 
                     MathJax.Hub.Queue(["Typeset", MathJax.Hub, "response"]);
 
@@ -48,12 +36,12 @@ define("gui_info_panel", ["d3", "mathjax"], function(d3, MathJax) {
                     document.getElementById("playground").removeChild(loading);
                 })
                 .on("error", function(error) {
-                    console.log("error");
+                    // console.log("error");
                     document.getElementById("playground").removeChild(loading);
                     d3.select('#response')
                         .classed('failure', true)
                         .html(JSON.parse(error.response).title);
-                    console.log(JSON.parse(error.response).title);
+                    // console.log(JSON.parse(error.response).title);
 
                 })
                 .post(JSON.stringify({
@@ -62,11 +50,11 @@ define("gui_info_panel", ["d3", "mathjax"], function(d3, MathJax) {
                     model: model_obj
                 }));
 
-            console.log(JSON.stringify({
-                state: state,
-                formula: formula,
-                model: model_obj
-            }));
+            // console.log(JSON.stringify({
+            //     state: state,
+            //     formula: formula,
+            //     model: model_obj
+            // }));
         };
 
         this.init = function() {
