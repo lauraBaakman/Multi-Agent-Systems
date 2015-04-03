@@ -173,7 +173,7 @@ define("gui_listener", ["d3"], function(d3) {
 
         var set_active = function(id, bool) {
             d3.select(id).classed("inactive", !bool);
-            
+
         };
 
         var set_message = function(id, msg) {
@@ -187,8 +187,13 @@ define("gui_listener", ["d3"], function(d3) {
             if (node) {
                 message += node.id;
                 set_active('#state-information', true);
+                if (node.reflexive) {
+                    set_active('#select-agents-state', true);
+                    activate_buttons('#select-agents-state', node);
+                }
             } else {
                 set_active('#state-information', false);
+                set_active('#select-agents-state', false);
             }
             set_message('#state-information', message);
         };
@@ -199,7 +204,7 @@ define("gui_listener", ["d3"], function(d3) {
             if (link) {
                 message += link.id;
                 set_active('#link-information', true);
-                activate_buttons(link);
+                activate_buttons('#select-agents-links', link);
             } else {
                 set_active('#link-information', false);
             }
@@ -208,26 +213,41 @@ define("gui_listener", ["d3"], function(d3) {
 
         // Editing of selected states and links 
 
-        var activate_buttons = function(link) {
-            d3.select('#select-agents').selectAll('button').classed('active', false);
-            link.agents.forEach(function(agent){
-                d3.select('#select-agents').select('#btn' + agent).classed('active', true);
+        var activate_buttons = function(container_id, link_or_state) {
+            d3.select(container_id).selectAll('button').classed('active', false);
+            link_or_state.agents.forEach(function(agent) {
+                d3.select(container_id).select('#btn' + agent).classed('active', true);
             });
         };
 
-        this.select_agent = function(agent) {
+        this.select_agent_link = function(agent) {
             var agents = d3.set(gui.selected_link.agents);
-            if(!agents.has(agent)) {
+            if (!agents.has(agent)) {
                 gui.selected_link.agents.push(agent);
             } else {
-                var link = model.get_link(model.link_exists(gui.selected_link.source.id, gui.selected_link.target.id));
-                link.agents = link.agents.filter(function(a) {
+                gui.selected_link.agents = gui.selected_link.agents.filter(function(a) {
                     return a != agent
                 });
             }
-            activate_buttons(gui.selected_link);
+            activate_buttons('#select-agents-links', gui.selected_link);
             gui.reset();
         };
+
+        this.select_agent_state = function(agent) {
+            if (!gui.selected_node.reflexive) return;
+
+            var agents = d3.set(gui.selected_node.agents);
+
+            if (!agents.has(agent)) {
+                gui.selected_node.agents.push(agent);
+            } else {
+                gui.selected_node.agents = gui.selected_node.agents.filter(function(a) {
+                    return a != agent
+                });
+            }
+            activate_buttons('#select-agents-state', gui.selected_node);
+        }
+
     }
     return Listener;
 });

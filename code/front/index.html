@@ -41,17 +41,37 @@
                         </div>
                     </div>
                     <div id="state-information" class="alert alert-info inactive">
-                        <p id="message">Currently selected state: none</p>
+                        <h5 id="message">Currently selected state: none</h5>
+
+                        <!-- <div id="select-props-state">
+                            <p>Choose your agents:</p>
+                            <button class="btn btn-default" id="btn0">p</button>
+                            <button class="btn btn-default" id="btn1">q</button>
+                            <button class="btn btn-default" id="btn2">r</button>
+                            <button class="btn btn-default" id="btn3">s</button>
+                            <button class="btn btn-default" id="btn4">t</button>
+                        </div> -->
+
+                        <div id="select-agents-state" class="btn-group inactive">
+                            <p>Choose your agents:</p>
+                            <button class="btn btn-default" id="btn0" onClick="listener.select_agent_state(0)">0</button>
+                            <button class="btn btn-default" id="btn1" onClick="listener.select_agent_state(1)">1</button>
+                            <button class="btn btn-default" id="btn2" onClick="listener.select_agent_state(2)">2</button>
+                            <button class="btn btn-default" id="btn3" onClick="listener.select_agent_state(3)">3</button>
+                            <button class="btn btn-default" id="btn4" onClick="listener.select_agent_state(4)">4</button>
+                        </div>
+
+
                     </div>
                     <div id="link-information" class="alert alert-info inactive">
                         <h5 id="message">Currently selected link: none</h5>
-                        <div id="select-agents">
+                        <div id="select-agents-links" class="btn-group">
                             <p>Choose your agents:</p>
-                            <button class="btn btn-default" id="btn0" onClick="listener.select_agent(0)">0</button>
-                            <button class="btn btn-default" id="btn1" onClick="listener.select_agent(1)">1</button>
-                            <button class="btn btn-default" id="btn2" onClick="listener.select_agent(2)">2</button>
-                            <button class="btn btn-default" id="btn3" onClick="listener.select_agent(3)">3</button>
-                            <button class="btn btn-default" id="btn4" onClick="listener.select_agent(4)">4</button>
+                            <button class="btn btn-default" id="btn0" onClick="listener.select_agent_link(0)">0</button>
+                            <button class="btn btn-default" id="btn1" onClick="listener.select_agent_link(1)">1</button>
+                            <button class="btn btn-default" id="btn2" onClick="listener.select_agent_link(2)">2</button>
+                            <button class="btn btn-default" id="btn3" onClick="listener.select_agent_link(3)">3</button>
+                            <button class="btn btn-default" id="btn4" onClick="listener.select_agent_link(4)">4</button>
                         </div>
                     </div>
                     <div class="row">
