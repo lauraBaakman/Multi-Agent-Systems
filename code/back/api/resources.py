@@ -64,7 +64,7 @@ def get_model_from_data(data):
 def get_ast_from_data(logic, data):
     formula = get_from_data(data, 'formula')
     if not formula:
-        raise falcon.HTTP_400(falcon.HTTPError, 'Input Error', 'You are required to enter a formula.')
+        raise falcon.HTTPError(falcon.HTTP_400, 'Input Error', "You are required to input a formula")
     try:
         return ast.Ast.from_string(formula, logic)
     except errors.TokenizeError as e:
@@ -75,7 +75,7 @@ def get_ast_from_data(logic, data):
 def get_state_from_data(data):
     state = data.get('state')
     if not state:
-        raise falcon.HTTP_400(falcon.HTTPError, 'Input Error', 'You are required to enter a state.')
+        raise falcon.HTTPError(falcon.HTTP_400, 'Input Error', "You are required to input a state")
     else:
         return state
 
