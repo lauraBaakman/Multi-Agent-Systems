@@ -183,6 +183,7 @@ define("gui_listener", ["d3"], function(d3) {
 
         var set_selected_node = function(node) {
             gui.selected_node = node;
+            set_active('#select-agents-state', false);
             var message = "Currently selected state: ";
             if (node) {
                 message += node.id;
@@ -191,6 +192,10 @@ define("gui_listener", ["d3"], function(d3) {
                     set_active('#select-agents-state', true);
                     activate_buttons('#select-agents-state', node);
                 }
+                d3.select('#select-props-state').selectAll('button').classed('active', false);
+                gui.selected_node.vals.forEach(function(val, idx) {
+                    d3.select('#select-props-state').select('#btn' + idx).classed('active', val);
+                });
             } else {
                 set_active('#state-information', false);
                 set_active('#select-agents-state', false);
@@ -246,6 +251,28 @@ define("gui_listener", ["d3"], function(d3) {
                 });
             }
             activate_buttons('#select-agents-state', gui.selected_node);
+        }
+
+        this.select_props_state = function(prop) {
+            d3.select('#select-props-state').selectAll('button').classed('disabled', true);
+            for (var idx = 0; idx < model.get_prop_count(); idx++) {
+                d3.select('#select-props-state').select('#btn' + idx).classed('disabled', false);
+            }
+            gui.selected_node.vals[prop] = !gui.selected_node.vals[prop];
+
+            d3.select('#select-props-state').selectAll('button').classed('active', false);
+            gui.selected_node.vals.forEach(function(val, idx) {
+                d3.select('#select-props-state').select('#btn' + idx).classed('active', val);
+            });
+
+            gui.draw();
+        }
+
+        this.set_num_props = function(num) {
+            d3.select('#num-props').selectAll('button').classed('active', false);
+            d3.select('#num-props').select('#btn' + num).classed('active', true);
+            model.set_prop_count(num);
+            gui.reset();
         }
 
     }

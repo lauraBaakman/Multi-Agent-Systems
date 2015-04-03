@@ -11,8 +11,7 @@ define("epl_model", [], function() {
         var link_counter = 0;
 
         var default_propositions = ['p', 'q', 'r', 's', 't'];
-        var current_propositions = [];
-        var proposition_counter = 3;
+        var proposition_counter = 2;
 
         var max_num_agents = 5;
         var max_num_props = 5;
@@ -29,7 +28,7 @@ define("epl_model", [], function() {
         };
 
         this.get_props = function() {
-            return current_propositions;
+            return default_propositions;
         };
 
         this.get_num_agents = function() {
@@ -195,7 +194,7 @@ define("epl_model", [], function() {
             state_counter = Math.max(parseInt(state_id), state_counter);
             state.id = parseInt(state_id);
 
-            state.vals = current_propositions.map(function(prop, index) {
+            state.vals = default_propositions.map(function(prop, index) {
                 return !state_vals[index] ? false : true;
             });
 
@@ -227,7 +226,7 @@ define("epl_model", [], function() {
             links = [];
             link_counter = 0;
 
-            current_propositions = model_object.propositions;
+            // current_propositions = model_object.propositions;
 
             model_object.states.forEach(function(pre_state) {
                 add_pre_state(pre_state.id, pre_state.vals);

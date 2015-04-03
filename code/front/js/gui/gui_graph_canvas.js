@@ -53,8 +53,8 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                 .nodes(model.get_states())
                 .links(model.get_links())
                 .size([self.width, self.height])
-                .linkDistance(300)
-                .charge(-600)
+                .linkDistance(280)
+                .charge(-3000)
                 .on('tick', tick);
         }
 
@@ -97,6 +97,9 @@ define("gui_graph_canvas", ["d3"], function(d3) {
             });
 
             self.nodes.attr('transform', function(d) {
+                if(d.x == NaN) {
+                    alert(d.id);    
+                }
                 return 'translate(' + d.x + ',' + d.y + ')';
             });
         };
@@ -123,18 +126,20 @@ define("gui_graph_canvas", ["d3"], function(d3) {
         function init_handles() {
             self.links = self.canvas.append('svg:g').selectAll('path');
             self.nodes = self.canvas.append('svg:g').selectAll('g');
-            self.link_labels = self.canvas.append('svg:g').selectAll('g.link_labels');
+            self.link_labels = self.canvas.append('svg:g').selectAll('g.link_labels').append("g").attr("class", "link_label_holder");
         }
 
         function relation_to_string(link) {
+            console.log(link);
+
             var agent_to_unicode = {
-                0: '\u2080',
-                1: '\u2081',
-                2: '\u2082',
-                3: '\u2083',
-                4: '\u2084',
-            }
-            // ( \u208D ) '\u208E'
+                    0: '\u2080',
+                    1: '\u2081',
+                    2: '\u2082',
+                    3: '\u2083',
+                    4: '\u2084',
+                }
+                // ( \u208D ) '\u208E'
             var str = 'R';
 
             console.log(link.source.id, link.agents, link.target.id);
@@ -177,7 +182,7 @@ define("gui_graph_canvas", ["d3"], function(d3) {
 
             self.link_labels = self.link_labels.data(model.get_links());
 
-            self.link_labels.enter().append("g").attr("class", "link_label_holder")
+            self.link_labels.enter()
                 .append("text")
                 .attr("class", "link_label")
                 .attr("dx", 110)
@@ -188,6 +193,11 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                     return "#linkId_" + d.id;
                 })
                 .text(relation_to_string);
+
+
+            // d3.select('textPath').text(relation_to_string);
+
+
 
             self.link_labels.exit().remove();
         }
@@ -234,7 +244,7 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                 })
                 .on('mousedown', listener.mousedown_state)
                 .on('mouseup', listener.mouseup_state);
-                
+
             // show node IDs
             g.append('svg:text')
                 .attr('x', 0)
@@ -263,11 +273,20 @@ define("gui_graph_canvas", ["d3"], function(d3) {
 
         this.reset = function() {
             console.log('reset');
+            self.layout.stop();
+
             self.canvas.remove();
+            // self.canvas.selectAll('*').remove();
             self.start();
         }
 
         this.start = function() {
+            d3.select('#num-props').select('#btn' + model.get_prop_count()).classed('active', true);
+            d3.select('#select-props-state').selectAll('button').classed('disabled', true);
+            for (var idx = 0; idx < model.get_prop_count(); idx++) {
+                d3.select('#select-props-state').select('#btn' + idx).classed('disabled', false);
+            }
+
             d3.select(window)
                 .on('keydown', listener.keydown)
                 .on('keyup', listener.keyup);

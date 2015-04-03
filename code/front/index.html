@@ -33,40 +33,38 @@
                     <div class="row">
                         <div id="num-props" class="btn-group col-md-12">
                             <h5>Number of propositions:</h5>
-                            <button class="btn btn-default" id="btn1">1</button>
-                            <button class="btn btn-default" id="btn2">2</button>
-                            <button class="btn btn-default active" id="btn3">3</button>
-                            <button class="btn btn-default" id="btn4">4</button>
-                            <button class="btn btn-default" id="btn5">5</button>
+                            <button class="btn btn-default" id="btn1" onClick="listener.set_num_props(1)">1</button>
+                            <button class="btn btn-default" id="btn2" onClick="listener.set_num_props(2)">2</button>
+                            <button class="btn btn-default" id="btn3" onClick="listener.set_num_props(3)">3</button>
+                            <button class="btn btn-default" id="btn4" onClick="listener.set_num_props(4)">4</button>
+                            <button class="btn btn-default" id="btn5" onClick="listener.set_num_props(5)">5</button>
                         </div>
                     </div>
                     <div id="state-information" class="alert alert-info inactive">
                         <h5 id="message">Currently selected state: none</h5>
 
-                        <!-- <div id="select-props-state">
-                            <p>Choose your agents:</p>
-                            <button class="btn btn-default" id="btn0">p</button>
-                            <button class="btn btn-default" id="btn1">q</button>
-                            <button class="btn btn-default" id="btn2">r</button>
-                            <button class="btn btn-default" id="btn3">s</button>
-                            <button class="btn btn-default" id="btn4">t</button>
-                        </div> -->
+                        <div id="select-props-state" class="btn-group">
+                            <p>Select 'true' propositions:</p>
+                            <button class="btn btn-default" id="btn0" onClick="listener.select_props_state(0)">p</button>
+                            <button class="btn btn-default" id="btn1" onClick="listener.select_props_state(1)">q</button>
+                            <button class="btn btn-default" id="btn2" onClick="listener.select_props_state(2)">r</button>
+                            <button class="btn btn-default" id="btn3" onClick="listener.select_props_state(3)">s</button>
+                            <button class="btn btn-default" id="btn4" onClick="listener.select_props_state(4)">t</button>
+                        </div>
 
                         <div id="select-agents-state" class="btn-group inactive">
-                            <p>Choose your agents:</p>
+                            <p>Choose agents:</p>
                             <button class="btn btn-default" id="btn0" onClick="listener.select_agent_state(0)">0</button>
                             <button class="btn btn-default" id="btn1" onClick="listener.select_agent_state(1)">1</button>
                             <button class="btn btn-default" id="btn2" onClick="listener.select_agent_state(2)">2</button>
                             <button class="btn btn-default" id="btn3" onClick="listener.select_agent_state(3)">3</button>
                             <button class="btn btn-default" id="btn4" onClick="listener.select_agent_state(4)">4</button>
                         </div>
-
-
                     </div>
                     <div id="link-information" class="alert alert-info inactive">
                         <h5 id="message">Currently selected link: none</h5>
                         <div id="select-agents-links" class="btn-group">
-                            <p>Choose your agents:</p>
+                            <p>Choose agents:</p>
                             <button class="btn btn-default" id="btn0" onClick="listener.select_agent_link(0)">0</button>
                             <button class="btn btn-default" id="btn1" onClick="listener.select_agent_link(1)">1</button>
                             <button class="btn btn-default" id="btn2" onClick="listener.select_agent_link(2)">2</button>
