@@ -230,9 +230,11 @@ define("gui_listener", ["d3"], function(d3) {
             if (!agents.has(agent)) {
                 gui.selected_link.agents.push(agent);
             } else {
-                gui.selected_link.agents = gui.selected_link.agents.filter(function(a) {
-                    return a != agent
-                });
+                if (gui.selected_link.agents.length != 1) {
+                    gui.selected_link.agents = gui.selected_link.agents.filter(function(a) {
+                        return a != agent
+                    });
+                }
             }
             activate_buttons('#select-agents-links', gui.selected_link);
             gui.reset();
@@ -246,9 +248,11 @@ define("gui_listener", ["d3"], function(d3) {
             if (!agents.has(agent)) {
                 gui.selected_node.agents.push(agent);
             } else {
-                gui.selected_node.agents = gui.selected_node.agents.filter(function(a) {
-                    return a != agent
-                });
+                if (gui.selected_node.agents.length != 1) {
+                    gui.selected_node.agents = gui.selected_node.agents.filter(function(a) {
+                        return a != agent
+                    });
+                }
             }
             activate_buttons('#select-agents-state', gui.selected_node);
         }
