@@ -359,13 +359,13 @@
                 </p>
                 <h4>Worlds</h4>
                 <p>
-                    A world or state is represented using a circle that is labeled with the propositions. <strong>Worlds are selectable</strong> by clicking on them. The selection of a world will load the state of that world into the panel on the left. In this panel the valuations of the propositions can be edited.
+                    A world or state is represented using a circle that is labelled with the propositions. <strong>Worlds are selectable</strong> by clicking on them. The selection of a world will load the state of that world into the panel on the left. In this panel the valuations of the propositions can be edited.
                 </p>
                 <p>
-                    <strong>Adding a world</strong> can be achieved by holding the <strong>a</strong> button on the keyboard and clicking on the white bordered canvas on the right side of the live demo. The force layout will make sure that the nodes will keep their distance from one and other.
+                    <strong>Adding a world</strong> can be achieved by holding the <strong>a button</strong> on the keyboard and clicking on the white bordered canvas on the right side of the live demo. The force layout will make sure that the nodes will keep their distance from one and other. Worlds can be <strong>removed</strong> again by selecting them and pressing delete or backspace. 
                 </p>
                 <p>
-                    <strong>Reflexive worlds</strong> reflexivity is achieved by selecting a world and then pressing the <strong>r</strong> button. This will draw a thick border around the world. If a reflexive world is selected the aditional choise of which agents have the reflexive relation will also be renderer in the info panel at the left. We chose to show reflexivity in this way mainly for readability reasons.
+                    <strong>Reflexive worlds</strong> reflexivity is achieved by selecting a world and then pressing the <strong>r button</strong>. This will draw a thick border around the world. If a reflexive world is selected the additional choice of which agents have the reflexive relation will also be renderer in the info panel at the left. We chose to show reflexivity in this way mainly for readability reasons. When <strong>r</strong> is pressed again on a selected reflexive world, the reflexive relation is removed.
                 </p>
 
                 <p>
@@ -378,10 +378,16 @@
                 </p>
 
                 <p>
-                    Except for the reflexive relations, all relations are shown as an arrow from one world to another. To <strong>create</strong>
+                    Except for the reflexive relations, all relations are shown as an arrow from one world to another. To <strong>create</strong> a new relation between two states you can simply drag from one world to another. If you want to edit the agents that have a certain relation you can select the link by clicking on it and the information will appear on the left side of the demo. A link can also be <strong>removed</strong> by selecting it and pressing backspace or delete.
                 </p>
+
+                <p><strong>Bidirectional</strong> relations are also possible and for readability the demo will then render the relations with a curve.</p>
                 
                 <h3>Formula evaluation mode</h3>
+
+                <p>In this mode a formula that you want to check can be given and also on which state you want to check this formula. Also the logic system can be selected in this mode. </p>
+
+                <p>After pressing the submit button the demo will send the model, formula and logic system to the backend. If the input was correct the backend returns a valuation of the formula and a new model, that may differ from the given model depending on the logic system given. This means that implicit relations of the different systems do not need to be given by the user, but are computed in the backend and rendered by the demo after the submit.</p>
         </section>
     </div>
     <footer class="footer">
