@@ -40,7 +40,7 @@ define("gui_info_panel", ["d3", "mathjax"], function(d3, MathJax) {
                     document.getElementById("playground").removeChild(loading);
                     d3.select('#response')
                         .classed('failure', true)
-                        .html(JSON.parse(error.response).title);
+                        .html(JSON.parse(error.response).title + "<br>" + JSON.parse(error.response).message);
                     // console.log(JSON.parse(error.response).title);
 
                 })
