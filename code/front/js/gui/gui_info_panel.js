@@ -50,7 +50,10 @@ define("gui_info_panel", ["d3", "mathjax"], function(d3, MathJax) {
                 .on("error", function(error) {
                     console.log("error");
                     document.getElementById("playground").removeChild(loading);
-                    console.log(error);
+                    d3.select('#response')
+                        .classed('failure', true)
+                        .html(JSON.parse(error.response).title);
+                    console.log(JSON.parse(error.response).title);
 
                 })
                 .post(JSON.stringify({
