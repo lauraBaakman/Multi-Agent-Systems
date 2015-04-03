@@ -12,7 +12,7 @@ define("gui_listener", ["d3"], function(d3) {
         var mousedown_link = null;
 
         this.mousedown = function() {
-            console.log("Mouse down");
+            // console.log("Mouse down");
             if (last_key_down === 65) {
                 model.add_state();
                 gui.draw();
@@ -28,13 +28,13 @@ define("gui_listener", ["d3"], function(d3) {
             gui.draw();
         };
 
-        this.reset_mouse_vars = function() {
+        var reset_mouse_vars = function() {
             mousedown_node = null;
             mouseup_node = null;
         };
 
         this.mouseup = function(d) {
-            console.log("Mouse up");
+            // console.log("Mouse up");
             if (mousedown_node) {
                 // hide drag line
                 gui.drag_line
@@ -44,22 +44,22 @@ define("gui_listener", ["d3"], function(d3) {
             // because :active only works in WebKit?
             // gui.get_canvas().classed('active', false);
             // clear mouse event vars
-            self.reset_mouse_vars();
+            reset_mouse_vars();
         };
 
         this.mousedown_state = function(d) {
-            console.log("Mouse down on state: " + d.id);
+            // console.log("Mouse down on state: " + d.id);
 
             if (d3.event.altKey) return;
             // select node
             mousedown_node = d;
 
             if (mousedown_node === gui.selected_node) {
-                self.set_selected_node(null);
+                set_selected_node(null);
             } else {
-                self.set_selected_node(mousedown_node);
+                set_selected_node(mousedown_node);
             }
-            self.set_selected_link(null);
+            set_selected_link(null);
 
             // reposition drag line
             gui.drag_line
@@ -71,7 +71,7 @@ define("gui_listener", ["d3"], function(d3) {
         };
 
         this.mouseup_state = function(d) {
-            console.log("Mouse up on state: " + d.id);
+            // console.log("Mouse up on state: " + d.id);
 
             if (!mousedown_node) return;
             // needed by FF
@@ -82,32 +82,32 @@ define("gui_listener", ["d3"], function(d3) {
             // check for drag-to-self
             mouseup_node = d;
             if (mouseup_node === mousedown_node) {
-                self.reset_mouse_vars();
+                reset_mouse_vars();
                 return;
             }
 
             if (model.link_exists(mousedown_node.id, mouseup_node.id) === null) {
                 var link_id = model.add_link(mousedown_node.id, mouseup_node.id);
                 model.add_agent_to_link(link_id, 0);
-                self.set_selected_node(null);
+                set_selected_node(null);
                 gui.draw();
             }
         }
 
         this.mousedown_link = function(d) {
-            console.log('Mousedown on link: ' + d.id);
+            // console.log('Mousedown on link: ' + d.id);
             if (d3.event.altKey) return;
 
             // select link
             mousedown_link = d;
             if (mousedown_link === gui.selected_link) {
-                self.set_selected_link(null);
+                set_selected_link(null);
             } else {
-                self.set_selected_link(mousedown_link);
+                set_selected_link(mousedown_link);
             }
-            self.set_selected_node(null);
+            set_selected_node(null);
 
-            console.log(gui.selected_link);
+            // console.log(gui.selected_link);
             gui.draw();
         }
 
@@ -127,14 +127,14 @@ define("gui_listener", ["d3"], function(d3) {
                 case 8: // backspace
                 case 46: // delete
                     if (gui.selected_node) {
-                        console.log("Delete selected node!" + gui.selected_node.id);
+                        // console.log("Delete selected node!" + gui.selected_node.id);
                         model.remove_state(gui.selected_node.id);
                     } else if (gui.selected_link) {
-                        console.log("Delete selected link!" + gui.selected_link.id);
+                        // console.log("Delete selected link!" + gui.selected_link.id);
                         model.remove_link(gui.selected_link.id);
                     }
-                    self.set_selected_node(null);
-                    self.set_selected_link(null);
+                    set_selected_node(null);
+                    set_selected_link(null);
 
                     gui.draw();
                     break;
@@ -144,15 +144,15 @@ define("gui_listener", ["d3"], function(d3) {
                             // model.add_link(gui.selected_node.id, gui.selected_node.id);
                             model.get_state(gui.selected_node.id).reflexive = true;
                             model.get_state(gui.selected_node.id).agents.push(0);
-                            console.log(gui.selected_node);
+                            // console.log(gui.selected_node);
                         } else {
                             // model.remove_link(model.link_exists(gui.selected_node.id, gui.selected_node.id));
                             model.get_state(gui.selected_node.id).reflexive = false;
                             model.get_state(gui.selected_node.id).agents = [];
                         }
                     }
-                    self.set_selected_link(null);
-                    self.set_selected_node(null);
+                    set_selected_link(null);
+                    set_selected_node(null);
                     gui.draw();
                     break;
             }
@@ -169,44 +169,65 @@ define("gui_listener", ["d3"], function(d3) {
             }
         };
 
-        this.set_active = function(id, bool) {
+        // Visibility of the state and link info
+
+        var set_active = function(id, bool) {
             d3.select(id).classed("inactive", !bool);
             
         };
 
-        this.set_message = function(id, message) {
-            d3.select(id).html(message);
+        var set_message = function(id, msg) {
+            var msg_id = "#message"
+            d3.select(id).select(msg_id).html(msg);
         };
 
-        this.set_selected_node = function(node) {
+        var set_selected_node = function(node) {
             gui.selected_node = node;
             var message = "Currently selected state: ";
             if (node) {
                 message += node.id;
-                self.set_active('#state-information', true);
+                set_active('#state-information', true);
             } else {
-                self.set_active('#state-information', false);
+                set_active('#state-information', false);
             }
-            self.set_message('#state-information', message);
-            
-
+            set_message('#state-information', message);
         };
 
-        this.set_selected_link = function(link) {
+        var set_selected_link = function(link) {
             gui.selected_link = link;
             var message = "Currently selected link: ";
             if (link) {
                 message += link.id;
-                self.set_active('#link-information', true);
+                set_active('#link-information', true);
+                activate_buttons(link);
             } else {
-                self.set_active('#link-information', false);
+                set_active('#link-information', false);
             }
-            self.set_message('#link-information', message);
-            
+            set_message('#link-information', message);
         };
 
+        // Editing of selected states and links 
+
+        var activate_buttons = function(link) {
+            d3.select('#select-agents').selectAll('button').classed('active', false);
+            link.agents.forEach(function(agent){
+                d3.select('#select-agents').select('#btn' + agent).classed('active', true);
+            });
+        };
+
+        this.select_agent = function(agent) {
+            var agents = d3.set(gui.selected_link.agents);
+            if(!agents.has(agent)) {
+                gui.selected_link.agents.push(agent);
+            } else {
+                var link = model.get_link(model.link_exists(gui.selected_link.source.id, gui.selected_link.target.id));
+                link.agents = link.agents.filter(function(a) {
+                    return a != agent
+                });
+            }
+            activate_buttons(gui.selected_link);
+            gui.reset();
+        };
     }
-
     return Listener;
-
 });

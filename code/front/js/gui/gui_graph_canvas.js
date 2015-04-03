@@ -1,4 +1,4 @@
-define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
+define("gui_graph_canvas", ["d3"], function(d3) {
 
     function GraphCanvas(container, model) {
 
@@ -24,8 +24,12 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
 
         var listener = null
 
-        function init_listener() {
-            listener = new Listener(self, model);
+        this.set_listener = function(app_listener) {
+            listener = app_listener;
+        }
+
+        this.get_listener = function() {
+            return listener;
         }
 
         function init_canvas() {
@@ -130,8 +134,8 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
                 3: '\u2083',
                 4: '\u2084',
             }
-
-            var str = 'R\u208D';
+            // ( \u208D ) '\u208E'
+            var str = 'R';
 
             console.log(link.source.id, link.agents, link.target.id);
 
@@ -139,7 +143,7 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
                 str += agent_to_unicode[agent];
             });
 
-            return str + '\u208E'
+            return str;
         }
 
         function draw_paths() {
@@ -258,13 +262,12 @@ define("gui_graph_canvas", ["d3", "gui_listener"], function(d3, Listener) {
         }
 
         this.reset = function() {
-            canvas.remove();
+            console.log('reset');
+            self.canvas.remove();
             self.start();
         }
 
         this.start = function() {
-            init_listener();
-
             d3.select(window)
                 .on('keydown', listener.keydown)
                 .on('keyup', listener.keyup);

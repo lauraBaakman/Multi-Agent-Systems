@@ -52,4 +52,5 @@ require.config({
 
 require(['app'], function(App) {
     var app = new App("#app-canvas", "#app-info");
+    window.listener = app.get_listener();
 });
