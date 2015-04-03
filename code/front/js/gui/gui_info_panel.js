@@ -32,6 +32,11 @@ define("gui_info_panel", ["d3", "mathjax"], function(d3, MathJax) {
 
                     model.load_from_model_object(new_model);
                     app.redraw();
+                    
+                    d3.select(window)
+                        .on('keydown', null)
+                        .on('keyup', null);
+
 
                     document.getElementById("playground").removeChild(loading);
                 })
@@ -41,7 +46,13 @@ define("gui_info_panel", ["d3", "mathjax"], function(d3, MathJax) {
                     d3.select('#response')
                         .classed('failure', true)
                         .html(JSON.parse(error.response).title + "<br>" + JSON.parse(error.response).description);
+
                     // console.log(JSON.parse(error.response).title);
+       
+                    d3.select(window)
+                        .on('keydown', null)
+                        .on('keyup', null);
+
 
                 })
                 .post(JSON.stringify({
@@ -49,12 +60,6 @@ define("gui_info_panel", ["d3", "mathjax"], function(d3, MathJax) {
                     formula: formula,
                     model: model_obj
                 }));
-
-            // console.log(JSON.stringify({
-            //     state: state,
-            //     formula: formula,
-            //     model: model_obj
-            // }));
         };
 
         this.init = function() {

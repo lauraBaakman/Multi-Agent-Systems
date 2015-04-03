@@ -10,7 +10,7 @@ define("gui_graph_canvas", ["d3"], function(d3) {
         this.width = 800;
         this.height = 600;
         this.colors = null;
-        this.drag_line = null
+        this.drag_line = null;
 
         // Specific/model :p visualisation variables
         this.nodes = null;
@@ -97,8 +97,8 @@ define("gui_graph_canvas", ["d3"], function(d3) {
             });
 
             self.nodes.attr('transform', function(d) {
-                if(d.x == NaN) {
-                    alert(d.id);    
+                if (d.x == NaN) {
+                    alert(d.id);
                 }
                 return 'translate(' + d.x + ',' + d.y + ')';
             });
