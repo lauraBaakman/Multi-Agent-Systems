@@ -280,12 +280,18 @@ define("gui_listener", ["d3"], function(d3) {
         }
 
         this.set_mode = function(mode) {
-            if(!mode) {
+            if (!mode) {
                 d3.select('#model-tab').classed('active', true);
                 d3.select('#eval-tab').classed('active', false);
+                d3.select(window)
+                    .on('keydown', self.keydown)
+                    .on('keyup', self.keyup);
             } else {
                 d3.select('#model-tab').classed('active', false);
                 d3.select('#eval-tab').classed('active', true);
+                d3.select(window)
+                    .on('keydown', null)
+                    .on('keyup', null);
             }
         }
 
