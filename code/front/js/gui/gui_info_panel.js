@@ -7,9 +7,11 @@ define("gui_info_panel", ["d3", "mathjax"], function(d3, MathJax) {
         var loading = null;
 
         this.send = function() {
-            console.log(d3.select('#formula'));
-            console.log(d3.select('#state'));
-            console.log(d3.select('#logic'));
+            var formula = document.getElementById("formula").value;
+            var state = document.getElementById("state").value;
+
+            var model_obj = model.save_to_model_object()
+            model_obj.logic = document.getElementById("logic").value;
 
 
             d3.json("http://localhost:8000/valuate")
@@ -45,16 +47,16 @@ define("gui_info_panel", ["d3", "mathjax"], function(d3, MathJax) {
 
                 })
                 .post(JSON.stringify({
-                    state: "0",
-                    formula: "p",
-                    model: model.save_to_model_object()
+                    state: state,
+                    formula: formula,
+                    model: model_obj
                 }));
 
-                console.log(JSON.stringify({
-                    state: "0",
-                    formula: "p",
-                    model: model.save_to_model_object()
-                }));
+            console.log(JSON.stringify({
+                state: state,
+                formula: formula,
+                model: model_obj
+            }));
 
             // console.log(model.save_to_model_object());
 

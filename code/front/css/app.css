@@ -60,7 +60,6 @@ text {
   pointer-events: none;
 }
 
-
 text::selection {
   background: none; /* WebKit/Blink Browsers */
 }

@@ -20,7 +20,6 @@
             <small>A project for the course Multi-Agent Systems</small>
             <a href="/report.html" class="navigation">Report</a>
         </header>
-
         <div id="mode-select" class="btn-group row">
             <button class="btn btn-primary active" id="edit-mode" onclick="listener.set_mode(0)">
                 <i class="icon-pencil icon-white"></i> Edit Model
@@ -97,44 +96,39 @@
                     </div>
                 </div>
                 <div id="eval-tab" class="tab-pane">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <form>
-                                <div class="form-group">
-                                    <label for="Formula">Formula</label>
-                                    <input type="text" class="form-control" id="formula" placeholder="~p -> q">
-                                </div>
-                                <div class="form-group">
-                                    <label for="state">State</label>
-                                    <input type="text" class="form-control" id="state" placeholder="0">
-                                </div>
-                                <div class="form-group">
-                                    <label for="logic">Logic</label>
-                                    <select id="logic" class="form-control">
-                                        <option>K</option>
-                                        <option>T</option>
-                                        <option>S4</option>
-                                        <option>S5</option>
-                                        <option>KEC</option>
-                                        <option>TEC</option>
-                                        <option>S4EC</option>
-                                        <option>S5EC</option>
-                                        <option>KI</option>
-                                        <option>TI</option>
-                                        <option>S4I</option>
-                                        <option>S5I</option>
-                                    </select>
-                                </div>
-                                <button type="button" id="json_submit_button" class="btn btn-default">Submit</button>
-                            </form>
+                    <form>
+                        <div class="form-group">
+                            <label for="formula">Formula</label>
+                            <input type="text" class="form-control" id="formula" placeholder="~p -> q">
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <label for="state">State</label>
+                            <input type="text" class="form-control" id="state" placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="logic">Logic</label>
+                            <select id="logic" class="form-control">
+                                <option>K</option>
+                                <option>T</option>
+                                <option>S4</option>
+                                <option>S5</option>
+                                <option>KEC</option>
+                                <option>TEC</option>
+                                <option>S4EC</option>
+                                <option>S5EC</option>
+                                <option>KI</option>
+                                <option>TI</option>
+                                <option>S4I</option>
+                                <option>S5I</option>
+                            </select>
+                        </div>
+                        <button type="button" id="json_submit_button" class="btn btn-default">Submit</button>
+                    </form>
                 </div>
             </div>
             <div class="col-md-9" id="app-canvas">
             </div>
         </section>
-
         <section class="row" id="response">
             No response
         </section>
