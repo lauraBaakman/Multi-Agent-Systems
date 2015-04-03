@@ -21,10 +21,16 @@ svg {
   padding-top: 15px;
 }
 
-#response {
-  margin-top: 15px;
-  padding: 10px;
-  border: 1px solid #e3e3e3;
+#response.motivation {
+  margin-left: 0;
+}
+
+#response.motivation.success {
+  border-color: green;
+}
+
+#response.motivation.failure {
+  border-color: red;
 }
 
 path.link.selected {

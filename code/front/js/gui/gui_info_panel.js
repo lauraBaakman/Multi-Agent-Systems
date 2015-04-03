@@ -30,10 +30,17 @@ define("gui_info_panel", ["d3", "mathjax"], function(d3, MathJax) {
                     }
                     response.appendChild(new_child);
 
+                    console.log(data);
+
+                    if(data.truth_value) {
+                        response.className += " success"
+                    } else {
+                        response.className += " failure"
+                    }
+
                     MathJax.Hub.Queue(["Typeset", MathJax.Hub, "response"]);
 
                     var new_model = JSON.parse(data.model);
-                    console.log(new_model);
 
                     model.load_from_model_object(new_model);
                     app.redraw();
@@ -43,7 +50,7 @@ define("gui_info_panel", ["d3", "mathjax"], function(d3, MathJax) {
                 .on("error", function(error) {
                     console.log("error");
                     document.getElementById("playground").removeChild(loading);
-                    console.log(error.title);
+                    console.log(error);
 
                 })
                 .post(JSON.stringify({
@@ -57,22 +64,9 @@ define("gui_info_panel", ["d3", "mathjax"], function(d3, MathJax) {
                 formula: formula,
                 model: model_obj
             }));
-
-            // console.log(model.save_to_model_object());
-
-            // editor.set(app.get_model().save_to_model_object());
         };
 
         this.init = function() {
-            // var editor_container = container.select('#json_editor');
-            // var editor_container = document.getElementById("json_editor");
-
-            // editor = new JSONEditor(editor_container);
-
-            // editor.setMode('text');
-
-            // editor.set(json);
-
             var submit_button = document.getElementById("json_submit_button");
             submit_button.onclick = self.send;
         };
