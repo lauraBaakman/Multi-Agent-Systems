@@ -30,7 +30,7 @@ define("gui_info_panel", ["d3", "mathjax"], function(d3, MathJax) {
                     }
                     response.appendChild(new_child);
 
-                    console.log(data);
+                    console.log(data.model);
 
                     if(data.truth_value) {
                         response.className += " success"

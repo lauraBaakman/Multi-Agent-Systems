@@ -19,8 +19,6 @@
             <small>A project for the course Multi-Agent Systems</small>
             <a href="/index.html" class="navigation">Live Demo</a>
         </header>
-    
-
         <section class="row" id="report">
             <h2>Introduction</h2>
             <p>
@@ -222,7 +220,6 @@
                 </p>
                 <p>
                     If the class $\mathcal{T}$ is selected, not only is the input model converted from JSON, the reflexive closure of the relations is also computed. In the case that a logic associated with the class $\mathcal{S4}$ is selected the reflexive-transitive closure of the set of relations of the models is computed using depth first search. In the same way the reflexive-transitive-symmetric closure of the relations is computed if the selected logic is one of $\SF{}$, $\SFEC{}$, $\SFI{}$. The updated model is returned to the front-end and visualised there. Consequently one does not need to input a reflexive-transitive model to evaluate a formula in e.g. $\SVEC{}$.
-
                 </p>
                 <p>
                     The reflexive-transitive closure and the reflexive-transitive-symmetric closure of the relations in a model are determined using depth-first search.
@@ -253,7 +250,6 @@
                     <figure>
                         <object class="center-block" data="./img/transformations.svg" type="image/svg+xml">
                             <img class="center-block" src="./img/transformations.png" />
-
                         </object>
                         <figcaption>
                             An expression tree representing an implication that is transformed to an expression tree with a disjunction as the root node.
@@ -352,30 +348,40 @@
                     We see that the checker has evaluated the child of the <span class="tt">Knowledge</span> node first in the state $sc$. Since $(\model, sc) \not\models p$ the checker terminates evaluation, since this means that $(\model, sc) \not\models K_2 p$. Note that the states are not considered in any particular order, i.e. it is a coincidence that the checker first checked the state which made the formula false. If we evaluate $(\model, sc) \models K_2 p \lor r$ the resulting motivation is comparable to that of $(\model, sc) \models K_2 p$, but the conclusion reads as follows:
                     <q>$\left(M, \text{sc} \right) \models \text{K}_{\text{2}} \left(\left(\text{p}\lor\text{r}\right)\right)$ holds since $\left(M, \text{sb} \right) \models \left(\text{p}\lor\text{r}\right)$, and $\left(M, \text{sc} \right) \models \left(\text{p}\lor\text{r}\right)$.</q>
                 </p>
+
                 <h2><a name="visualisation">Visualisation</a></h2>
                 <p>
-                    The visualisation depicts a Kripke model as a graph. The worlds have a label that shows the valuations of the atomic propositions at that world. Reflexive relations are not supported at this moment.
+                    The visualisation depicts a Kripke model as a graph. This graph is drawn using the force layout which is a flexible force-directed graph layout implementation, that can be found <a href="https://github.com/mbostock/d3/wiki/Force-Layout">here</a>.
                 </p>
-                <h3>How To Use</h3>
+                <h3>Model editing mode</h3>
                 <p>
-                    At this stage the user interface is not quite finished yet and a (probably) temporal solution is in place. This temporal solution includes an json editor in which the model can be edited. Our goal is to include a more user friendly interface where states and links can be added by simply clicking in the in the graph canvas.
+                    This section explains the functionality of the model editing mode of the live demo. Here we will also explain how things are visualized, but the best way to see this is by just playing with the demo.
                 </p>
-                <h4>JSON Format</h4>
+                <h4>Worlds</h4>
                 <p>
-                    An example is included in the editor for this. It contains an object called model. Within this model the states, relations, and logic system are defined.
-                    <ul>
-                        <li> <strong>States</strong> is an array of objects. Each object represents a state and needs to have an "id" field followed by an integer. This id is used later in the relations. The "vals" field is followed by an array of valuations. The order of these valuations needs to be the same as that of the propositions array
-                        </li>
-                        <li> <strong>Relations</strong> This object needs to be an array of arrays. The inner arrays describe a relation between two states and of which of the maximum 5 agents this relations belongs to.
-                        </li>
-                        <li>
-                            <strong>
-                        Logic System
-                    </strong> The logic system the Kripke belongs to. Will in final version compute the reflexive transitive etc. closures when that is necessary. Options for the logic system are "KM", "S5", and "S5CE"
-                        </li>
-                    </ul>
-                    The model object is followed by the formula you want to check on the system. Syntax is described in the table at the top of the page. The state field tells the model checker in which state the formula should hold.
+                    A world or state is represented using a circle that is labeled with the propositions. <strong>Worlds are selectable</strong> by clicking on them. The selection of a world will load the state of that world into the panel on the left. In this panel the valuations of the propositions can be edited.
                 </p>
+                <p>
+                    <strong>Adding a world</strong> can be achieved by holding the <strong>a</strong> button on the keyboard and clicking on the white bordered canvas on the right side of the live demo. The force layout will make sure that the nodes will keep their distance from one and other.
+                </p>
+                <p>
+                    <strong>Reflexive worlds</strong> reflexivity is achieved by selecting a world and then pressing the <strong>r</strong> button. This will draw a thick border around the world. If a reflexive world is selected the aditional choise of which agents have the reflexive relation will also be renderer in the info panel at the left. We chose to show reflexivity in this way mainly for readability reasons.
+                </p>
+
+                <p>
+                    <strong>Moving</strong> a world is possible by holding the <strong>alt</strong> key and dragging the world you want to move.
+                </p>
+
+                <h4>Relations</h4>
+                <p>
+                    <strong>Reflexivity</strong> please look at the <strong>reflexive worlds</strong> paragraph under the worlds section.
+                </p>
+
+                <p>
+                    Except for the reflexive relations, all relations are shown as an arrow from one world to another. To <strong>create</strong>
+                </p>
+                
+                <h3>Formula evaluation mode</h3>
         </section>
     </div>
     <footer class="footer">
