@@ -279,6 +279,16 @@ define("gui_listener", ["d3"], function(d3) {
             gui.reset();
         }
 
+        this.set_mode = function(mode) {
+            if(!mode) {
+                d3.select('#model-tab').classed('active', true);
+                d3.select('#eval-tab').classed('active', false);
+            } else {
+                d3.select('#model-tab').classed('active', false);
+                d3.select('#eval-tab').classed('active', true);
+            }
+        }
+
     }
     return Listener;
 });

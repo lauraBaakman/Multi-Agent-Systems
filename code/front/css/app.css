@@ -13,6 +13,14 @@ svg {
   user-select: none;
 }
 
+#eval-tab {
+  padding-top: 15px;
+}
+
+#model-tab {
+  padding-top: 15px;
+}
+
 path.link.selected {
   stroke-dasharray: 10,2;
 }

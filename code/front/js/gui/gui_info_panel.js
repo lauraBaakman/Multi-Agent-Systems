@@ -39,15 +39,21 @@ define("gui_info_panel", ["d3", "mathjax"], function(d3, JSONEditor, MathJax) {
             //         console.log(error.title);
 
             //     })
-            //     .post(JSON.stringify(editor.get()));
+            //     .post(JSON.stringify({
+            //         state: "0",
+            //         formula: "K_1 M_2 p <-> q",
+            //         model: model.save_to_model_object()
+            //     }));
 
-            console.log(model.save_to_model_object());
+                console.log(JSON.stringify({
+                    state: "0",
+                    formula: "K_1 M_2 p <-> q",
+                    model: model.save_to_model_object()
+                }));
+
+            // console.log(model.save_to_model_object());
 
             // editor.set(app.get_model().save_to_model_object());
-        };
-
-        this.set_selected_state = function(selected_node) {
-            d3.select('#state-information').html("Selected state: " + selected_state.id);
         };
 
         this.init = function() {
