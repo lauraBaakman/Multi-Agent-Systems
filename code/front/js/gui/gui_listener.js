@@ -265,7 +265,7 @@ define("gui_listener", ["d3"], function(d3) {
                 d3.select('#select-props-state').select('#btn' + idx).classed('active', val);
             });
 
-            gui.draw();
+            gui.reset();
         }
 
         this.set_num_props = function(num) {
