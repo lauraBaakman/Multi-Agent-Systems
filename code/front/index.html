@@ -19,6 +19,7 @@
             <h1>Epistemic Logic Playground</h1>
             <small>A project for the course Multi-Agent Systems</small>
         </header>
+
         <div id="mode-select" class="btn-group row">
             <button class="btn btn-primary active" id="edit-mode" onclick="listener.set_mode(0)">
                 <i class="icon-pencil icon-white"></i> Edit Model
@@ -131,10 +132,11 @@
             </div>
             <div class="col-md-9" id="app-canvas">
             </div>
-
         </section>
+
         <section class="row" id="response">
         </section>
+
         <section class="row" id="report">
             <h2>Introduction</h2>
             <p>
@@ -336,6 +338,7 @@
                 </p>
                 <p>
                     If the class $\mathcal{T}$ is selected, not only is the input model converted from JSON, the reflexive closure of the relations is also computed. In the case that a logic associated with the class $\mathcal{S4}$ is selected the reflexive-transitive closure of the set of relations of the models is computed using depth first search. In the same way the reflexive-transitive-symmetric closure of the relations is computed if the selected logic is one of $\SF{}$, $\SFEC{}$, $\SFI{}$. The updated model is returned to the front-end and visualised there. Consequently one does not need to input a reflexive-transitive model to evaluate a formula in e.g. $\SVEC{}$.
+
                 </p>
                 <p>
                     The reflexive-transitive closure and the reflexive-transitive-symmetric closure of the relations in a model are determined using depth-first search.
@@ -366,6 +369,7 @@
                     <figure>
                         <object class="center-block" data="./img/transformations.svg" type="image/svg+xml">
                             <img class="center-block" src="./img/transformations.png" />
+
                         </object>
                         <figcaption>
                             An expression tree representing an implication that is transformed to an expression tree with a disjunction as the root node.

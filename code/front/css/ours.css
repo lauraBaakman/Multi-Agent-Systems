@@ -3,6 +3,16 @@ figure.float-right {
 	margin: 10px 10px 10px 0;
 }
 
+.float-center {
+	margin: 0 auto;
+}
+
+.motivation {
+	border-left-style: solid;
+	border-left-color: rgb(238, 238, 238);
+	border-left-width: 5px;
+}
+
 figcaption{
 	padding-top: 8px;
 	padding-bottom: 8px;
@@ -63,9 +73,11 @@ ul.quad {
 .quad>li{
 	float:left;	
 	width:25%; 
+
 }
 
 /*Temporary*/
 /*.alert-info{
 	width: 60%;
 }*/
+
