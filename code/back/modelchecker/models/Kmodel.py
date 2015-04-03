@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import json
+from collections import OrderedDict
 
 import state
 import relation
@@ -139,7 +140,7 @@ class KModel(object):
                 raise errors.ModelError(
                     "The length of the list of valuations and the list of propositions differs."
                 )
-            return dict(zip(propositions, valuations))
+            return OrderedDict(zip(propositions, valuations))
 
         propositions = json_data['propositions']
         for json_state in json_data['states']:
