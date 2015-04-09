@@ -34,6 +34,10 @@ svg {
   padding-top: 15px;
 }
 
+#select-agents-state {
+  margin-top: 15px;
+}
+
 #response.motivation {
   margin-left: 0;
 }

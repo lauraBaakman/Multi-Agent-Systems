@@ -158,12 +158,11 @@ define("gui_listener", ["d3"], function(d3) {
                             model.get_state(gui.selected_node.id).agents = [];
                         }
                     }
-                    set_selected_link(null);
-                    set_selected_node(null);
+                    // set_selected_link(null);
+                    set_selected_node(gui.selected_node);
                     gui.draw();
                     break;
             }
-
         };
 
         this.keyup = function() {

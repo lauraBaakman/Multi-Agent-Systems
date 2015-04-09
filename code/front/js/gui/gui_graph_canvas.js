@@ -54,8 +54,8 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                 .links(model.get_links())
                 .size([self.width, self.height])
                 .linkDistance(280)
-                .charge(-3000)
-                .gravity(0.1)
+                .charge(-2500)
+                .gravity(0.15)
                 .on('tick', tick);
         }
 
