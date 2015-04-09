@@ -78,9 +78,18 @@ text::-moz-selection {
   stroke-width: 2.5px;
 }
 
+#playground {
+  width: 1850px;
+  min-height: 800px;
+}
+
+#app svg {
+  margin-left: -15px;
+}
+
 #app {
     position: relative;
-    min-height: 650px;
+    min-height: inherit;
 
     border: 1px solid #e3e3e3;
   	border-radius: 4px;

@@ -11,6 +11,13 @@ define("gui_listener", ["d3"], function(d3) {
         var mouseup_node = null;
         var mousedown_link = null;
 
+        var MODE = {
+            EDIT: 0,
+            VAL: 1
+        };
+
+        this.mode = 0;
+
         this.mousedown = function() {
             // console.log("Mouse down");
             if (last_key_down === 65) {
@@ -50,7 +57,7 @@ define("gui_listener", ["d3"], function(d3) {
         this.mousedown_state = function(d) {
             // console.log("Mouse down on state: " + d.id);
 
-            if (d3.event.altKey) return;
+            if (self.mode == MODE.VAL || d3.event.altKey) return;
             // select node
             mousedown_node = d;
 
@@ -73,7 +80,7 @@ define("gui_listener", ["d3"], function(d3) {
         this.mouseup_state = function(d) {
             // console.log("Mouse up on state: " + d.id);
 
-            if (!mousedown_node) return;
+            if (self.mode == MODE.VAL || !mousedown_node) return;
             // needed by FF
             gui.drag_line
                 .classed('hidden', true)
@@ -96,7 +103,7 @@ define("gui_listener", ["d3"], function(d3) {
 
         this.mousedown_link = function(d) {
             // console.log('Mousedown on link: ' + d.id);
-            if (d3.event.altKey) return;
+            if (self.mode == MODE.VAL || d3.event.altKey) return;
 
             // select link
             mousedown_link = d;
@@ -279,8 +286,9 @@ define("gui_listener", ["d3"], function(d3) {
             gui.reset();
         }
 
-        this.set_mode = function(mode) {
-            if (!mode) {
+        this.set_mode = function(new_mode) {
+            self.mode = new_mode;
+            if (self.mode == MODE.EDIT) {
                 d3.select('#model-tab').classed('active', true);
                 d3.select('#edit-mode').classed('active', true);
                 d3.select('#eval-tab').classed('active', false);

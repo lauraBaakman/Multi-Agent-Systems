@@ -34,9 +34,9 @@ define("gui_graph_canvas", ["d3"], function(d3) {
 
         function init_canvas() {
             // Get meassurement of the container of the graph canvas
-            var padding = 5;
-            self.width = container.node().getBoundingClientRect().width - padding;
-            self.height = container.node().getBoundingClientRect().height - padding;
+            // var padding = 5;
+            self.width = container.node().getBoundingClientRect().width;
+            self.height = container.node().getBoundingClientRect().height;
             self.colors = d3.scale.category10();
             self.canvas = container
                 .append('svg')
@@ -55,6 +55,7 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                 .size([self.width, self.height])
                 .linkDistance(280)
                 .charge(-3000)
+                .gravity(0.1)
                 .on('tick', tick);
         }
 
@@ -97,9 +98,6 @@ define("gui_graph_canvas", ["d3"], function(d3) {
             });
 
             self.nodes.attr('transform', function(d) {
-                if (d.x == NaN) {
-                    alert(d.id);
-                }
                 return 'translate(' + d.x + ',' + d.y + ')';
             });
         };
