@@ -1,12 +1,20 @@
-\documentclass{standalone}
+\documentclass{article}
+
+\usepackage[left=0cm,top=0cm,right=0cm,nohead,nofoot]{geometry}
 
 \usepackage{amsmath}
 \usepackage{xcolor}
+\usepackage{anyfontsize}
+\usepackage{t1enc}
 
-\definecolor{terminal}{RGB}{169,26,16}
-\definecolor{nonterminal}{RGB}{121,136,159}
+\definecolor{nonterminal}{RGB}{169,26,16}
+\definecolor{terminal}{RGB}{121,136,159}
 
-
+\geometry{
+paperwidth=972pt,
+paperheight=193pt	,
+margin=0cm
+}
 	
 
 \newcommand{\non}[1]{\textcolor{nonterminal}{#1}}
@@ -24,26 +32,26 @@
 \newcommand{\f}{\non{\ensuremath{{\mathbf{F}}}}}
 
 
-% \begin{document}
-% $	\begin{array}{cccl} 
-% 	\x & := & ~ & 
-% 		\t \terbin{\land} \t 			\; | \; 
-% 		\t \terbin{\lor} \t 				\; | \; 
-% 		\t \terbin{\to} \t 				\; | \; 
-% 		\t \terbin{\leftrightarrow} \t 	\\ 
-% 	\t & := & ~ & 
-% 		\terun{\text{I}}\: \f 					\; | \; 
-% 		\terun{\text{E}}\: \f 					\; | \; 
-% 		\terun{\text{C}}\: \f 					\; | \; 
-% 		\terun{\text{K}_i}\: \f 				\; | \; 
-% 		\terun{\text{M}_i}\: \f 				\\ 
-% 	\f & := & ~ & 
-% 		\teropen{(} \x \terclose{)} 				\; | \; 
-% 		~ \terun{\lnot} \x 						\; | \; 
-% 		\prop 					\\ 
-% 	\end{array}$
-% \end{document}
-
 \begin{document}
-$a \land \left( b \land c\right)$
+{\fontsize{50}{60}\selectfont 
+$	\begin{array}{cccl} 
+	\x & := & ~ & 
+		\t 								\; | \; 
+		\t \terbin{\land} \t 			\; | \; 
+		\t \terbin{\lor} \t 			\; | \; 
+		\t \terbin{\to} \t 				\; | \; 
+		\t \terbin{\leftrightarrow} \t 	\\ 
+	\t & := & ~ & 
+		\f 										\; | \;
+		\terun{\text{I}}\: \x 					\; | \; 
+		\terun{\text{E}}\: \x 					\; | \; 
+		\terun{\text{C}}\: \x 					\; | \; 
+		\terun{\text{K}_i}\: \x 				\; | \; 
+		\terun{\text{M}_i}\: \x 				\\ 
+	\f & := & ~ & 
+		\teropen{(} \x \terclose{)} 				\; | \; 
+		~ \terun{\lnot} \x 						\; | \; 
+		\prop 					\\ 
+	\end{array}$
+}
 \end{document}

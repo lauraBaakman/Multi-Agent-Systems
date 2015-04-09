@@ -6,7 +6,7 @@ The parser handles the actual parsing of expressions.
  Grammar:
 
  E -> T '&' T | T '|' T | T '->' T | T '<->' T
- T -> C F | K F | M F
+ T -> C F | K F | M F | I F
  F -> prop | '(' E ')' | '~' E
 
 """
@@ -97,7 +97,10 @@ class Parser(object):
     def t(self):
         if isinstance(self.next(), (tokens.BracketOpen, tokens.Proposition)):
             return self.f()
-        elif isinstance(self.next(), (tokens.AgentOperator, tokens.UnaryOperator)):
+        elif (
+                    isinstance(self.next(), (tokens.AgentOperator, tokens.UnaryOperator)) or
+                        self.next().type == operators.Unary.negation
+        ):
             node = nodeFactory.from_token(self.next())
             self.consume()
             node.lhs = self.e()
@@ -132,10 +135,3 @@ class Parser(object):
         t = self.e()
         self.expect(END)
         return t
-
-
-
-
-
-
-
