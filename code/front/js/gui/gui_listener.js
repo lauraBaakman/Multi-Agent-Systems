@@ -119,7 +119,7 @@ define("gui_listener", ["d3"], function(d3) {
         }
 
         this.keydown = function() {
-            d3.event.preventDefault();
+            // d3.event.preventDefault();
 
             if (last_key_down !== -1) return;
             last_key_down = d3.event.keyCode;
