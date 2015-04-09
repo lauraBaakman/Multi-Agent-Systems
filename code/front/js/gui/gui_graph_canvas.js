@@ -34,9 +34,9 @@ define("gui_graph_canvas", ["d3"], function(d3) {
 
         function init_canvas() {
             // Get meassurement of the container of the graph canvas
-            // var padding = 5;
+            var padding = 5;
             self.width = container.node().getBoundingClientRect().width;
-            self.height = container.node().getBoundingClientRect().height;
+            self.height = container.node().getBoundingClientRect().height - padding;
             self.colors = d3.scale.category10();
             self.canvas = container
                 .append('svg')
@@ -128,8 +128,6 @@ define("gui_graph_canvas", ["d3"], function(d3) {
         }
 
         function relation_to_string(link) {
-            // console.log(link);
-
             var agent_to_unicode = {
                     0: '\u2080',
                     1: '\u2081',
@@ -139,13 +137,9 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                 }
                 // ( \u208D ) '\u208E'
             var str = 'R';
-
-            // console.log(link.source.id, link.agents, link.target.id);
-
             link.agents.forEach(function(agent) {
                 str += agent_to_unicode[agent];
             });
-
             return str;
         }
 
@@ -191,12 +185,6 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                     return "#linkId_" + d.id;
                 })
                 .text(relation_to_string);
-
-
-            // d3.select('textPath').text(relation_to_string);
-
-
-
             self.link_labels.exit().remove();
         }
 

@@ -286,6 +286,12 @@ define("gui_listener", ["d3"], function(d3) {
             gui.reset();
         }
 
+        var reset_key_listener = function() {
+            d3.select(window)
+                .on('keydown', null)
+                .on('keyup', null);
+        }
+
         this.set_mode = function(new_mode) {
             self.mode = new_mode;
             if (self.mode == MODE.EDIT) {
@@ -301,9 +307,39 @@ define("gui_listener", ["d3"], function(d3) {
                 d3.select('#edit-mode').classed('active', false);
                 d3.select('#eval-tab').classed('active', true);
                 d3.select('#evaluate-mode').classed('active', true);
-                d3.select(window)
-                    .on('keydown', null)
-                    .on('keyup', null);
+                reset_key_listener();
+            }
+        }
+
+        this.fill_screen = function() {
+            var playground = d3.select('#playground');
+            var app_info = d3.select('#app-info');
+            var app_canvas = d3.select('#app-canvas');
+
+            if (playground.classed('container')) {
+                playground.classed('container-fluid', true);
+                playground.classed('container', false);
+                
+                app_info.classed('col-lg-2', true);
+                app_canvas.classed('col-lg-10', true);
+
+                if(self.mode == MODE.VAL) {
+                    reset_key_listener();
+                }
+
+                gui.reset();
+            } else {
+                playground.classed('container-fluid', false);
+                playground.classed('container', true);
+
+                app_info.classed('col-lg-2', false);
+                app_canvas.classed('col-lg-10', false);
+
+                if(self.mode == MODE.VAL) {
+                    reset_key_listener();
+                }
+
+                gui.reset();
             }
         }
 

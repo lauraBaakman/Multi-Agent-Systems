@@ -20,13 +20,18 @@
             <small>A project for the course Multi-Agent Systems</small>
             <a href="/report.html" class="navigation">Report</a>
         </header>
-        <div id="mode-select" class="btn-group row">
-            <button class="btn btn-primary active" id="edit-mode" onclick="listener.set_mode(0)">
-                <i class="icon-pencil icon-white"></i> Edit Model
-            </button>
-            <button class="btn btn-primary" id="evaluate-mode" onclick="listener.set_mode(1)">
-                <i class="icon-eye-open icon-white"></i> Evaluate Formula
-            </button>
+        <div class="row">
+            <div id="mode-select" class="btn-group col-md-3">
+                <button class="btn btn-primary active" id="edit-mode" onclick="listener.set_mode(0)">
+                    <i class="icon-pencil icon-white"></i> Edit Model
+                </button>
+                <button class="btn btn-primary" id="evaluate-mode" onclick="listener.set_mode(1)">
+                    <i class="icon-eye-open icon-white"></i> Evaluate Formula
+                </button>
+            </div>
+            <div class="col-md-offset-8 col-md-1">
+                <a class="btn btn-default pull-right" id="fill-screen" onclick="listener.fill_screen()">fill screen</a>
+            </div>
         </div>
         <section class="row" id="app">
             <div class="col-md-3 tab-content" id="app-info">
@@ -73,6 +78,7 @@
                     </div>
                     <div class="row">
                         <div id="instruction" class="col-md-12">
+                            <h5><strong>Instructions</strong></h5>
                             <ul class="list-unstyled">
                                 <li>Hold the <strong>'a'</strong> button and <strong>click</strong> in the open space to <strong>add a state</strong></li>
                                 <li>Drag between states to <strong>add a transition</strong></li>
@@ -99,11 +105,11 @@
                     <form>
                         <div class="form-group">
                             <label for="formula">Formula</label>
-                            <input type="text" class="form-control" id="formula" placeholder="~p -> q">
+                            <input type="text" class="form-control" id="formula" placeholder="e.g., ~p -> q">
                         </div>
                         <div class="form-group">
                             <label for="state">State</label>
-                            <input type="text" class="form-control" id="state" placeholder="0">
+                            <input type="text" class="form-control" id="state" placeholder="e.g., 0">
                         </div>
                         <div class="form-group">
                             <label for="logic">Logic</label>
@@ -124,17 +130,37 @@
                         </div>
                         <button type="button" id="json_submit_button" class="btn btn-default">Submit</button>
                     </form>
+                    <div class="row">
+                        <div id="instruction" class="col-md-12">
+                            <h5><strong>Instructions</strong></h5>
+                            <ul class="list-unstyled">
+                                <li>When entering a formula</li>
+                                <ul>
+                                    <li>use <code>~a</code> for $\lnot a$</li>
+                                    <li>use <code>a &amp; b</code> for $a \land b$</li>
+                                    <li>use <code>a | b</code> for $a \lor b$</li>
+                                    <li>use <code>a -&gt; b</code> for $a \to b$</li>
+                                    <li>use <code>a &lt;-&gt; b</code> for $a \leftrightarrow b$</li>
+                                    <li>use <code>K_i</code> for $K_i$</li>
+                                    <li>use <code>M_i</code> for $M_i$</li>
+                                    <li>use <code>C</code> for $C$</li>
+                                    <li>use <code>E</code> for $E$</li>
+                                    <li>use <code>I</code> for $I$</li>
+                                </ul>
+                                <li><strong>NB: </strong>states are integers and propositions are lower case.</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-md-9" id="app-canvas">
             </div>
         </section>
-        <section class = "row">
+        <section class="row">
             <div class="col-md-12 motivation" id="response">
                 No response
             </div>
         </section>
-
     </div>
     <footer class="footer">
         <div class="container">

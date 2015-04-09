@@ -13,8 +13,21 @@ svg {
   user-select: none;
 }
 
+#playground.container-fluid {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+#playground {
+  min-height: 750px;
+}
+
 #eval-tab {
   padding-top: 15px;
+}
+
+#fill-screen {
+  margin-right: -30px;
 }
 
 #model-tab {
@@ -78,11 +91,6 @@ text::-moz-selection {
   stroke-width: 2.5px;
 }
 
-#playground {
-  width: 1850px;
-  min-height: 800px;
-}
-
 #app svg {
   margin-left: -15px;
 }
@@ -106,7 +114,7 @@ text::-moz-selection {
 }
 
 #app-info {
-	 position:relative;
+	  position:relative;
     min-height: inherit;
     background-color: #f5f5f5;
     border-right: 1px solid #e3e3e3;
@@ -123,6 +131,7 @@ text::-moz-selection {
 }
 
 #mode-select {
+  margin-left: -15px;
   margin-bottom: 5px;
 }
 
