@@ -41,7 +41,7 @@ class Common(Unary):
             state=state.name
         )
 
-    def to_latex(self, delimiter='', operator='\\text{{C}}'):
+    def to_latex(self, delimiter='', operator='\\text{C}'):
         """
         Return LaTeX representation
         :param: operator: operator
