@@ -56,7 +56,7 @@ path.link.selected {
 
 path.link {
     fill: none;
-    stroke: #000;
+    stroke: #aaa;
     stroke-width: 3px;
     cursor: pointer;
 }

@@ -7,8 +7,8 @@ define("epl_model", [], function() {
         var states = [],
             links = [];
 
-        var state_counter = 0;
-        var link_counter = 0;
+        var state_counter = 1;
+        var link_counter = 1;
 
         var default_propositions = ['p', 'q', 'r', 's', 't'];
         var proposition_counter = 2;
@@ -60,6 +60,7 @@ define("epl_model", [], function() {
             if (!link) return;
 
             link.agents.push(agent);
+            link.agents = link.agents.sort();
         };
 
         // Todo: Agent
@@ -221,10 +222,10 @@ define("epl_model", [], function() {
 
         this.load_from_model_object = function(model_object) {
             states = [];
-            state_counter = 0;
+            state_counter = 1;
 
             links = [];
-            link_counter = 0;
+            link_counter = 1;
 
             // current_propositions = model_object.propositions;
 

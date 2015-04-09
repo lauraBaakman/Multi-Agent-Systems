@@ -106,13 +106,13 @@ define("gui_graph_canvas", ["d3"], function(d3) {
             self.canvas.append('svg:defs').append('svg:marker')
                 .attr('id', 'end-arrow')
                 .attr('viewBox', '0 -5 10 10')
-                .attr('refX', 6)
-                .attr('markerWidth', 6)
-                .attr('markerHeight', 6)
+                .attr('refX', 5)
+                .attr('markerWidth', 5)
+                .attr('markerHeight', 5)
                 .attr('orient', 'auto')
                 .append('svg:path')
                 .attr('d', 'M0,-5L10,0L0,5')
-                .attr('fill', '#000');
+                .attr('fill', '#aaa');
         }
 
         function init_drag_line() {
@@ -129,15 +129,17 @@ define("gui_graph_canvas", ["d3"], function(d3) {
 
         function relation_to_string(link) {
             var agent_to_unicode = {
-                    0: '\u2080',
                     1: '\u2081',
                     2: '\u2082',
                     3: '\u2083',
                     4: '\u2084',
+                    5: '\u2085'
                 }
                 // ( \u208D ) '\u208E'
             var str = 'R';
+            console.log(link.agents);
             link.agents.forEach(function(agent) {
+                console.log(agent);
                 str += agent_to_unicode[agent];
             });
             return str;
@@ -184,7 +186,11 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                 .attr("xlink:href", function(d) {
                     return "#linkId_" + d.id;
                 })
-                .text(relation_to_string);
+                .text(relation_to_string)
+                .attr('font-size', '16px')
+                .style('fill', 'rgb(37, 91, 141)')
+                .attr('stroke', 'black')
+                .attr('stroke-width', '.3px');
             self.link_labels.exit().remove();
         }
 
@@ -238,12 +244,18 @@ define("gui_graph_canvas", ["d3"], function(d3) {
                 .attr('class', 'id')
                 .text(function(d) {
                     return d.id;
-                });
+                })
+                .attr('font-size', '16px');
 
+            // rgb(37, 91, 141) rgb(48, 101, 46) 193, 13, 60
             // text foreground
             g.append('svg:text')
                 .attr('x', 24)
                 .attr('y', 4)
+                .attr('font-size', '16px')
+                .attr('stroke', 'black')
+                .attr('stroke-width', '.3px')
+                .attr('fill', 'rgb(193, 13, 60) ')
                 .text(valuation_to_string);
 
             // remove old nodes

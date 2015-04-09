@@ -95,7 +95,7 @@ define("gui_listener", ["d3"], function(d3) {
 
             if (model.link_exists(mousedown_node.id, mouseup_node.id) === null) {
                 var link_id = model.add_link(mousedown_node.id, mouseup_node.id);
-                model.add_agent_to_link(link_id, 0);
+                model.add_agent_to_link(link_id, 1);
                 set_selected_node(null);
                 gui.draw();
             }
@@ -126,7 +126,6 @@ define("gui_listener", ["d3"], function(d3) {
 
             if (d3.event.keyCode === 18) {
                 gui.nodes.call(gui.layout.drag);
-                // gui.get_canvas().classed('alt', true);
             }
 
             if (!gui.selected_node && !gui.selected_link) return;
@@ -176,7 +175,6 @@ define("gui_listener", ["d3"], function(d3) {
         };
 
         // Visibility of the state and link info
-
         var set_active = function(id, bool) {
             d3.select(id).classed("inactive", !bool);
 
@@ -235,6 +233,7 @@ define("gui_listener", ["d3"], function(d3) {
             var agents = d3.set(gui.selected_link.agents);
             if (!agents.has(agent)) {
                 gui.selected_link.agents.push(agent);
+                gui.selected_link.agents.sort();
             } else {
                 if (gui.selected_link.agents.length != 1) {
                     gui.selected_link.agents = gui.selected_link.agents.filter(function(a) {
@@ -325,7 +324,6 @@ define("gui_listener", ["d3"], function(d3) {
                 if(self.mode == MODE.VAL) {
                     reset_key_listener();
                 }
-
                 gui.reset();
             } else {
                 playground.classed('container-fluid', false);
@@ -337,7 +335,6 @@ define("gui_listener", ["d3"], function(d3) {
                 if(self.mode == MODE.VAL) {
                     reset_key_listener();
                 }
-
                 gui.reset();
             }
         }
