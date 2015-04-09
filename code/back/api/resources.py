@@ -13,10 +13,10 @@ import modelchecker.ast as ast
 import modelchecker.config as config
 
 def get_from_data(data, key, message=None):
-    result = data.get(key)
+    result = data.get(key, None)
     if not message:
         message = "A {}, with the key '{}' is required".format(key, key)
-    if not result:
+    if result is None:
         raise falcon.HTTPError(
             falcon.HTTP_400,
             message
@@ -50,21 +50,21 @@ def get_logic_from_data(data):
     return logic
 
 def get_model_from_data(data):
-    json_model = get_from_data(data, 'model')
-    logic = get_logic_from_data(json_model)
-
     try:
+        json_model = get_from_data(data, 'model')
+        logic = get_logic_from_data(json_model)
         model_class = modelfactory.from_model_name(logic)
         model = model_class.from_json(json_model)
     except errors.ModelError as e:
         raise falcon.HTTPError(falcon.HTTP_400, 'Model Error', e.message)
     except errors.ParserError as e:
-        raise falcon.HTTPError(falcon.HTTP_400, 'Model Error', e.message)
+        raise falcon.HTTPError(falcon.HTTP_400, 'Parser Error', e.message)
     return (logic, model)
 
 def get_ast_from_data(logic, data):
     formula = get_from_data(data, 'formula')
-
+    if not formula:
+        raise falcon.HTTPError(falcon.HTTP_400, 'Input Error', "You are required to input a formula")
     try:
         return ast.Ast.from_string(formula, logic)
     except errors.TokenizeError as e:
@@ -73,43 +73,38 @@ def get_ast_from_data(logic, data):
         raise falcon.HTTPError(falcon.HTTP_400, 'Parse Error', e.message)
 
 def get_state_from_data(data):
-    return data.get('state')
+    state = data.get('state')
+    if not state:
+        raise falcon.HTTPError(falcon.HTTP_400, 'Input Error', "You are required to input a state")
+    else:
+        return state
 
 def evaluate_model(model, formula, state):
     try:
         return model.is_true(formula, state)
     except errors.ValuationError as e:
         raise falcon.HTTPError(falcon.HTTP_400, 'Evaluation Error', e.message)
+    except errors.ModelError as e:
+        raise falcon.HTTPError(falcon.HTTP_400, 'Model Error', e.message)
 
 class Valuate(object):
 
     def on_post(self, req, resp):
-        try:
-            print 'Received request: {req}'.format(req=req)
-            json_data = read_json(req)
-            (logic, model) = get_model_from_data(json_data)
-            ast = get_ast_from_data(logic, json_data)
-            state = get_state_from_data(json_data)
-            (truth_value, motivation) = evaluate_model(model, ast, state)
+        json_data = read_json(req)
+        (logic, model) = get_model_from_data(json_data)
+        ast = get_ast_from_data(logic, json_data)
+        state = get_state_from_data(json_data)
+        (truth_value, motivation) = evaluate_model(model, ast, state)
 
-            resp.status = falcon.HTTP_202
-            resp.set_header('Access-Control-Allow-Headers', req.get_header('Origin'))
-            resp.body = json.dumps(
-                {
-                    'truth_value': truth_value,
-                    'motivation' : utils._sub_motivation_to_html(motivation),
-                    'model': model.to_json()
-                },
-                 encoding='utf-8'
-            )
-            resp.set_header('Access-Control-Allow-Origin', req.get_header('Origin'))
-            print 'Sent response: {resp}'.format(resp=resp)
-        except:
-            raise falcon.HTTPError(
-                falcon.HTTP_500,
-                'Error',
-                'Something went horribly wrong, contact the administrator.'
-            )
+        resp.status = falcon.HTTP_202
+        resp.body = json.dumps(
+            {
+                'truth_value': truth_value,
+                'motivation' : utils._sub_motivation_to_html(motivation),
+                'model': model.to_json()
+            },
+             encoding='utf-8'
+        )
 
 class Logics(object):
     def on_get(self, req, resp):

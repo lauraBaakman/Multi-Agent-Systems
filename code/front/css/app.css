@@ -1,12 +1,68 @@
-html {
+/*html {
 	height: 100%;
+}
+*/
+
+svg {
+  background-color: #FFF;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+#playground.container-fluid {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+#playground {
+  min-height: 700px;
+}
+
+#eval-tab {
+  padding-top: 15px;
+}
+
+#fill-screen {
+  margin-right: -30px;
+}
+
+#model-tab {
+  padding-top: 15px;
+}
+
+#select-agents-state {
+  margin-top: 15px;
+}
+
+#response.motivation {
+  margin-left: 0;
+}
+
+#response.motivation.success {
+  border-color: green;
+}
+
+#response.motivation.failure {
+  border-color: red;
+}
+
+path.link.selected {
+  stroke-dasharray: 10,2;
 }
 
 path.link {
     fill: none;
-    stroke: #000;
-    stroke-width: 2px;
-    cursor: default;
+    stroke: #aaa;
+    stroke-width: 3px;
+    cursor: pointer;
+}
+
+circle.node {
+  cursor: pointer;
 }
 
 path.label {
@@ -14,14 +70,38 @@ path.label {
     font-weight: bold;
 }
 
+path.link.dragline {
+  pointer-events: none;
+}
+
 text.id {
     text-anchor: middle;
     font-weight: bold;
 }
 
+text {
+  pointer-events: none;
+}
+
+text::selection {
+  background: none; /* WebKit/Blink Browsers */
+}
+text::-moz-selection {
+  background: none; /* Gecko Browsers */
+}
+
+.reflexive {
+  stroke: #000 !important;
+  stroke-width: 2.5px;
+}
+
+#app svg {
+  margin-left: -15px;
+}
+
 #app {
     position: relative;
-    min-height: 650px;
+    min-height: inherit;
 
     border: 1px solid #e3e3e3;
   	border-radius: 4px;
@@ -38,7 +118,7 @@ text.id {
 }
 
 #app-info {
-	position:relative;
+	  position:relative;
     min-height: inherit;
     background-color: #f5f5f5;
     border-right: 1px solid #e3e3e3;
@@ -46,24 +126,148 @@ text.id {
     padding-bottom: 10px;
 }
 
-#editor_container {
-	padding-top: 10px;
-	min-height: 616px;
-	max-height: 616px;
+#instruction {
+  position: absolute;
+  bottom: 0;
+  padding-top: 20px;
+  margin-top: 20px;
+  border-top: 1px solid #e3e3e3;
 }
 
-#json_editor {
-	min-height: 560px;
+#mode-select {
+  margin-left: -15px;
+  margin-bottom: 5px;
 }
 
-#json_editor .jsoneditor {
-	min-height: inherit;
+#link-information {
+  margin-top: 10px;
 }
 
-#json_editor .jsoneditor .outer {
-	min-height: inherit;
+#state-information {
+  margin-top: 10px;
 }
 
-#json_editor .jsoneditor .outer .text{
-	min-height: inherit;
+.inactive {
+  display: none;
+}
+
+/* ######## Spinner ######## */
+
+/* Absolute Center CSS Spinner */
+.loading {
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  width: 2em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+/* Transparent Overlay */
+.loading:before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.3);
+}
+
+/* :not(:required) hides these rules from IE9 and below */
+.loading:not(:required) {
+  /* hide "loading..." text */
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+
+.loading:not(:required):after {
+  content: '';
+  display: block;
+  font-size: 10px;
+  width: 1em;
+  height: 1em;
+  margin-top: -0.5em;
+  -webkit-animation: spinner 1500ms infinite linear;
+  -moz-animation: spinner 1500ms infinite linear;
+  -ms-animation: spinner 1500ms infinite linear;
+  -o-animation: spinner 1500ms infinite linear;
+  animation: spinner 1500ms infinite linear;
+  border-radius: 0.5em;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.5) -1.5em 0 0 0, rgba(0, 0, 0, 0.5) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+  box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+}
+
+/* Animation */
+@-webkit-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-moz-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
