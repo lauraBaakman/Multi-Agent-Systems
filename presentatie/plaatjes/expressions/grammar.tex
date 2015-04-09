@@ -1,0 +1,49 @@
+\documentclass{standalone}
+
+\usepackage{amsmath}
+\usepackage{xcolor}
+
+\definecolor{terminal}{RGB}{169,26,16}
+\definecolor{nonterminal}{RGB}{121,136,159}
+
+
+	
+
+\newcommand{\non}[1]{\textcolor{nonterminal}{#1}}
+\newcommand{\ter}[1]{\textcolor{terminal}{#1}}
+
+\newcommand{\terun}[1]{\mathord{\ter{#1}}}
+\newcommand{\terbin}[1]{\mathbin{\ter{#1}}}
+\newcommand{\teropen}[1]{\mathopen{\ter{#1}}}
+\newcommand{\terclose}[1]{\mathclose{\ter{#1}}}
+
+\newcommand{\prop}{\ter{\mathit{proposition}}}
+
+\newcommand{\x}{\non{\ensuremath{{\mathbf{X}}}}}
+\renewcommand{\t}{\non{\ensuremath{{\mathbf{T}}}}}
+\newcommand{\f}{\non{\ensuremath{{\mathbf{F}}}}}
+
+
+% \begin{document}
+% $	\begin{array}{cccl} 
+% 	\x & := & ~ & 
+% 		\t \terbin{\land} \t 			\; | \; 
+% 		\t \terbin{\lor} \t 				\; | \; 
+% 		\t \terbin{\to} \t 				\; | \; 
+% 		\t \terbin{\leftrightarrow} \t 	\\ 
+% 	\t & := & ~ & 
+% 		\terun{\text{I}}\: \f 					\; | \; 
+% 		\terun{\text{E}}\: \f 					\; | \; 
+% 		\terun{\text{C}}\: \f 					\; | \; 
+% 		\terun{\text{K}_i}\: \f 				\; | \; 
+% 		\terun{\text{M}_i}\: \f 				\\ 
+% 	\f & := & ~ & 
+% 		\teropen{(} \x \terclose{)} 				\; | \; 
+% 		~ \terun{\lnot} \x 						\; | \; 
+% 		\prop 					\\ 
+% 	\end{array}$
+% \end{document}
+
+\begin{document}
+$a \land \left( b \land c\right)$
+\end{document}

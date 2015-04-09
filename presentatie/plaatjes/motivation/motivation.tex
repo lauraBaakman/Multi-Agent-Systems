@@ -1,0 +1,42 @@
+\documentclass{article}
+
+\usepackage[left=0cm,top=0cm,right=0cm,nohead,nofoot]{geometry}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{mathptmx}
+\usepackage{anyfontsize}
+\usepackage{t1enc}
+\geometry{
+paperwidth=680pt,
+paperheight=350pt	,
+margin=0cm
+}
+
+\definecolor{RED}{RGB}{169,26,16}
+\definecolor{BLUE}{RGB}{121,136,159}
+
+\newcommand{\emphasise}[1]{\textcolor{RED}{\bf #1}}
+\newcommand{\normal}[1]{#1}
+
+\begin{document}
+{\fontsize{22}{25}\selectfont 
+	\normal{\noindent$\left(\text{M}, s_1 \right) \models  \text{K}_{\text{1}} \left(\left(\text{a}\land\text{b}\right)\right)$ iff $\left(\text{M}, \text{t} \right) \models \left(\text{a}\land\text{b}\right)$ for all $t$ with $(s1, t) \in R_{1}$.}
+
+	\hfill\begin{minipage}{\dimexpr\textwidth-0.1\textwidth}
+			\normal{$\left(\text{M}, s_2 \right) \models \left(\text{a}\land\text{b}\right)$ iff $\left(\text{M}, s_2 \right) \models \text{a}$ and $\left(\text{M}, s_2 \right) \models \text{b}$. }
+
+			\hfill\begin{minipage}{\dimexpr\textwidth-0.1\textwidth}
+				\normal{$\left(\text{M}, s_2 \right) \models \text{a}$ iff $\pi\left(s_2\right)\left( a \right) = 1$. 
+				~\\
+	 			$\left(\text{M}, s_2 \right) \models \text{a}$ holds since $\pi\left(s_2\right)\left( a \right) = 1$.}
+	 			~\\
+ 				\normal{$\left(\text{M}, s_2 \right) \models \text{b}$ iff $\pi\left(s_2\right)\left( b \right) = 1$. 
+ 				~\\
+	 			$\left(\text{M}, s_2 \right) \models \text{b}$ does not hold since $\pi\left(s_2\right)\left( b \right) = 0$.}
+	 		\end{minipage}
+	 	\normal{$\left(\text{M}, s_2 \right) \models \left(\text{a}\land\text{b}\right)$ does not hold since $\left(\text{M}, s_2 \right) \models \text{b}$ does not hold.}
+	\end{minipage}
+
+	\emphasise{$\left(\text{M}, s_1 \right) \models  \text{K}_{\text{1}} \left(\left(\text{a}\land\text{b}\right)\right)$ does not hold since $\left(\text{M}, s_2 \right) \models \left(\text{a}\land\text{b}\right)$ does not hold.}
+}
+\end{document}
