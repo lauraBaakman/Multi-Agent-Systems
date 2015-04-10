@@ -14,7 +14,11 @@ def from_model_name(logic_name):
         'KEC': models.KModel,
         'TEC': models.TModel,
         'S4EC': models.S4Model,
-        'S5EC': models.S5Model
+        'S5EC': models.S5Model,
+        'KI': models.KModel,
+        'TI': models.TModel,
+        'S4I': models.S4Model,
+        'S5I': models.S5Model
     }
     class_name = logic_name_to_class.get(logic_name)
     if class_name:
