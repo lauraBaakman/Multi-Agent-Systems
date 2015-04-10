@@ -14,7 +14,7 @@ define("gui_info_panel", ["d3", "mathjax"], function(d3, MathJax) {
             model_obj.logic = document.getElementById("logic").value;
 
 
-            d3.json("http://localhost:8000/valuate")
+            d3.json("http://mas.jandr.nl:31415/valuate")
                 .on("beforesend", function() {
                     loading = document.createElement('div')
                     loading.className = 'loading';
